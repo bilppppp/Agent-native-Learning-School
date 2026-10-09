@@ -11,7 +11,7 @@
 复制下面的指令，按需替换学习来源、目标和偏好：
 
 ```text
-请在当前可写工作区克隆 https://github.com/bilppppp/Agent-native-Learning-School-.git；如果已有该仓库，请复用它，不要覆盖现有文件。
+请在当前可写工作区克隆 https://github.com/bilppppp/Agent-native-Learning-School.git；如果已有该仓库，请复用它，不要覆盖现有文件。
 阅读仓库的 README.md、AGENT_GUIDE.md 和 AGENTS.md，按照现有工具创建并启动一所新的独立 School。
 学习来源：https://github.com/facebook/react
 学习目标：理解组件为什么会重新渲染，能解释状态更新与父子组件的关系，并用小例子检验理解。

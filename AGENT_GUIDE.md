@@ -4,7 +4,7 @@
 
 ## 1. 定位项目与确认输入
 
-首次使用，在用户允许的可写目录克隆 `https://github.com/bilppppp/Agent-native-Learning-School-.git`；已有本地路径则直接使用。不要覆盖已有目录。进入仓库根目录，确认 `package.json` 与 `scripts/school.mjs` 存在，阅读本指南、README 和根 AGENTS。
+首次使用，在用户允许的可写目录克隆 `https://github.com/bilppppp/Agent-native-Learning-School.git`；已有本地路径则直接使用。不要覆盖已有目录。进入仓库根目录，确认 `package.json` 与 `scripts/school.mjs` 存在，阅读本指南、README 和根 AGENTS。
 
 必需信息只有可访问的学习来源和 Learning Goal。来源可为 GitHub 仓库、HTTP(S) 文档/论文或本地文件/目录；本地来源优先使用绝对路径。仅在来源或目标无法确定时补问，避免让用户设计课程目录或编写 JSON。
 
