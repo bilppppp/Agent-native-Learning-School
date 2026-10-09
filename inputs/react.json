@@ -1,0 +1,10 @@
+{
+  "name": "React School",
+  "goal": "Understand why React components rerender.",
+  "sourceRoot": "sources",
+  "materials": [
+    {"path": "react", "url": "https://github.com/facebook/react", "version": "v19.2.0", "commit": "ae74234eae6ebd62f19190731278e20bc1c37d51"},
+    {"path": "react-docs", "urls": ["https://react.dev/learn/render-and-commit", "https://react.dev/reference/react/useState", "https://react.dev/reference/react/memo"], "retrieved": "2026-10-09"}
+  ],
+  "output": "schools/react"
+}

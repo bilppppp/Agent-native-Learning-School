@@ -1,0 +1,21 @@
+{
+  "name": "concurrency-intro",
+  "goal": "理解异步任务的并发限制如何工作，并能正确使用 p-limit 控制任务执行",
+  "depth": "introductory",
+  "background": "熟悉 JavaScript 函数和 Promise；未系统学习并发限制",
+  "learningStyle": "未指定",
+  "teachingMode": "simple",
+  "language": "中文",
+  "port": 4323,
+  "request": "学习 https://github.com/sindresorhus/p-limit，目标是理解异步任务的并发限制如何工作，并能正确使用 p-limit 控制任务执行。我熟悉 JavaScript 函数和 Promise，希望入门课程，教学先用简单模式。",
+  "output": "schools/concurrency-intro",
+  "sourceRoot": "schools/concurrency-intro/materials",
+  "materials": [
+    {
+      "path": "material-1",
+      "url": "https://github.com/sindresorhus/p-limit",
+      "commit": "a8a6fbec4e0e866d6d779b10889bb4f5567e70eb",
+      "version": "a8a6fbec4e0e866d6d779b10889bb4f5567e70eb"
+    }
+  ]
+}

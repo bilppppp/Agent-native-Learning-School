@@ -1,0 +1,17 @@
+node_modules
+.astro/
+.vite/
+.wrangler/
+dist/
+__pycache__/
+.DS_Store
+
+# Downloaded upstream checkouts and generation workspaces (recreated by setup/create)
+/upstream/
+/sources/react/
+/schools/*/materials/
+
+# Local credentials
+.env
+.env.*
+!.env.example

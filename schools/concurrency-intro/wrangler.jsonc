@@ -1,0 +1,16 @@
+{
+  "name": "concurrency-intro-school",
+  "compatibility_date": "2026-03-12",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "assets": {
+    "directory": "./dist/client"
+  },
+  "kv_namespaces": [
+    {
+      "binding": "PROGRESS",
+      "id": "local-concurrency-intro-progress"
+    }
+  ]
+}

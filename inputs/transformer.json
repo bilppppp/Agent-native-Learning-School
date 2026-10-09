@@ -1,0 +1,9 @@
+{
+  "name": "Transformer School",
+  "goal": "Understand the Transformer architecture and attention mechanism.",
+  "sourceRoot": "sources",
+  "materials": [
+    {"path": "transformer/attention-is-all-you-need.txt", "pdf": "transformer/attention-is-all-you-need.pdf", "url": "https://arxiv.org/abs/1706.03762", "version": "arXiv:1706.03762v7", "retrieved": "2026-10-09"}
+  ],
+  "output": "schools/transformer"
+}

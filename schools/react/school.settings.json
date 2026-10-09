@@ -1,0 +1,10 @@
+{
+  "name": "React School",
+  "goal": "Understand why React components rerender: trace state, parent and context updates, explain bailouts, and distinguish rendering from DOM changes.",
+  "depth": "systematic (existing experimental route)",
+  "background": "Unknown; scaffold necessary prerequisites",
+  "learningStyle": "examples",
+  "teachingMode": "simple",
+  "language": "zh",
+  "port": 4321
+}

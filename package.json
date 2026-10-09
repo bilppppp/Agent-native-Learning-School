@@ -1,0 +1,11 @@
+{
+  "name": "agent-native-learning-school",
+  "private": true,
+  "type": "module",
+  "bin": { "learn-school": "scripts/school.mjs" },
+  "scripts": {
+    "school": "node scripts/school.mjs",
+    "dev": "node scripts/start.mjs",
+    "generate": "node scripts/generate.mjs"
+  }
+}
