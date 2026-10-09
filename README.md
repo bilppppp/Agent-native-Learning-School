@@ -2,7 +2,40 @@
 
 从可访问的材料和学习目标生成一所独立 School。课程深度决定学什么，教学模式决定如何教。网站保存身份与进度；当前使用 Pi 教师，课程与进度格式不依赖 Pi。
 
-## 准备与创建
+## 交给你的 Coding Agent
+
+主要入口是自然语言：把下面任一段交给具备终端工具能力的 Coding Agent。无需安装或注册专用 Skill，也无需先学习 CLI 或手写 JSON。Agent 负责定位项目、准备环境、调用现有生成能力并启动网站；你在网页获取学习身份，再到 Pi 中学习。
+
+### 首次使用：让 Agent 克隆项目
+
+复制下面的指令，按需替换学习来源、目标和偏好：
+
+```text
+请在当前可写工作区克隆 https://github.com/bilppppp/Agent-native-Learning-School-.git；如果已有该仓库，请复用它，不要覆盖现有文件。
+阅读仓库的 README.md、AGENT_GUIDE.md 和 AGENTS.md，按照现有工具创建并启动一所新的独立 School。
+学习来源：https://github.com/facebook/react
+学习目标：理解组件为什么会重新渲染，能解释状态更新与父子组件的关系，并用小例子检验理解。
+我熟悉 JavaScript，但不熟悉 React 源码。希望从基础直觉逐步深入到相关实现机制；教学先用简单模式，偏好预测与代码观察。
+请选择一个未占用的 School 名称，保留已有课程和进度。完成后给我实际可访问的网站地址、课程文件位置，以及在 Pi 中开始学习和下次续学的方法。
+如果缺少运行环境、模型认证或来源不可访问，请明确说明需要我补充什么；不要声称未完成的生成或教学已经成功。
+```
+
+### 已克隆：让 Agent 使用本地项目
+
+将 `<本地仓库绝对路径>` 替换成你的路径（含空格的路径也可），然后复制：
+
+```text
+请使用本地仓库 <本地仓库绝对路径> 中的 Agent-native Learning School，先阅读 README.md、AGENT_GUIDE.md 和 AGENTS.md。
+利用现有工具为 https://arxiv.org/abs/1706.03762 创建并启动一所新的独立 School，不要覆盖已有 School。
+我的目标是理解 Transformer 架构和 Attention 的关键计算。我已熟悉基础神经网络，希望深入理解组件关系、公式推导与简单数值实验；教学先用沉浸模式，允许中途调整节奏。
+完成后给我实际可访问的网站地址、可编辑的课程位置，以及在 Pi 中开始学习和恢复进度的步骤。未指定的设置使用项目默认值。
+```
+
+来源也可以是文章、文档、本地文件或目录；自然语言可以自由描述深度与基础。课程深度影响内容范围，Simple / Immersive 影响教学节奏，并能在学习时切换。可访问材料和已配置模型的 Pi 仍是当前生成与教学的运行条件。
+
+给 Agent 的执行流程见 [AGENT_GUIDE.md](AGENT_GUIDE.md)；修改项目实现时遵循 [AGENTS.md](AGENTS.md)。以下保留直接操作 CLI 的完整用法。
+
+## CLI：准备与创建
 
 需要 Node.js 22.12+（本次使用 24.16）、Python 3、Git、curl，以及已安装并配置可用强模型的 Pi。首次执行：
 
@@ -40,17 +73,6 @@ npm run school -- start my-school
 
 课程完成表示参与活动并收到反馈，不是知识认证。模式影响节奏与提问，不会删除深入课程中的知识范围。网页身份是本地轻量标识，没有账号安全或权限系统。
 
-## 现有可体验 School
-
-| School | 启动命令 | 默认地址 |
-| --- | --- | --- |
-| React | `npm run school -- start react` | http://localhost:4321 |
-| Transformer | `npm run school -- start transformer` | http://localhost:4322 |
-| p-limit 入门（三关） | `npm run school -- start concurrency-intro` | http://localhost:4323 |
-| p-limit 深入（七关） | `npm run school -- start concurrency-deep` | http://localhost:4324 |
-
-`npm run school -- list` 查看所有 School。旧 `npm run dev` 同时启动 React 和 Transformer。原实验身份 React `radiant-builder-9136`、Transformer `nimble-builder-9936` 保留；新学习者另行注册。网址添加 `?sid=身份` 可恢复身份。
-
 ## 编辑、运行与迁移
 
 `schools/NAME/COURSE.md` 说明路线、来源、深度取舍；`src/content/lessons/*.md` 是完整内容和灵活教学说明；`public/sources/` 是可通过 HTTP 读取的来源，`public/activities/` 是标明为生成内容的活动。编辑后开发服务刷新。`school.settings.json` 保存创建设置与默认模式；修改课程顺序使用 frontmatter `order`，保持已学习关卡的 `slug` 稳定。
@@ -58,13 +80,3 @@ npm run school -- start my-school
 先停止该 School 的开发服务，再执行 `npm run school -- build NAME`；构建和开发不要同时操作同一 School。每所 School 有独立缓存和本地 `.wrangler/` 进度，迁移时保留后者。端口被占用会失败；用 `start NAME --port 另一个端口`，所有 HTTP 指令会跟随当前地址。
 
 独立使用时复制 School，移除指向本项目模板依赖的 `node_modules` 链接，在该目录 `npm ci`、`npm run dev`。源文件与锁文件已包含；根工具无需常驻。当前仅验证本地运行，未部署公网。
-
-## 复用边界与限制
-
-`generation/protocol.md`、课程 Markdown、共享 `/llms.txt`、Profile 和进度 API 属于通用层。`/harness/pi.txt` 集中当前 Pi 工具说明；`scripts/pi.mjs` 是生成模型运行入口，`teach` 与验收桥是 Pi 启动部分。未来替换教师只需替换启动/工具说明，不必重新生成课程或改进度结构；本次没有实现第二个 Harness。
-
-优先复用 School Template 的 Astro 网站、身份、KV 与 API。新增轻量 CLI、材料获取/提取、深度参数与模式控制，以及共享教学/当前 Pi 边界。未加入 RAG、SDK、插件框架或考试系统。生成依赖模型质量和上下文容量；不可访问、需登录、扫描 PDF 或复杂二进制材料须提供可读导出，不能保证任意来源全自动处理。生成器按提示约束写入范围，不是额外安全沙箱；敏感本地材料请先选择合适的公开子集。
-
-实际结果见 [TOOL-REPORT.md](TOOL-REPORT.md)，原始实验见 [EXPERIMENTS.md](EXPERIMENTS.md)，真实记录位于 `evidence/generation/` 和 `evidence/teaching/`。验收由 Codex 作为学习者操作真实 Pi，不等同真人学习效果研究。
-
-网站派生自 [School Template](https://github.com/agentschools/school-template)，commit `f5a1682f111e4992a2e9cb0e194d0f1c747f5d63`，Apache-2.0；保留版权头。体验参考 [Pi School](https://github.com/agentschools/pi-school)。来源副本保留原始许可和归属。
