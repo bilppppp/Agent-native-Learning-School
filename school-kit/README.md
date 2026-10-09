@@ -50,3 +50,17 @@ application. Scaffolding applies this automatically to every new School.
 Reapply the overlay to existing Schools, then restart development or rebuild
 after changing their language setting. Keep internal mode values, routes,
 API fields, and progress semantics unchanged when editing UI copy.
+
+## Teachers and generators
+
+The HTTP teaching contract (`/llms.txt`), lesson/source access, profiles, and
+progress API are shared by compatible teacher Harnesses. Only Pi reads
+`/harness/pi.txt`; other Harnesses use their own HTTP/terminal tools. The
+website prompt is shared and the optional Pi adapter link is conditional.
+
+Pi remains the default automated CLI generator and interactive `teach`
+launcher. `create --prepare-only` prepares sources plus `GENERATION.md` for
+the current Coding Agent; `finish NAME` uses the same curriculum checks and
+build without calling Pi. `teach --prompt-only` returns a shared continuation
+prompt rather than launching a teacher. No alternate adapter or session
+format is required. See `HARNESS-VALIDATION.md` for actual verified limits.

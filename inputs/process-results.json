@@ -1,0 +1,23 @@
+{
+  "name": "process-results",
+  "goal": "理解 command 函数如何把子进程的 stdout/stderr、退出码和超时转换为 Promise 结果，并能预测调用行为",
+  "depth": "系统理解机制但只选对目标有用的内容",
+  "background": "已有 JavaScript、Promise 的基础",
+  "learningStyle": "代码预测和小型 Node 观察",
+  "teachingMode": "simple",
+  "language": "zh",
+  "port": 4414,
+  "request": "以当前仓库 scripts/materials.mjs 作为原始学习来源，目标是理解 command 函数如何把子进程的 stdout/stderr、退出码和超时转换为 Promise 结果，并能预测调用行为。已有 JavaScript、Promise 的基础，希望系统理解机制但只选对目标有用的内容，偏好代码预测和小型 Node 观察，教学先用 simple，中文。",
+  "sources": [
+    "/Users/gravity/Desktop/AI/Agent-native Learning School /scripts/materials.mjs"
+  ],
+  "output": "schools/process-results",
+  "sourceRoot": "schools/process-results/materials",
+  "materials": [
+    {
+      "path": "material-1/materials.mjs",
+      "originalPath": "/Users/gravity/Desktop/AI/Agent-native Learning School /scripts/materials.mjs",
+      "version": "local file"
+    }
+  ]
+}

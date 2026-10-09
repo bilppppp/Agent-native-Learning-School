@@ -1,0 +1,114 @@
+---
+// Copyright (c) 2026 Cloudflare, Inc.
+// Licensed under the Apache 2.0 license found in the LICENSE file or at:
+//     https://opensource.org/licenses/Apache-2.0
+export const prerender = true;
+
+import Base from "../layouts/Base.astro";
+
+import { t } from "../lib/ui";
+---
+
+<Base title={t("disenroll")} description={t("disenrollDescription")}>
+  <div class="mb-6">
+    <a href="/" class="text-sm text-gray-500 dark:text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 transition-colors">{t("allLessons")}</a>
+  </div>
+
+  <header class="mb-8">
+    <h1 class="text-3xl font-bold">{t("disenroll")}</h1>
+  </header>
+
+  <div id="no-enrollment" class="hidden">
+    <p class="text-gray-600 dark:text-stone-400">{t("notEnrolled")}<a href="/" class="underline">{t("goHome")}</a>{t("toEnroll")}</p>
+  </div>
+
+  <div id="enrolled-options" class="hidden">
+    <!-- Reset progress (primary action) -->
+    <div class="mb-8 p-6 border border-gray-200 dark:border-stone-700 rounded-lg">
+      <h2 class="text-xl font-semibold mb-2">{t("resetProgress")}</h2>
+      <p class="text-gray-600 dark:text-stone-400 mb-4">{t("resetDescription")}</p>
+      <div id="reset-confirm">
+        <button
+          id="reset-button"
+          class="px-4 py-2 rounded-md text-sm font-medium bg-orange-600 text-white hover:bg-orange-700 transition-colors"
+        >{t("resetButton")}</button>
+      </div>
+      <div id="reset-done" class="hidden">
+        <p class="text-gray-600 dark:text-stone-400">{t("resetDone")}<a href="/" class="underline">{t("goHome")}</a>{t("startOver")}</p>
+      </div>
+      <div id="reset-error" class="hidden">
+        <p class="text-red-600 dark:text-red-400">{t("resetError")}</p>
+      </div>
+    </div>
+
+    <!-- Disenroll (secondary/destructive action) -->
+    <div class="p-6 border border-gray-200 dark:border-stone-700 rounded-lg">
+      <h2 class="text-xl font-semibold mb-2">{t("disenrollCompletely")}</h2>
+      <p class="text-gray-600 dark:text-stone-400 mb-4">{t("disenrollDescriptionLong")}</p>
+      <div id="disenroll-confirm">
+        <button
+          id="disenroll-button"
+          class="px-4 py-2 rounded-md text-sm font-medium border border-red-300 dark:border-red-700 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950 transition-colors"
+        >{t("disenrollButton")}</button>
+      </div>
+      <div id="disenroll-done" class="hidden">
+        <p class="text-gray-600 dark:text-stone-400">{t("disenrollDone")}</p>
+        </div>
+    </div>
+  </div>
+
+  <script is:inline>
+    (function () {
+      var studentId = localStorage.getItem("studentId");
+      if (!studentId) {
+        document.getElementById("no-enrollment").classList.remove("hidden");
+        return;
+      }
+
+      document.getElementById("enrolled-options").classList.remove("hidden");
+
+      // Reset progress
+      document.getElementById("reset-button").addEventListener("click", function () {
+        var btn = this;
+        btn.disabled = true;
+        btn.textContent = window.schoolUI.t("resetting");
+
+        fetch("/api/progress/" + encodeURIComponent(studentId), {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ reset: true }),
+        })
+          .then(function (res) {
+            if (!res.ok) throw new Error(window.schoolUI.t("resetFailed"));
+            return res.json();
+          })
+          .then(function (progress) {
+            localStorage.setItem("progress", JSON.stringify(progress));
+            document.getElementById("reset-confirm").classList.add("hidden");
+            document.getElementById("reset-done").classList.remove("hidden");
+          })
+          .catch(function () {
+            btn.disabled = false;
+            btn.textContent = window.schoolUI.t("resetButton");
+            document.getElementById("reset-error").classList.remove("hidden");
+          });
+      });
+
+      // Disenroll
+      document.getElementById("disenroll-button").addEventListener("click", function () {
+        localStorage.removeItem("studentId");
+        localStorage.removeItem("themeColor");
+        localStorage.removeItem("progress");
+        document.getElementById("disenroll-confirm").classList.add("hidden");
+        document.getElementById("disenroll-done").classList.remove("hidden");
+        setTimeout(function () {
+          window.location.replace("/");
+        }, 1500);
+      });
+    })();
+  </script>
+
+  <noscript>
+    <p>{t("javascriptRequired")}</p>
+  </noscript>
+</Base>

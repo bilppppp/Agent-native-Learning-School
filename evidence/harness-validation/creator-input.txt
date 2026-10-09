@@ -1,0 +1,5 @@
+为当前 Agent-native Learning School 做一次真实的非 Pi 创建验证。你是负责创建的 Coding Agent，不是教师。当前任务明确允许你创建这一所 School 和运行构建；不要修改共享代码、文档或其他 School，不要 commit/push，不要运行 pi。环境 PATH 的 pi 是不可用占位入口，这次不能间接调用 Pi。
+先阅读 README.md、AGENT_GUIDE.md、scripts/school.mjs 和 generation/protocol.md。旧文档里“生成必须用 Pi”的要求由本次验证任务替代：本仓库新增 create --prepare-only（要求明确 --source/--goal），会准备原始材料、模板与学校目录内 GENERATION.md；你读取 GENERATION.md 并直接利用自己的模型能力与工具生成课程，随后 npm run school -- finish NAME 校验并构建。输入 JSON 由 CLI 保存，不手工编写它，不复制生成协议。
+用户学习请求：以当前仓库 scripts/materials.mjs 作为原始学习来源，目标是理解 command 函数如何把子进程的 stdout/stderr、退出码和超时转换为 Promise 结果，并能预测调用行为。已有 JavaScript、Promise 的基础，希望系统理解机制但只选对目标有用的内容，偏好代码预测和小型 Node 观察，教学先用 simple，中文。
+选择 School 名称 process-results，端口 4414。使用该文件的实际绝对路径。由你自行映射准确的 CLI 参数，执行 create --prepare-only，读取产生的 GENERATION.md，读取原始材料，生成完整且可教学的课程。严格保留来源，遵守生成协议的输出边界。运行 finish 构建；不要启动长期服务，父 Agent 会负责启动和真实教学。
+请先用 command -v pi 和 pi --version 确认 Pi 不可用（这个检查预计退出 127）；随后必须使用不依赖 Pi 的创建路径。最终说明实际调用命令、产生的关卡和来源、构建结果以及未验证事项。不要宣称教学闭环成功。

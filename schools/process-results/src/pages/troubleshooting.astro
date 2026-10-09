@@ -1,0 +1,29 @@
+---
+export const prerender = true;
+
+import Base from "../layouts/Base.astro";
+
+import { t } from "../lib/ui";
+---
+
+<Base title={t("troubleshooting")} description={t("troubleshootingDescription")}>
+  <div class="mb-6">
+    <a href="/" class="text-sm text-gray-500 dark:text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 transition-colors">{t("home")}</a>
+  </div>
+
+  <header class="mb-8">
+    <h1 class="text-3xl font-bold">{t("troubleshooting")}</h1>
+    <p class="text-gray-600 dark:text-stone-400 mt-2">{t("troubleshootingDescription")}</p>
+  </header>
+
+  <article class="prose dark:prose-invert max-w-none">
+    <h2 id="enrollment-issues"><a href="#enrollment-issues" class="heading-anchor">{t("enrollmentIssues")}</a></h2>
+    <p>{t("enrollmentHelp")}</p>
+
+    <h2 id="progress-not-updating"><a href="#progress-not-updating" class="heading-anchor">{t("progressIssues")}</a></h2>
+    <p>{t("progressHelp")}</p>
+
+    <h2 id="reset-progress"><a href="#reset-progress" class="heading-anchor">{t("resetHelpTitle")}</a></h2>
+    <p>{t("resetHelpBefore")}<a href="/disenroll">{t("disenrollPage")}</a>{t("resetHelpAfter")}</p>
+  </article>
+</Base>

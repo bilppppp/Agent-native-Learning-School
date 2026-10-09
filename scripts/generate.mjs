@@ -5,17 +5,17 @@ import { piPrint } from './pi.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 
-export async function generate(inputPath, { model } = {}) {
+export function generationPrompt(inputPath) {
   const input = JSON.parse(readFileSync(inputPath, 'utf8'));
   const output = resolve(root, input.output);
   if (!existsSync(join(output, 'school.config.ts'))) throw new Error('School must be scaffolded before generation.');
   const protocol = readFileSync(join(root, 'generation/protocol.md'), 'utf8');
-  const summary = await piPrint(`${protocol}\n\nInput:\n${JSON.stringify(input, null, 2)}\nRead the sources and write the actual curriculum files now.`, {
-    model, cwd: root, tools: 'read,bash,write,edit',
-    logPath: join(root, `evidence/generation/${basename(output)}.jsonl`),
-    sessionDir: join(root, 'evidence/generation/sessions'),
-    onTool: name => console.log(`生成中：${name}`)
-  });
+  return `${protocol}\n\nRepository working directory: ${root}\nInput:\n${JSON.stringify(input, null, 2)}\nRead the sources and write the actual curriculum files now.`;
+}
+
+export function validateGeneration(inputPath) {
+  const input = JSON.parse(readFileSync(inputPath, 'utf8'));
+  const output = resolve(root, input.output);
   const lessons = readdirSync(join(output, 'src/content/lessons')).filter(n => /\.mdx?$/.test(n));
   if (!lessons.length || !existsSync(join(output, 'COURSE.md'))) throw new Error('Generation did not produce a complete route and lessons. Files are preserved for inspection.');
   for (const name of lessons) {
@@ -25,8 +25,21 @@ export async function generate(inputPath, { model } = {}) {
     }
     if (/Use the bash tool|Pi is the only|Pi should teach|--mode rpc/.test(text.split('\n---')[0])) throw new Error(`Harness-specific teaching notes in ${name}; revise before using the School.`);
   }
-  console.log(summary);
   return lessons.length;
+}
+
+export async function generate(inputPath, { model } = {}) {
+  const input = JSON.parse(readFileSync(inputPath, 'utf8'));
+  const output = resolve(root, input.output);
+  const summary = await piPrint(generationPrompt(inputPath), {
+    model, cwd: root, tools: 'read,bash,write,edit',
+    logPath: join(root, `evidence/generation/${basename(output)}.jsonl`),
+    sessionDir: join(root, 'evidence/generation/sessions'),
+    onTool: name => console.log(`生成中：${name}`)
+  });
+  const count = validateGeneration(inputPath);
+  console.log(summary);
+  return count;
 }
 if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1])) {
   if (!process.argv[2]) { console.error('Use: node scripts/generate.mjs INPUT.json (or npm run school -- create)'); process.exitCode = 1; }

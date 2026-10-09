@@ -6,21 +6,24 @@ import { createInterface } from 'node:readline/promises';
 import { spawn } from 'node:child_process';
 import { command, prepareMaterials } from './materials.mjs';
 import { piPrint, defaultModel } from './pi.mjs';
-import { generate } from './generate.mjs';
+import { generate, generationPrompt, validateGeneration } from './generate.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const originalCwd = process.cwd();
 const args = process.argv.slice(2);
 const operation = args.shift();
 const options = {}, positionals = [];
-const allowed = new Set(['source', 'goal', 'name', 'depth', 'background', 'style', 'mode', 'language', 'model', 'port', 'ref', 'student', 'lesson', 'help']);
+const allowed = new Set(['source', 'goal', 'name', 'depth', 'background', 'style', 'mode', 'language', 'model', 'port', 'ref', 'student', 'lesson', 'help', 'prepare-only', 'prompt-only']);
 function parse() {
   while (args.length) {
     const arg = args.shift();
     if (!arg.startsWith('--')) { positionals.push(arg); continue; }
     const [key, inline] = arg.slice(2).split(/=(.*)/s);
     if (!allowed.has(key)) throw new Error(`Unknown option --${key}. Use --help.`);
-    if (key === 'help') { options.help = true; continue; }
+    if (['help', 'prepare-only', 'prompt-only'].includes(key)) {
+      if (inline !== undefined) throw new Error(`--${key} does not take a value.`);
+      options[key] = true; continue;
+    }
     const value = inline ?? args.shift();
     if (!value || value.startsWith('--')) throw new Error(`--${key} needs a value.`);
     if (key === 'source') (options.source ||= []).push(value); else options[key] = value;
@@ -34,6 +37,7 @@ function help() {
 创建（明确参数，无需模型解析请求）：
   npm run school -- create --source URL_OR_PATH --goal "学习目标" --depth "入门/系统/深入或自由描述" --mode simple
   可选：--name NAME --background "已有基础" --style "偏好" --language zh --model PROVIDER/MODEL --ref TAG
+  --prepare-only：不调用 Pi，准备材料和 GENERATION.md，交由当前 Coding Agent 生成，再运行 finish NAME。
   可多次 --source；默认深度系统、基础未知并按需补充、教学simple、语言zh。
   不带描述/参数时，只询问来源和目标。
 
@@ -41,11 +45,13 @@ function help() {
   npm run school -- list
   npm run school -- start NAME [--port 4323]
   npm run school -- teach NAME --student STUDENT_ID [--mode immersive] [--lesson SLUG]
+  添加 --prompt-only 输出通用教师提示词，不启动 Pi。
+  npm run school -- finish NAME      # 检查 Agent 生成的课程并构建，不调用 Pi
   npm run school -- build NAME
   npm run school -- retry NAME       # 检查保留文件后重新生成；可能修改课程，不重置进度
   npm run school -- setup            # 安装模板依赖；PDF提取还需要pypdf
 
-网页可选择教学模式、复制Pi启动Prompt。课程和进度属于School；Pi接入独立于课程。
+网页可选择教学模式、复制通用教师启动Prompt。teach 默认启动 Pi。课程和进度属于School；Pi接入独立于课程。
 失败时返回错误，保留材料和可审查文件，不宣称生成或教学成功。`);
 }
 async function ask(label) {
@@ -100,6 +106,7 @@ async function setup() {
 }
 async function create() {
   const description = positionals.join(' ');
+  if (options['prepare-only'] && !(options.source?.length && options.goal)) throw new Error('--prepare-only requires --source and --goal. Let your Coding Agent map the request to these parameters; no Pi request parser is used.');
   const interpreted = description && !(options.source?.length && options.goal) ? await intake(description) : {};
   let sources = options.source || interpreted.sources;
   if (!sources?.length) sources = [await ask('学习来源（URL 或本地路径）：')];
@@ -138,6 +145,12 @@ async function create() {
   writeFileSync(inputPath, JSON.stringify(spec, null, 2) + '\n');
   writeFileSync(join(output, 'school.settings.json'), JSON.stringify(spec, null, 2) + '\n');
   await command('python3', ['scripts/apply-school-kit.py', spec.output], { inherit: true });
+  if (options['prepare-only']) {
+    const promptPath = join(output, 'GENERATION.md');
+    writeFileSync(promptPath, generationPrompt(inputPath) + '\n');
+    console.log(`\n材料和网站骨架已准备，尚未生成课程。当前 Coding Agent 请阅读 ${relative(root, promptPath)}，按该指令生成课程，然后运行：npm run school -- finish ${name}。此路径未调用 Pi。`);
+    return;
+  }
   const count = await generate(inputPath, { model: options.model });
   await command('npm', ['run', 'build'], { cwd: output, inherit: true, rejectOnErrorLog: true });
   console.log(`\nSchool 已生成并构建：${name}（${count} 关）。\n启动：npm run school -- start ${name}\n网页：http://localhost:${spec.port}\n课程可在该目录编辑；真实教学尚未进行。`);
@@ -145,7 +158,9 @@ async function create() {
 async function main() {
   parse();
   if (!operation || options.help || ['help', '--help', '-h'].includes(operation)) { help(); return; }
-  if (!['setup', 'create', 'list', 'start', 'build', 'retry', 'teach'].includes(operation)) throw new Error(`Unknown command ${operation}. Use --help.`);
+  if (options['prepare-only'] && operation !== 'create') throw new Error('--prepare-only is only valid with create.');
+  if (options['prompt-only'] && operation !== 'teach') throw new Error('--prompt-only is only valid with teach.');
+  if (!['setup', 'create', 'list', 'start', 'build', 'retry', 'teach', 'finish'].includes(operation)) throw new Error(`Unknown command ${operation}. Use --help.`);
   if (operation === 'setup') { await setup(); return; }
   if (operation === 'create') { await create(); return; }
   process.chdir(root);
@@ -167,6 +182,10 @@ async function main() {
     await command('npm', ['run', 'dev', '--', '--host', '127.0.0.1', '--port', String(chosen)], { cwd: path, inherit: true });
   } else if (operation === 'build') {
     await command('npm', ['run', 'build'], { cwd: path, inherit: true, rejectOnErrorLog: true });
+  } else if (operation === 'finish') {
+    const count = validateGeneration(join(root, 'inputs', basename(path) + '.json'));
+    await command('npm', ['run', 'build'], { cwd: path, inherit: true, rejectOnErrorLog: true });
+    console.log(`School 已检查并构建：${basename(path)}（${count} 关）。启动：npm run school -- start ${basename(path)}。真实教学尚未验证。`);
   } else if (operation === 'retry') {
     const inputPath = join(root, 'inputs', basename(path) + '.json');
     if (!existsSync(inputPath)) throw new Error('No saved creation input. Existing School was not modified.');
@@ -199,6 +218,10 @@ async function main() {
     if (options.mode) {
       const response = await fetch(`${origin}/api/profile/${student}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ teachingMode: mode(options.mode) }) });
       if (!response.ok) throw new Error(`Could not save teaching mode: HTTP ${response.status}`);
+    }
+    if (options['prompt-only']) {
+      console.log(`我是 ${s.name} 的学生，ID 是 ${student}。请读取 ${origin}/llms.txt 和 ${origin}/api/openapi.json，然后按服务器进度${options.lesson ? `学习 ${options.lesson}` : '继续课程'}。使用你当前的 HTTP/终端工具读取课程和来源，在实际活动完成后通过进度 API 上报并确认成功。不要重新生成课程。`);
+      return;
     }
     const model = options.model || defaultModel();
     const prompt = `我是 ${s.name} 的学生，ID 是 ${student}。请读取 ${origin}/harness/pi.txt，然后按服务器进度${options.lesson ? `学习 ${options.lesson}` : '继续课程'}。不要重新生成课程。`;
