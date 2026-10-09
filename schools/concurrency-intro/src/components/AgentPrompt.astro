@@ -5,21 +5,17 @@ interface Props {
 }
 
 const { title, prompt } = Astro.props;
+
+import { t } from "../lib/ui";
 ---
 
 <div class="agent-prompt-card hidden mb-8" data-lesson-title={title} data-prompt={prompt}>
-  <p class="text-sm text-gray-500 dark:text-stone-400 mb-2 font-mono uppercase tracking-wider text-xs">
-    Prompt for your teacher
-  </p>
+  <p class="text-sm text-gray-500 dark:text-stone-400 mb-2 font-mono uppercase tracking-wider text-xs">{t("promptTitle")}</p>
   <div class="agent-prompt-box relative rounded-lg overflow-hidden">
     <pre class="agent-prompt-text px-5 py-4 font-mono text-sm text-gray-800 dark:text-stone-200 overflow-x-auto whitespace-pre-wrap leading-relaxed"></pre>
-    <button class="agent-prompt-copy absolute top-2.5 right-2.5 px-2.5 py-1 text-xs font-mono font-medium rounded transition-colors cursor-pointer theme-button">
-      Copy
-    </button>
+    <button class="agent-prompt-copy absolute top-2.5 right-2.5 px-2.5 py-1 text-xs font-mono font-medium rounded transition-colors cursor-pointer theme-button">{t("copy")}</button>
   </div>
-  <p class="agent-prompt-confirm hidden mt-5 text-sm font-mono text-gray-500 dark:text-stone-400">
-    Copied! Paste this into your teacher harness.
-  </p>
+  <p role="status" aria-live="polite" class="agent-prompt-confirm hidden mt-5 text-sm font-mono text-gray-500 dark:text-stone-400">{t("copied")}</p>
 </div>
 
 <script is:inline>
@@ -37,19 +33,30 @@ const { title, prompt } = Astro.props;
 
       var customPrompt = card.getAttribute("data-prompt");
       var schoolName = document.querySelector("[data-school-name]");
-      var name = schoolName ? schoolName.getAttribute("data-school-name") : "this school";
+      var name = schoolName ? schoolName.getAttribute("data-school-name") : window.schoolUI.t("thisSchool");
       var origin = window.location.origin;
       var pathParts = window.location.pathname.split("/").filter(Boolean);
       var lessonSlug = pathParts[pathParts.length - 1] || lessonTitle || "";
-      var prompt = "I'm a student at " + name + ". My student ID is " + studentId + ".\n\n" +
-        (customPrompt || "Let's work on the \"" + lessonTitle + "\" lesson together!") +
-        "\n\nFetch " + origin + "/llms.txt for the shared teaching contract. If you are using Pi, also fetch " + origin + "/harness/pi.txt. Then fetch " + origin + "/api/lessons/" + encodeURIComponent(lessonSlug) + "?studentId=" + encodeURIComponent(studentId) + " and my progress before starting; refresh the lesson with my studentId before every teaching turn, so website mode changes take effect.";
+      var kind = pathParts[0] === "exercises" ? "exercises" : "lessons";
+      var prompt = window.schoolUI.t("promptIdentity", { school: name, student: studentId }) + "\n\n" +
+        (customPrompt || window.schoolUI.t("promptLesson", { title: lessonTitle })) + "\n\n" +
+        window.schoolUI.t("promptContract", { origin: origin, kind: kind, slug: encodeURIComponent(lessonSlug), student: encodeURIComponent(studentId) });
       promptText.textContent = prompt;
       card.classList.remove("hidden");
 
       if (copyBtn) copyBtn.addEventListener("click", function() {
-        navigator.clipboard.writeText(prompt).then(function() {
-          if (confirm) confirm.classList.remove("hidden");
+        Promise.resolve().then(function() {
+          return navigator.clipboard.writeText(prompt);
+        }).then(function() {
+          if (confirm) {
+            confirm.textContent = window.schoolUI.t("copied");
+            confirm.classList.remove("hidden");
+          }
+        }).catch(function() {
+          if (confirm) {
+            confirm.textContent = window.schoolUI.t("copyError");
+            confirm.classList.remove("hidden");
+          }
         });
       });
     });

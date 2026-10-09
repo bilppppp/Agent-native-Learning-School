@@ -7,6 +7,7 @@ import argparse
 import json
 import re
 import sys
+import importlib.util
 from pathlib import Path
 
 
@@ -14,6 +15,9 @@ ROOT = Path(__file__).resolve().parents[1]
 OVERLAY = ROOT / "school-kit" / "overlay"
 
 OVERLAY_FILES = (
+    Path("src/lib/ui.ts"),
+    Path("src/lib/ui-messages.json"),
+    Path("src/components/ClientUI.astro"),
     Path("src/components/AgentPrompt.astro"),
     Path("src/components/TeachingMode.astro"),
     Path("src/lib/teaching.ts"),
@@ -308,6 +312,10 @@ def apply(target: Path) -> list[str]:
     openapi = target / "src/pages/api/openapi.json.ts"
     if patch_openapi(openapi):
         changed.append("src/pages/api/openapi.json.ts")
+    spec = importlib.util.spec_from_file_location("localize_school", ROOT / "scripts/localize-school.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    changed.extend(module.apply_language(target))
     return changed
 
 

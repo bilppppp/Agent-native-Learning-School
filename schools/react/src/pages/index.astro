@@ -10,6 +10,8 @@ import { getCollection } from "astro:content";
 
 const lessons = (await getCollection("lessons")).sort((a, b) => a.data.order - b.data.order);
 const exercises = (await getCollection("exercises")).sort((a, b) => a.data.order - b.data.order);
+
+import { t } from "../lib/ui";
 ---
 
 <Base>
@@ -21,7 +23,7 @@ const exercises = (await getCollection("exercises")).sort((a, b) => a.data.order
     <!-- Card itself sits above the particle layer -->
     <div class="theme-card-band rounded-2xl overflow-hidden" style="aspect-ratio:85.6/54; position:relative; z-index:2;">
       <div class="flex flex-col justify-between h-full px-7 py-5">
-        <p class="text-xs font-mono uppercase tracking-[0.3em] opacity-80">Student ID</p>
+        <p class="text-xs font-mono uppercase tracking-[0.3em] opacity-80">{t("studentId")}</p>
         <p id="student-id-display" class="text-2xl font-mono font-bold tracking-tight"></p>
       </div>
     </div>
@@ -29,14 +31,12 @@ const exercises = (await getCollection("exercises")).sort((a, b) => a.data.order
 
   <!-- Page header: hidden once enrolled -->
   <div id="page-header" class="mb-8">
-    <p class="text-xl text-gray-700 dark:text-gray-300 leading-relaxed">
-      {config.description} 学习目标驱动的课程，在 Pi 中逐步探索。注册获取学习身份，完成活动后进度自动同步。
-    </p>
+    <p class="text-xl text-gray-700 dark:text-gray-300 leading-relaxed">{config.description} {t("welcome")}</p>
   </div>
 
   <!-- Enrolled: lesson list -->
   <div id="enrolled-section" class="hidden mb-12">
-    <h2 class="text-sm font-mono uppercase tracking-wider text-gray-500 dark:text-gray-500 mb-4">Lessons</h2>
+    <h2 class="text-sm font-mono uppercase tracking-wider text-gray-500 dark:text-gray-500 mb-4">{t("lessons")}</h2>
 
     <ol class="divide-y divide-gray-200 dark:divide-stone-800">
       {lessons.map((lesson) => {
@@ -62,7 +62,7 @@ const exercises = (await getCollection("exercises")).sort((a, b) => a.data.order
                     isStub && "text-gray-400 dark:text-gray-600",
                   ]}>
                     {lesson.data.title}
-                    {isStub && <span class="ml-2 text-xs font-normal text-gray-400 dark:text-gray-600">(coming soon)</span>}
+                    {isStub && <span class="ml-2 text-xs font-normal text-gray-400 dark:text-gray-600">{t("comingSoon")}</span>}
                   </h3>
                   <p class="lesson-description mt-0.5 text-sm text-gray-500 dark:text-gray-500">{lesson.data.description}</p>
                 </div>
@@ -70,9 +70,7 @@ const exercises = (await getCollection("exercises")).sort((a, b) => a.data.order
               <a
                 href={href}
                 class="lesson-cta theme-button hidden shrink-0 rounded-lg px-3 py-2 text-center font-mono text-sm"
-              >
-                Continue
-              </a>
+              >{t("continue")}</a>
             </div>
           </li>
         );
@@ -88,37 +86,33 @@ const exercises = (await getCollection("exercises")).sort((a, b) => a.data.order
         type="button"
         id="enroll-button"
         class="rainbow-bg cursor-pointer rounded-lg px-10 py-4 font-mono font-semibold text-2xl disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-        Enroll
-      </button>
-      <p class="text-sm text-gray-500 dark:text-stone-500 mt-4">
-        Free. No account required. No personal data collected.
-      </p>
+      >{t("enroll")}</button>
+      <p class="text-sm text-gray-500 dark:text-stone-500 mt-4">{t("privacy")}</p>
     </div>
 
     <div id="enroll-step-color" class="hidden">
-      <p id="color-picker-copy" class="text-sm text-gray-600 dark:text-stone-400 mb-4">Choose a color for your student ID card and site theme.</p>
+      <p id="color-picker-copy" class="text-sm text-gray-600 dark:text-stone-400 mb-4">{t("chooseColor")}</p>
       <div id="color-picker" class="grid grid-cols-6 gap-2 not-prose">
-        <button type="button" class="enrollment-color-option h-12 w-full rounded-xl border-2 border-transparent shadow-sm" data-theme-color="red"     aria-label="Red"     title="Red"     style="background:#dc2626;--i:0"></button>
-        <button type="button" class="enrollment-color-option h-12 w-full rounded-xl border-2 border-transparent shadow-sm" data-theme-color="orange"  aria-label="Orange"  title="Orange"  style="background:#ea580c;--i:1"></button>
-        <button type="button" class="enrollment-color-option h-12 w-full rounded-xl border-2 border-transparent shadow-sm" data-theme-color="amber"   aria-label="Amber"   title="Amber"   style="background:#b45309;--i:2"></button>
-        <button type="button" class="enrollment-color-option h-12 w-full rounded-xl border-2 border-transparent shadow-sm" data-theme-color="yellow"  aria-label="Yellow"  title="Yellow"  style="background:#ca8a04;--i:3"></button>
-        <button type="button" class="enrollment-color-option h-12 w-full rounded-xl border-2 border-transparent shadow-sm" data-theme-color="lime"    aria-label="Lime"    title="Lime"    style="background:#4d7c0f;--i:4"></button>
-        <button type="button" class="enrollment-color-option h-12 w-full rounded-xl border-2 border-transparent shadow-sm" data-theme-color="green"   aria-label="Green"   title="Green"   style="background:#15803d;--i:5"></button>
-        <button type="button" class="enrollment-color-option h-12 w-full rounded-xl border-2 border-transparent shadow-sm" data-theme-color="emerald" aria-label="Emerald" title="Emerald" style="background:#059669;--i:6"></button>
-        <button type="button" class="enrollment-color-option h-12 w-full rounded-xl border-2 border-transparent shadow-sm" data-theme-color="teal"    aria-label="Teal"    title="Teal"    style="background:#0f766e;--i:7"></button>
-        <button type="button" class="enrollment-color-option h-12 w-full rounded-xl border-2 border-transparent shadow-sm" data-theme-color="cyan"    aria-label="Cyan"    title="Cyan"    style="background:#0e7490;--i:8"></button>
-        <button type="button" class="enrollment-color-option h-12 w-full rounded-xl border-2 border-transparent shadow-sm" data-theme-color="sky"     aria-label="Sky"     title="Sky"     style="background:#0284c7;--i:9"></button>
-        <button type="button" class="enrollment-color-option h-12 w-full rounded-xl border-2 border-transparent shadow-sm" data-theme-color="blue"    aria-label="Blue"    title="Blue"    style="background:#2563eb;--i:10"></button>
-        <button type="button" class="enrollment-color-option h-12 w-full rounded-xl border-2 border-transparent shadow-sm" data-theme-color="indigo"  aria-label="Indigo"  title="Indigo"  style="background:#4f46e5;--i:11"></button>
-        <button type="button" class="enrollment-color-option h-12 w-full rounded-xl border-2 border-transparent shadow-sm" data-theme-color="violet"  aria-label="Violet"  title="Violet"  style="background:#7c3aed;--i:12"></button>
-        <button type="button" class="enrollment-color-option h-12 w-full rounded-xl border-2 border-transparent shadow-sm" data-theme-color="purple"  aria-label="Purple"  title="Purple"  style="background:#9333ea;--i:13"></button>
-        <button type="button" class="enrollment-color-option h-12 w-full rounded-xl border-2 border-transparent shadow-sm" data-theme-color="fuchsia" aria-label="Fuchsia" title="Fuchsia" style="background:#c026d3;--i:14"></button>
-        <button type="button" class="enrollment-color-option h-12 w-full rounded-xl border-2 border-transparent shadow-sm" data-theme-color="pink"    aria-label="Pink"    title="Pink"    style="background:#db2777;--i:15"></button>
-        <button type="button" class="enrollment-color-option h-12 w-full rounded-xl border-2 border-transparent shadow-sm" data-theme-color="rose"    aria-label="Rose"    title="Rose"    style="background:#e11d48;--i:16"></button>
-        <button type="button" class="enrollment-color-option h-12 w-full rounded-xl border-2 border-transparent shadow-sm" data-theme-color="slate"   aria-label="Slate"   title="Slate"   style="background:#475569;--i:17"></button>
+        <button type="button" class="enrollment-color-option h-12 w-full rounded-xl border-2 border-transparent shadow-sm" data-theme-color="red"     aria-label={t("colorRed")}     title={t("colorRed")}     style="background:#dc2626;--i:0"></button>
+        <button type="button" class="enrollment-color-option h-12 w-full rounded-xl border-2 border-transparent shadow-sm" data-theme-color="orange"  aria-label={t("colorOrange")}  title={t("colorOrange")}  style="background:#ea580c;--i:1"></button>
+        <button type="button" class="enrollment-color-option h-12 w-full rounded-xl border-2 border-transparent shadow-sm" data-theme-color="amber"   aria-label={t("colorAmber")}   title={t("colorAmber")}   style="background:#b45309;--i:2"></button>
+        <button type="button" class="enrollment-color-option h-12 w-full rounded-xl border-2 border-transparent shadow-sm" data-theme-color="yellow"  aria-label={t("colorYellow")}  title={t("colorYellow")}  style="background:#ca8a04;--i:3"></button>
+        <button type="button" class="enrollment-color-option h-12 w-full rounded-xl border-2 border-transparent shadow-sm" data-theme-color="lime"    aria-label={t("colorLime")}    title={t("colorLime")}    style="background:#4d7c0f;--i:4"></button>
+        <button type="button" class="enrollment-color-option h-12 w-full rounded-xl border-2 border-transparent shadow-sm" data-theme-color="green"   aria-label={t("colorGreen")}   title={t("colorGreen")}   style="background:#15803d;--i:5"></button>
+        <button type="button" class="enrollment-color-option h-12 w-full rounded-xl border-2 border-transparent shadow-sm" data-theme-color="emerald" aria-label={t("colorEmerald")} title={t("colorEmerald")} style="background:#059669;--i:6"></button>
+        <button type="button" class="enrollment-color-option h-12 w-full rounded-xl border-2 border-transparent shadow-sm" data-theme-color="teal"    aria-label={t("colorTeal")}    title={t("colorTeal")}    style="background:#0f766e;--i:7"></button>
+        <button type="button" class="enrollment-color-option h-12 w-full rounded-xl border-2 border-transparent shadow-sm" data-theme-color="cyan"    aria-label={t("colorCyan")}    title={t("colorCyan")}    style="background:#0e7490;--i:8"></button>
+        <button type="button" class="enrollment-color-option h-12 w-full rounded-xl border-2 border-transparent shadow-sm" data-theme-color="sky"     aria-label={t("colorSky")}     title={t("colorSky")}     style="background:#0284c7;--i:9"></button>
+        <button type="button" class="enrollment-color-option h-12 w-full rounded-xl border-2 border-transparent shadow-sm" data-theme-color="blue"    aria-label={t("colorBlue")}    title={t("colorBlue")}    style="background:#2563eb;--i:10"></button>
+        <button type="button" class="enrollment-color-option h-12 w-full rounded-xl border-2 border-transparent shadow-sm" data-theme-color="indigo"  aria-label={t("colorIndigo")}  title={t("colorIndigo")}  style="background:#4f46e5;--i:11"></button>
+        <button type="button" class="enrollment-color-option h-12 w-full rounded-xl border-2 border-transparent shadow-sm" data-theme-color="violet"  aria-label={t("colorViolet")}  title={t("colorViolet")}  style="background:#7c3aed;--i:12"></button>
+        <button type="button" class="enrollment-color-option h-12 w-full rounded-xl border-2 border-transparent shadow-sm" data-theme-color="purple"  aria-label={t("colorPurple")}  title={t("colorPurple")}  style="background:#9333ea;--i:13"></button>
+        <button type="button" class="enrollment-color-option h-12 w-full rounded-xl border-2 border-transparent shadow-sm" data-theme-color="fuchsia" aria-label={t("colorFuchsia")} title={t("colorFuchsia")} style="background:#c026d3;--i:14"></button>
+        <button type="button" class="enrollment-color-option h-12 w-full rounded-xl border-2 border-transparent shadow-sm" data-theme-color="pink"    aria-label={t("colorPink")}    title={t("colorPink")}    style="background:#db2777;--i:15"></button>
+        <button type="button" class="enrollment-color-option h-12 w-full rounded-xl border-2 border-transparent shadow-sm" data-theme-color="rose"    aria-label={t("colorRose")}    title={t("colorRose")}    style="background:#e11d48;--i:16"></button>
+        <button type="button" class="enrollment-color-option h-12 w-full rounded-xl border-2 border-transparent shadow-sm" data-theme-color="slate"   aria-label={t("colorSlate")}   title={t("colorSlate")}   style="background:#475569;--i:17"></button>
       </div>
-      <p id="enroll-error" class="mt-2 text-red-500 text-sm hidden">Something went wrong. Please try again.</p>
+      <p id="enroll-error" class="mt-2 text-red-500 text-sm hidden">{t("enrollError")}</p>
     </div>
   </div>
 
@@ -126,9 +120,9 @@ const exercises = (await getCollection("exercises")).sort((a, b) => a.data.order
   <div class="prose dark:prose-invert max-w-none">
     <!-- TODO: Replace this section with content about your school's subject -->
 
-    <h2>How it works</h2>
+    <h2>{t("howItWorks")}</h2>
 
-    <p>在上方注册，然后从关卡页面复制启动 Prompt 到 Pi。Pi 读取课程和原始材料，一次围绕一个小问题教学；完成学习活动后自动同步进度。新会话使用同一学习身份即可继续。</p>
+    <p>{t("orientation")}</p>
   </div>
 
   <!-- Bottom enroll CTA: hidden once enrolled -->
@@ -137,12 +131,8 @@ const exercises = (await getCollection("exercises")).sort((a, b) => a.data.order
       type="button"
       id="enroll-button-bottom"
       class="rainbow-bg cursor-pointer rounded-lg px-10 py-4 font-mono font-semibold text-2xl disabled:opacity-50 disabled:cursor-not-allowed"
-    >
-      Enroll
-    </button>
-    <p class="text-sm text-gray-500 dark:text-stone-500 mt-4">
-      Free. No account required. No personal data collected.
-    </p>
+    >{t("enroll")}</button>
+    <p class="text-sm text-gray-500 dark:text-stone-500 mt-4">{t("privacy")}</p>
   </div>
 
   <script is:inline>
@@ -340,13 +330,13 @@ const exercises = (await getCollection("exercises")).sort((a, b) => a.data.order
           setSelectedTheme(opt.getAttribute("data-theme-color"));
           // Scroll to top so the student ID card and enrolled state are visible
           window.scrollTo({ top: 0, behavior: "smooth" });
-          setPickerState("Generating your student ID...", true);
+          setPickerState(window.schoolUI.t("generatingId"), true);
           try {
             var data = await window.school.enroll();
             showEnrolled(data.studentId, true, false);
           } catch (e) {
             enrollError.classList.remove("hidden");
-            setPickerState("Choose a color for your student ID card and site theme.", false);
+            setPickerState(window.schoolUI.t("chooseColor"), false);
             isSubmitting = false;
           }
         });

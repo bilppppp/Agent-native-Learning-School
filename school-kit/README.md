@@ -34,3 +34,19 @@ the teacher API updates the control without adding another polling loop.
 The overlay can be reapplied after regenerating a school. It does not touch
 `src/content/lessons`, `src/content/exercises`, `public/sources`, progress
 storage, or existing profile values.
+
+## Website language
+
+Fixed UI copy uses `school.settings.json.language`: `zh` (default) or `en`
+(including `en-US` / `en-GB`). Natural-language values such as `English`,
+`英文`, or `英语` also select English; other values fall back to Chinese.
+Course content remains independently editable and is not translated by this layer.
+
+`src/lib/ui-messages.json` is the shared text catalog. `src/lib/ui.ts` selects
+server-rendered copy; `ClientUI.astro` exposes the same selected messages to
+inline browser scripts, including status/error messages and completion dates.
+`scripts/localize-school.py` wires inherited Template pages during overlay
+application. Scaffolding applies this automatically to every new School.
+Reapply the overlay to existing Schools, then restart development or rebuild
+after changing their language setting. Keep internal mode values, routes,
+API fields, and progress semantics unchanged when editing UI copy.

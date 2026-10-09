@@ -1,0 +1,19 @@
+---
+import { locale, messages } from "../lib/ui";
+---
+<script is:inline define:vars={{ uiLocale: locale, uiMessages: messages }}>
+  window.schoolUI = {
+    locale: uiLocale,
+    t: function(key, values) {
+      values = values || {};
+      return (uiMessages[key] || key).replace(/\{(\w+)\}/g, function(match, name) {
+        return values[name] == null ? match : String(values[name]);
+      });
+    },
+    completion: function(kind, record) {
+      if (!record || !record.completedAt) return this.t(kind + "Done");
+      var date = new Date(record.completedAt).toLocaleDateString(this.locale, { month: "long", day: "numeric", year: "numeric" });
+      return this.t(kind + "CompletedAt", { date: date, via: this.t(record.source === "agent" ? "viaAgent" : "viaBrowser") });
+    }
+  };
+</script>

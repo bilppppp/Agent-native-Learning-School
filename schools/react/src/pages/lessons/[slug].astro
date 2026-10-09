@@ -22,28 +22,27 @@ const { Content } = await render(lesson);
 const allLessons = (await getCollection("lessons")).sort((a, b) => a.data.order - b.data.order);
 const currentIndex = allLessons.findIndex((l) => l.data.slug === lesson.data.slug);
 const next = currentIndex < allLessons.length - 1 ? allLessons[currentIndex + 1] : null;
+
+import { t } from "../../lib/ui";
 ---
 
 <Base title={lesson.data.title} description={lesson.data.description}>
   <div class="mb-6">
-    <a href="/" class="text-sm text-gray-500 dark:text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
-      &larr; All lessons
-    </a>
+    <a href="/" class="text-sm text-gray-500 dark:text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 transition-colors">{t("allLessons")}</a>
   </div>
 
   <header class="mb-8">
-    <p class="text-sm font-mono text-gray-400 dark:text-gray-600 mb-1">Lesson {lesson.data.order}</p>
+    <p class="text-sm font-mono text-gray-400 dark:text-gray-600 mb-1">{t("lessonNumber", { number: lesson.data.order })}</p>
     <h1 class="text-3xl font-bold">{lesson.data.title}</h1>
     <p class="text-gray-600 dark:text-gray-400 mt-2">{lesson.data.description}</p>
   </header>
 
   <div id="lesson-completed-banner" class="theme-banner hidden mb-6 rounded-lg px-4 py-3 text-sm font-medium">
-    <span id="lesson-completed-text">You completed this lesson!</span>
+    <span id="lesson-completed-text">{t("lessonDone")}</span>
   </div>
 
   <div id="lesson-enroll-nudge" class="hidden mb-8 rounded-lg border border-gray-200 dark:border-stone-700 px-4 py-3 text-sm text-gray-600 dark:text-stone-400">
-    <a href="/" class="theme-link font-medium underline underline-offset-2">Enroll for free</a> to track your progress through the course.
-  </div>
+    <a href="/" class="theme-link font-medium underline underline-offset-2">{t("freeEnroll")}</a>{t("trackProgress")}</div>
 
   <article class="prose dark:prose-invert max-w-none">
     <Content />
@@ -54,17 +53,13 @@ const next = currentIndex < allLessons.length - 1 ? allLessons[currentIndex + 1]
   <!-- Agent-only notice: shown for lessons that can only be completed in OpenCode -->
   {lesson.data.agentOnly && (
     <div id="lesson-agent-only" class="mt-10 pt-6 border-t border-gray-200 dark:border-stone-800 hidden">
-      <p id="lesson-agent-only-text" class="text-center text-sm text-gray-500 dark:text-stone-500">
-        Complete this lesson in your AI agent to continue.
-      </p>
+      <p id="lesson-agent-only-text" class="text-center text-sm text-gray-500 dark:text-stone-500">{t("agentContinue")}</p>
       {next && (
         <a
           id="lesson-agent-only-next"
           href={`/lessons/${next.data.slug}`}
           class="theme-button mt-4 flex w-full justify-center cursor-pointer items-center gap-2 rounded-lg px-6 py-4 text-sm font-medium select-none hidden"
-        >
-          Next lesson: {next.data.title} &rarr;
-        </a>
+        >{t("nextLesson", { title: next.data.title })}</a>
       )}
     </div>
   )}
@@ -77,14 +72,14 @@ const next = currentIndex < allLessons.length - 1 ? allLessons[currentIndex + 1]
         data-next-url={`/lessons/${next.data.slug}`}
         class="theme-button flex w-full justify-center cursor-pointer items-center gap-2 rounded-lg px-6 py-4 text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed select-none"
       >
-        <span id="lesson-action-label">Next lesson: {next.data.title} &rarr;</span>
+        <span id="lesson-action-label">{t("nextLesson", { title: next.data.title })}</span>
       </button>
     ) : (
       <button
         id="lesson-action-btn"
         class="theme-button flex w-full justify-center cursor-pointer items-center gap-2 rounded-lg px-6 py-4 text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed select-none"
       >
-        <span id="lesson-action-label">Mark this lesson as complete</span>
+        <span id="lesson-action-label">{t("markLesson")}</span>
       </button>
     )}
   </div>
@@ -115,13 +110,7 @@ const next = currentIndex < allLessons.length - 1 ? allLessons[currentIndex + 1]
       var wasAlreadyComplete = window.school.isLessonComplete(lessonSlug);
 
       function formatBannerText(completion) {
-        var text = "You completed this lesson!";
-        if (completion && completion.completedAt) {
-          var date = new Date(completion.completedAt).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
-          var via = completion.source === "agent" ? "via your AI agent" : "in the browser";
-          text = "You completed this lesson on " + date + " " + via + ".";
-        }
-        return text;
+        return window.schoolUI.completion("lesson", completion);
       }
 
       function showBanner() {
@@ -137,7 +126,7 @@ const next = currentIndex < allLessons.length - 1 ? allLessons[currentIndex + 1]
 
         if (window.school.isLessonComplete(lessonSlug)) {
           showBanner();
-            if (agentOnlyText) agentOnlyText.textContent = "You completed this lesson via your AI agent.";
+            if (agentOnlyText) agentOnlyText.textContent = window.schoolUI.t("agentDone");
           if (agentOnlyNext) agentOnlyNext.classList.remove("hidden");
         }
 
@@ -147,7 +136,7 @@ const next = currentIndex < allLessons.length - 1 ? allLessons[currentIndex + 1]
           if (nudge && window.school.getStudentId()) nudge.classList.add("hidden");
           if (window.school.isLessonComplete(lessonSlug)) {
             showBanner();
-          if (agentOnlyText) agentOnlyText.textContent = "You completed this lesson via your AI agent.";
+          if (agentOnlyText) agentOnlyText.textContent = window.schoolUI.t("agentDone");
             if (agentOnlyNext) agentOnlyNext.classList.remove("hidden");
             // Auto-navigate if just completed by agent during this page session
             if (!wasAlreadyComplete && agentOnlyNext) {
@@ -170,7 +159,7 @@ const next = currentIndex < allLessons.length - 1 ? allLessons[currentIndex + 1]
         if (nextUrl) {
           window.location.href = nextUrl;
         } else {
-          label.textContent = "Lesson complete!";
+          label.textContent = window.schoolUI.t("lessonComplete");
           btn.disabled = true;
         }
       }
@@ -181,13 +170,13 @@ const next = currentIndex < allLessons.length - 1 ? allLessons[currentIndex + 1]
         if (nextUrl) {
           btn.addEventListener("click", function() { window.location.href = nextUrl; });
         } else {
-          label.textContent = "Lesson complete!";
+          label.textContent = window.schoolUI.t("lessonComplete");
           btn.disabled = true;
         }
       } else {
         btn.addEventListener("click", async function() {
           btn.disabled = true;
-          label.textContent = "Saving...";
+          label.textContent = window.schoolUI.t("saving");
           var progress = await window.school.markComplete(lessonSlug);
           if (progress) {
             window.school.updateAllCheckmarks();

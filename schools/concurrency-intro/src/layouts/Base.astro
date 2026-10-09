@@ -19,11 +19,16 @@ const canonicalUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site).href :
 const lessons = (await getCollection("lessons")).sort((a, b) => a.data.order - b.data.order);
 const exercises = (await getCollection("exercises")).sort((a, b) => a.data.order - b.data.order);
 const currentPath = Astro.url.pathname;
+
+import { t, locale } from "../lib/ui";
+
+import ClientUI from "../components/ClientUI.astro";
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={locale}>
   <head>
+    <ClientUI />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
@@ -408,7 +413,7 @@ const currentPath = Astro.url.pathname;
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ deviceId }),
           });
-          if (!res.ok) throw new Error("Enrollment failed");
+          if (!res.ok) throw new Error(window.schoolUI.t("enrollFailed"));
           const data = await res.json();
           this.setStudentId(data.studentId);
           this.setCachedProgress(data.progress);
@@ -479,7 +484,7 @@ const currentPath = Astro.url.pathname;
             if (ctaEl) {
               ctaEl.classList.toggle("hidden", !isNext);
               ctaEl.classList.toggle("inline-block", isNext);
-              if (isNext) ctaEl.textContent = this.isLessonVisited(slug) ? "Continue" : "Start";
+              if (isNext) ctaEl.textContent = this.isLessonVisited(slug) ? window.schoolUI.t("continue") : window.schoolUI.t("start");
             }
             if (statusEl) {
               statusEl.classList.toggle("lesson-status--complete", complete);
@@ -546,7 +551,7 @@ const currentPath = Astro.url.pathname;
         <button
           id="menu-toggle"
           class="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-stone-800"
-          aria-label="Toggle navigation"
+          aria-label={t("toggleNav")}
         >
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -597,9 +602,7 @@ const currentPath = Astro.url.pathname;
                 ? "theme-active-nav font-medium"
                 : "text-gray-500 dark:text-stone-500 hover:text-gray-900 dark:hover:text-stone-200",
             ]}
-          >
-            Exercises
-          </a>
+          >{t("exercises")}</a>
           <ol class="space-y-1">
             {exercises.map((exercise) => {
               const href = `/exercises/${exercise.data.slug}`;
@@ -633,16 +636,12 @@ const currentPath = Astro.url.pathname;
                 ? "theme-active-nav font-medium"
                 : "text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-stone-400 dark:hover:text-stone-200 dark:hover:bg-stone-800",
             ]}
-          >
-            Troubleshooting
-          </a>
+          >{t("troubleshooting")}</a>
           <a
             id="sidebar-disenroll-link"
             href="/disenroll"
             class="hidden block px-3 py-1.5 rounded-md text-sm transition-colors text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-stone-400 dark:hover:text-stone-200 dark:hover:bg-stone-800"
-          >
-            Disenroll
-          </a>
+          >{t("disenroll")}</a>
         </div>
 
       </nav>

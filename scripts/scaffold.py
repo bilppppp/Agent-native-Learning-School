@@ -38,13 +38,13 @@ text = re.sub(r'          <a\n            href="/glossary"[\s\S]*?</a>\n', '', t
 base.write_text(text)
 home = out / "src/pages/index.astro"
 text = home.read_text().replace('import Base from "../layouts/Base.astro";', 'import Base from "../layouts/Base.astro";\nimport config from "../../school.config";')
-text = text.replace('Welcome! This is an interactive, self-paced course. Enroll to get started.', '{config.description} 学习目标驱动的课程。注册获取学习身份，完成活动后进度自动同步。')
+text = text.replace('Welcome! This is an interactive, self-paced course. Enroll to get started.', '{config.description} {t("welcome")}')
 # Remove the empty exercises invitation; real activities live inside lessons.
 start = text.index('    <h2 class="text-sm font-mono uppercase tracking-wider text-gray-500 dark:text-gray-500 mb-4 mt-10">Exercises</h2>')
 end = text.index('  </div>', text.index('    </ol>', start))
 text = text[:start] + text[end:]
 text = re.sub(r"    <p>Enroll above, then use your AI agent of choice.*?</p>\n\n    <p>Works with.*?</p>",
-    "    <p>在上方注册并选择教学模式，从关卡页面复制启动 Prompt。教师读取课程和原始材料，引导完成学习活动后同步进度。新会话使用同一学习身份即可继续。当前支持 Pi 教师，课程和进度独立于教师运行环境。</p>", text, flags=re.S)
+    '    <p>{t("orientation")}</p>', text, flags=re.S)
 home.write_text(text)
 subprocess.run([sys.executable, str(root / "scripts/apply-school-kit.py"), str(out)], check=True)
 print(f"Scaffolded {out.relative_to(root)} using school-template; local KV and shared teacher contract.")
