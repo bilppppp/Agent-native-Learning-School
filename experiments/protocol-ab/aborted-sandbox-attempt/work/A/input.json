@@ -1,0 +1,20 @@
+{
+  "name": "p-limit-protocol-experiment",
+  "goal": "理解异步任务的并发限制如何工作，并能正确使用 p-limit 控制任务执行",
+  "depth": "deep",
+  "background": "熟悉 JavaScript 函数和 Promise；未系统学习并发限制",
+  "learningStyle": "Concrete examples with explanations and appropriate practice.",
+  "teachingMode": "simple",
+  "language": "zh",
+  "request": "理解异步任务的并发限制如何工作，并能正确使用 p-limit 控制任务执行。熟悉 JavaScript 函数和 Promise，但未系统学习并发限制；希望深入核心源码，以具体例子、解释和适量实践学习，教学先用简单模式。",
+  "output": "school",
+  "sourceRoot": "materials",
+  "materials": [
+    {
+      "path": "material-1",
+      "url": "https://github.com/sindresorhus/p-limit",
+      "commit": "a8a6fbec4e0e866d6d779b10889bb4f5567e70eb",
+      "version": "a8a6fbec4e0e866d6d779b10889bb4f5567e70eb"
+    }
+  ]
+}

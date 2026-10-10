@@ -1,0 +1,21 @@
+{
+  "name": "concurrency-deep",
+  "goal": "理解异步任务的并发限制如何工作，并能正确使用 p-limit 控制任务执行",
+  "depth": "deep",
+  "background": "熟悉 JavaScript 函数和 Promise；未系统学习并发限制",
+  "learningStyle": "Concrete examples with explanations and appropriate practice.",
+  "teachingMode": "simple",
+  "language": "zh",
+  "port": 4324,
+  "request": "理解异步任务的并发限制如何工作，并能正确使用 p-limit 控制任务执行",
+  "output": "schools/concurrency-deep",
+  "sourceRoot": "schools/concurrency-deep/materials",
+  "materials": [
+    {
+      "path": "material-1",
+      "url": "https://github.com/sindresorhus/p-limit",
+      "commit": "a8a6fbec4e0e866d6d779b10889bb4f5567e70eb",
+      "version": "a8a6fbec4e0e866d6d779b10889bb4f5567e70eb"
+    }
+  ]
+}

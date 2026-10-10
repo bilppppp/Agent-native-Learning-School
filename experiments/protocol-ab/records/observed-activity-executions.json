@@ -1,0 +1,42 @@
+[
+  {
+    "group": "A",
+    "toolCallId": "call_TG9PDFINMdCD1Lr1zMLT84tv|fc_0ff14d1a5561f19b016ac9a087c2d887d097d9d4dee27fcba6",
+    "command": "node school/public/activities/promise-boundaries.mjs; for f in index.js index.d.ts test.js readme.md recipes.md package.json license; do cmp \"materials/material-1/$f\" \"school/public/sources/material-1/$f\" || exit 1; done; printf '\\nAll 7 original copies match byte-for-byte.\\n'; python3 - <<'PY'\nfrom pathlib import Path\nimport re\nroot=Path('school')\nlessons=sorted((root/'src/content/lessons').glob('*.md'))\nassert len(lessons)==7\nfor order,p in enumerate(lessons,1):\n    s=p.read_text()\n    fm=s.split('---',2)[1]\n    for required in ['title:', 'slug:', 'description:', f'order: {order}', 'quiz: false', 'agentOnly: true', 'agentInstructions: |']:\n        assert required in fm,(p,required)\n    assert '{origin}/sources/material-1/' in fm,p\n    assert 'a8a6fbec4e0e866d6d779b10889bb4f5567e70eb' in s,p\n    assert not re.search(r'^import.*from.*react',s,re.M)\n    for target in re.findall(r'\\]\\((/(?:sources|activities)/[^)]+)\\)',s):\n        assert (root/'public'/target.lstrip('/')).is_file(),(p,target)\n    print(f'{p.name}: metadata and local links present ({len(s.splitlines())} lines)')\nprint('\\nWritten files:')\nfor p in sorted(root.rglob('*')):\n    if p.is_file(): print(p)\nPY",
+    "isError": false,
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "before release: executor | sync end\nobserved value: 7\nafter release: executor | sync end | then reads 7\nouter settled before inner: false\nouter result: done\nouter settled after inner: true\n\nAll 7 original copies match byte-for-byte.\n01-slots-and-starts.md: metadata and local links present (79 lines)\n02-task-lifetime.md: metadata and local links present (92 lines)\n03-core-scheduler.md: metadata and local links present (105 lines)\n04-errors-and-map.md: metadata and local links present (100 lines)\n05-control-and-shutdown.md: metadata and local links present (101 lines)\n06-scope-and-deadlock.md: metadata and local links present (98 lines)\n07-transfer-pipeline.md: metadata and local links present (103 lines)\n\nWritten files:\nschool/COURSE.md\nschool/public/activities/promise-boundaries.mjs\nschool/public/activities/slot-trace.md\nschool/public/sources/material-1/index.d.ts\nschool/public/sources/material-1/index.js\nschool/public/sources/material-1/license\nschool/public/sources/material-1/package.json\nschool/public/sources/material-1/readme.md\nschool/public/sources/material-1/recipes.md\nschool/public/sources/material-1/test.js\nschool/src/content/lessons/01-slots-and-starts.md\nschool/src/content/lessons/02-task-lifetime.md\nschool/src/content/lessons/03-core-scheduler.md\nschool/src/content/lessons/04-errors-and-map.md\nschool/src/content/lessons/05-control-and-shutdown.md\nschool/src/content/lessons/06-scope-and-deadlock.md\nschool/src/content/lessons/07-transfer-pipeline.md\n"
+        }
+      ],
+      "structuredContent": {
+        "output": "before release: executor | sync end\nobserved value: 7\nafter release: executor | sync end | then reads 7\nouter settled before inner: false\nouter result: done\nouter settled after inner: true\n\nAll 7 original copies match byte-for-byte.\n01-slots-and-starts.md: metadata and local links present (79 lines)\n02-task-lifetime.md: metadata and local links present (92 lines)\n03-core-scheduler.md: metadata and local links present (105 lines)\n04-errors-and-map.md: metadata and local links present (100 lines)\n05-control-and-shutdown.md: metadata and local links present (101 lines)\n06-scope-and-deadlock.md: metadata and local links present (98 lines)\n07-transfer-pipeline.md: metadata and local links present (103 lines)\n\nWritten files:\nschool/COURSE.md\nschool/public/activities/promise-boundaries.mjs\nschool/public/activities/slot-trace.md\nschool/public/sources/material-1/index.d.ts\nschool/public/sources/material-1/index.js\nschool/public/sources/material-1/license\nschool/public/sources/material-1/package.json\nschool/public/sources/material-1/readme.md\nschool/public/sources/material-1/recipes.md\nschool/public/sources/material-1/test.js\nschool/src/content/lessons/01-slots-and-starts.md\nschool/src/content/lessons/02-task-lifetime.md\nschool/src/content/lessons/03-core-scheduler.md\nschool/src/content/lessons/04-errors-and-map.md\nschool/src/content/lessons/05-control-and-shutdown.md\nschool/src/content/lessons/06-scope-and-deadlock.md\nschool/src/content/lessons/07-transfer-pipeline.md\n",
+        "truncated": false,
+        "exit_code": 0,
+        "wall_time_seconds": 0.1
+      }
+    }
+  },
+  {
+    "group": "B",
+    "toolCallId": "call_383ebf4649c248b7a8e97dd6f33eea52|fc_09788c98d6cc2d23016ac99fb5a7fc8191aa5d8386725e5e40",
+    "command": "node school/public/activities/promise-probe.mjs",
+    "isError": false,
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "sync: value=2\nthen: value=2\nbefore release: settled=false\nouter: done\nsync throw becomes rejection: boom\n"
+        }
+      ],
+      "structuredContent": {
+        "output": "sync: value=2\nthen: value=2\nbefore release: settled=false\nouter: done\nsync throw becomes rejection: boom\n",
+        "truncated": false,
+        "exit_code": 0,
+        "wall_time_seconds": 0.1
+      }
+    }
+  }
+]

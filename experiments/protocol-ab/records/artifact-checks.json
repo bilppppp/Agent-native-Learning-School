@@ -1,0 +1,225 @@
+{
+  "A": {
+    "originalLicensePresentInSources": true,
+    "courseExists": true,
+    "lessons": [
+      {
+        "file": "src/content/lessons/01-slots-and-starts.md",
+        "title": "\"并发槽位：控制的是何时启动\"",
+        "slug": "slots-and-starts",
+        "description": "\"用小任务时间线区分提交、开始与完成，理解为什么必须传函数。\"",
+        "order": "1",
+        "quiz": "false",
+        "agentOnly": "true",
+        "agentInstructions": "|",
+        "bodyNonempty": true
+      },
+      {
+        "file": "src/content/lessons/02-task-lifetime.md",
+        "title": "\"把完整工作交给同一个限流器\"",
+        "slug": "task-lifetime",
+        "description": "\"明确任务的 Promise 生命周期，用共享 limit 和 map 组织有限批次。\"",
+        "order": "2",
+        "quiz": "false",
+        "agentOnly": "true",
+        "agentInstructions": "|",
+        "bodyNonempty": true
+      },
+      {
+        "file": "src/content/lessons/03-core-scheduler.md",
+        "title": "\"核心源码：从入队到交接槽位\"",
+        "slug": "core-scheduler",
+        "description": "\"逐步追踪 generator、enqueue、resumeNext、run 和 next，解释占位与微任务边界。\"",
+        "order": "3",
+        "quiz": "false",
+        "agentOnly": "true",
+        "agentInstructions": "|",
+        "bodyNonempty": true
+      },
+      {
+        "file": "src/content/lessons/04-errors-and-map.md",
+        "title": "\"失败不是停机：两条 Promise 通道\"",
+        "slug": "errors-and-map",
+        "description": "\"解释 result 的状态采纳、失败后的槽位释放，以及 map 的迭代异常分支。\"",
+        "order": "4",
+        "quiz": "false",
+        "agentOnly": "true",
+        "agentInstructions": "|",
+        "bodyNonempty": true
+      },
+      {
+        "file": "src/content/lessons/05-control-and-shutdown.md",
+        "title": "\"改容量与清队列：控制不等于取消\"",
+        "slug": "control-and-shutdown",
+        "description": "\"推导动态并发变更与 clearQueue 两个分支，避免等待被丢弃但不结算的 Promise。\"",
+        "order": "5",
+        "quiz": "false",
+        "agentOnly": "true",
+        "agentInstructions": "|",
+        "bodyNonempty": true
+      },
+      {
+        "file": "src/content/lessons/06-scope-and-deadlock.md",
+        "title": "\"共享范围与嵌套死锁\"",
+        "slug": "scope-and-deadlock",
+        "description": "\"画出等待关系，选择共享 limit 或 limitFunction，并避免重入同一容量池。\"",
+        "order": "6",
+        "quiz": "false",
+        "agentOnly": "true",
+        "agentInstructions": "|",
+        "bodyNonempty": true
+      },
+      {
+        "file": "src/content/lessons/07-transfer-pipeline.md",
+        "title": "\"迁移：修复双入口处理流水线\"",
+        "slug": "transfer-pipeline",
+        "description": "\"组合共享容量、完整任务寿命、失败汇总与收尾，给出可解释的并发控制方案。\"",
+        "order": "7",
+        "quiz": "false",
+        "agentOnly": "true",
+        "agentInstructions": "|",
+        "bodyNonempty": true
+      }
+    ],
+    "sourceCopiesExact": true,
+    "copiedSourceFiles": [
+      "public/sources/material-1/recipes.md",
+      "public/sources/material-1/test.js",
+      "public/sources/material-1/license",
+      "public/sources/material-1/index.js",
+      "public/sources/material-1/readme.md",
+      "public/sources/material-1/package.json",
+      "public/sources/material-1/index.d.ts"
+    ],
+    "toolErrors": [],
+    "outputSha256": {
+      "COURSE.md": "08634c370591bdee57d576bc90310da3f0a9f23b02f4cc71255137fc8e889ff7",
+      "public/activities/promise-boundaries.mjs": "e83a90ff0f4b5c065d05276e5c89d0b6c7d510937ae5bf6f2677dbc036fa3e1a",
+      "public/activities/slot-trace.md": "98079aa58941a8c090b36cd30c0b21830a7cbd1038dc785f0b539bcdfbdddba4",
+      "public/sources/material-1/index.d.ts": "d367543c32631ba661e044b1d1f44deed2bbf54654dd0eb251061337162514ee",
+      "public/sources/material-1/index.js": "edde12a4a4dbdbe8d27161cdd0853db0bab435d5dc6c15f9f4dedc27ee9bca60",
+      "public/sources/material-1/license": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+      "public/sources/material-1/package.json": "daa6b0d168d7197eccbfef1c678e8f00b79d063129bf48f4ee2db38dc605ca7f",
+      "public/sources/material-1/readme.md": "dbe29b10fca55743e35fe2b3d768024cd135d1bac4bd60aee566a5e1f3af294f",
+      "public/sources/material-1/recipes.md": "bc3e6759f7c0953888bdfed68ddee2d8baf964dd21bb263ade6fa50dac859efe",
+      "public/sources/material-1/test.js": "a803c332d9af3a9e14d657d63280c2e059e3fe5c343ab7ab869da8a85276204c",
+      "src/content/lessons/01-slots-and-starts.md": "53e9ae672acf792d1602a2068d498810c00c6987714e209aa0ebee3e165b3c16",
+      "src/content/lessons/02-task-lifetime.md": "d8f20ddc8320c4dd2e55ad5bdbad570c40a33cf9b4618af0aab1fd04fbda1c46",
+      "src/content/lessons/03-core-scheduler.md": "ecd6e935b4560e7f5a17a01db1dd5bcff590a1cb8d3800f3de72c2b1fa294f63",
+      "src/content/lessons/04-errors-and-map.md": "fc5d47f199b0151eab2e3986630d570cfc30b8cad4a70a15280d1a23c477240d",
+      "src/content/lessons/05-control-and-shutdown.md": "7dacdfa71d6ace9ab4611b31e1b33d334ed5fc373ce0730108c4c1c5d76094db",
+      "src/content/lessons/06-scope-and-deadlock.md": "3c0e03fc27e04e73250b397c849225371f559064b74198808a50600962c7877a",
+      "src/content/lessons/07-transfer-pipeline.md": "030232137612624c9480be3d3c56c80cdab2b46cc40d66332b614ffec1b68e4c"
+    }
+  },
+  "B": {
+    "originalLicensePresentInSources": false,
+    "courseExists": true,
+    "lessons": [
+      {
+        "file": "src/content/lessons/01-slots-and-lifetimes.md",
+        "title": "槽位与任务生命周期",
+        "slug": "slots-and-lifetimes",
+        "description": "用时间线区分提交、启动与完成，建立并发限制而非限速的模型。",
+        "order": "1",
+        "quiz": "false",
+        "agentOnly": "true",
+        "agentInstructions": "|",
+        "bodyNonempty": true
+      },
+      {
+        "file": "src/content/lessons/02-api-and-resource-boundary.md",
+        "title": "把限制放在正确的资源边界",
+        "slug": "api-and-resource-boundary",
+        "description": "选择合适的 API，避免提前启动、提前释放和拆散共享并发预算。",
+        "order": "2",
+        "quiz": "false",
+        "agentOnly": "true",
+        "agentInstructions": "|",
+        "bodyNonempty": true
+      },
+      {
+        "file": "src/content/lessons/03-core-scheduler.md",
+        "title": "沿核心源码走一遍：占槽位与真正执行",
+        "slug": "core-scheduler",
+        "description": "追踪五个核心符号、三个 Promise 与微任务，解释同步计数和异步调用的时差。",
+        "order": "3",
+        "quiz": "false",
+        "agentOnly": "true",
+        "agentInstructions": "|",
+        "bodyNonempty": true
+      },
+      {
+        "file": "src/content/lessons/04-errors-and-map.md",
+        "title": "失败仍会释放槽位：汇总与 map 的异常边界",
+        "slug": "errors-and-map",
+        "description": "区分任务拒绝、汇总失败和迭代失败，解释为何内部 catch 不吞调用者错误。",
+        "order": "4",
+        "quiz": "false",
+        "agentOnly": "true",
+        "agentInstructions": "|",
+        "bodyNonempty": true
+      },
+      {
+        "file": "src/content/lessons/05-changing-and-clearing.md",
+        "title": "改上限与清队列：控制不是取消",
+        "slug": "changing-and-clearing",
+        "description": "推导动态并发的非抢占行为与清队列后的 Promise 结算，设计不会悬挂的停止策略。",
+        "order": "5",
+        "quiz": "false",
+        "agentOnly": "true",
+        "agentInstructions": "|",
+        "bodyNonempty": true
+      },
+      {
+        "file": "src/content/lessons/06-deadlocks-and-budget.md",
+        "title": "嵌套等待与共享预算：识别死锁",
+        "slug": "deadlocks-and-budget",
+        "description": "用等待图分析同一 limiter 的嵌套调用，并比较不破坏资源预算的修复方法。",
+        "order": "6",
+        "quiz": "false",
+        "agentOnly": "true",
+        "agentInstructions": "|",
+        "bodyNonempty": true
+      },
+      {
+        "file": "src/content/lessons/07-transfer-batch-runner.md",
+        "title": "迁移：设计一个可解释的批处理器",
+        "slug": "transfer-batch-runner",
+        "description": "综合资源边界、错误报告与停止策略，用代码和状态轨迹说明并发限制真的覆盖了目标任务。",
+        "order": "7",
+        "quiz": "false",
+        "agentOnly": "true",
+        "agentInstructions": "|",
+        "bodyNonempty": true
+      }
+    ],
+    "sourceCopiesExact": true,
+    "copiedSourceFiles": [
+      "public/sources/material-1/recipes.md",
+      "public/sources/material-1/test.js",
+      "public/sources/material-1/index.js",
+      "public/sources/material-1/readme.md",
+      "public/sources/material-1/package.json",
+      "public/sources/material-1/index.d.ts"
+    ],
+    "toolErrors": [],
+    "outputSha256": {
+      "COURSE.md": "ee448c8dd727d5416a9764b6f356923367a82f9b480aabbcfe5cfa98c269e93f",
+      "public/activities/promise-probe.mjs": "492caf612be497bcd77cb13e3e2df56d60e9cedea99704bfd5c5f081bf0c65ee",
+      "public/sources/material-1/index.d.ts": "d367543c32631ba661e044b1d1f44deed2bbf54654dd0eb251061337162514ee",
+      "public/sources/material-1/index.js": "edde12a4a4dbdbe8d27161cdd0853db0bab435d5dc6c15f9f4dedc27ee9bca60",
+      "public/sources/material-1/package.json": "daa6b0d168d7197eccbfef1c678e8f00b79d063129bf48f4ee2db38dc605ca7f",
+      "public/sources/material-1/readme.md": "dbe29b10fca55743e35fe2b3d768024cd135d1bac4bd60aee566a5e1f3af294f",
+      "public/sources/material-1/recipes.md": "bc3e6759f7c0953888bdfed68ddee2d8baf964dd21bb263ade6fa50dac859efe",
+      "public/sources/material-1/test.js": "a803c332d9af3a9e14d657d63280c2e059e3fe5c343ab7ab869da8a85276204c",
+      "src/content/lessons/01-slots-and-lifetimes.md": "7fb0f374697f32d0a9928854eb4c435358fd866f05c9122cc9c33084ac1438b9",
+      "src/content/lessons/02-api-and-resource-boundary.md": "f84f424be7a7b3d6d53f4b2b96d38c13d4b1e443da4b96dc5c73062903874df1",
+      "src/content/lessons/03-core-scheduler.md": "aa0d8e96155932cfd72c824ec6a8c00b17c01632b21fa3a2a5a924c02647649d",
+      "src/content/lessons/04-errors-and-map.md": "510701799626cbdfadce30bd99b5edeba97cde9bbcb618e1ddbe303a4cdc6d2e",
+      "src/content/lessons/05-changing-and-clearing.md": "65c9fb3a7ba21cfbd8aaa9ea3d30755716ad1d08f8d85c91fa183d85cef45a5f",
+      "src/content/lessons/06-deadlocks-and-budget.md": "10832d7ae258f8a289a35def534bd01bb6289cd9c9fa6d116c42b6bdd9264731",
+      "src/content/lessons/07-transfer-batch-runner.md": "4d1d2028c9dcab39eaedb3d4d5dd8db0e49dd944125bb1fd078e7395fb60a11d"
+    }
+  }
+}

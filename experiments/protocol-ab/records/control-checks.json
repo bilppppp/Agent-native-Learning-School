@@ -1,0 +1,13 @@
+{
+  "A": {
+    "protocol_exact_prefix": true,
+    "input_identical": true,
+    "source_identical": true
+  },
+  "B": {
+    "protocol_exact_prefix": true,
+    "input_identical": true,
+    "source_identical": true
+  },
+  "prompt_suffix_identical": true
+}

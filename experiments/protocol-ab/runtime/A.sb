@@ -1,0 +1,8 @@
+(version 1)
+(allow default)
+(deny file-read* file-write*
+  (require-all (subpath "/Users/gravity/Desktop/AI/Agent-native Learning School ")
+    (require-not (subpath "/Users/gravity/Desktop/AI/Agent-native Learning School /experiments/protocol-ab/work/A"))
+    (require-not (subpath "/Users/gravity/Desktop/AI/Agent-native Learning School /experiments/protocol-ab/records/A/sessions"))))
+(deny file-read* file-write* (subpath "/Users/gravity/.pi/agent/sessions"))
+(allow file-read-metadata (subpath "/Users/gravity/Desktop/AI/Agent-native Learning School "))

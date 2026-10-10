@@ -1,0 +1,6 @@
+{
+  "own_source": "allowed",
+  "other_source": "denied: 1",
+  "formal_protocol": "denied: 1",
+  "prior_sessions": "denied: 1"
+}

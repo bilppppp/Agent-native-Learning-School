@@ -1,0 +1,125 @@
+{
+  "A": {
+    "sessionHeader": {
+      "type": "session",
+      "version": 3,
+      "id": "01a12393-6b5b-7053-bf1a-294ff4d2defe",
+      "timestamp": "2026-10-10T02:10:26.267Z",
+      "cwd": "/Users/gravity/Desktop/AI/Agent-native Learning School /experiments/protocol-ab/work/A"
+    },
+    "modelChanges": [
+      {
+        "type": "model_change",
+        "id": "1ef3e514",
+        "parentId": null,
+        "timestamp": "2026-10-10T02:10:26.299Z",
+        "provider": "openai-codex",
+        "modelId": "gpt-6.1-sol"
+      }
+    ],
+    "thinkingChanges": [
+      {
+        "type": "thinking_level_change",
+        "id": "fd5d1ad0",
+        "parentId": "1ef3e514",
+        "timestamp": "2026-10-10T02:10:26.299Z",
+        "thinkingLevel": "high"
+      }
+    ],
+    "userMessageCount": 1,
+    "hasParentSession": false,
+    "resourceDisablingFlags": [
+      "--no-extensions",
+      "--no-mcp",
+      "--no-skills",
+      "--no-prompt-templates",
+      "--no-context-files"
+    ],
+    "toolErrors": 0,
+    "retryEvents": [],
+    "compactionEntries": 0,
+    "firstUserMessageIsExactExperimentPrompt": true
+  },
+  "B": {
+    "sessionHeader": {
+      "type": "session",
+      "version": 3,
+      "id": "01a12393-6b6e-7150-82f8-954f75161bd3",
+      "timestamp": "2026-10-10T02:10:26.287Z",
+      "cwd": "/Users/gravity/Desktop/AI/Agent-native Learning School /experiments/protocol-ab/work/B"
+    },
+    "modelChanges": [
+      {
+        "type": "model_change",
+        "id": "e4e3942a",
+        "parentId": null,
+        "timestamp": "2026-10-10T02:10:26.316Z",
+        "provider": "openai-codex",
+        "modelId": "gpt-6.1-sol"
+      }
+    ],
+    "thinkingChanges": [
+      {
+        "type": "thinking_level_change",
+        "id": "1b59a3b3",
+        "parentId": "e4e3942a",
+        "timestamp": "2026-10-10T02:10:26.316Z",
+        "thinkingLevel": "high"
+      }
+    ],
+    "userMessageCount": 1,
+    "hasParentSession": false,
+    "resourceDisablingFlags": [
+      "--no-extensions",
+      "--no-mcp",
+      "--no-skills",
+      "--no-prompt-templates",
+      "--no-context-files"
+    ],
+    "toolErrors": 0,
+    "retryEvents": [],
+    "compactionEntries": 0,
+    "firstUserMessageIsExactExperimentPrompt": true
+  },
+  "review": {
+    "sessionHeader": {
+      "type": "session",
+      "version": 3,
+      "id": "01a1239d-aea9-7574-95ee-3ebe5406e85c",
+      "timestamp": "2026-10-10T02:21:38.857Z",
+      "cwd": "/Users/gravity/Desktop/AI/Agent-native Learning School /experiments/protocol-ab/review"
+    },
+    "modelChanges": [
+      {
+        "type": "model_change",
+        "id": "4c8b80a7",
+        "parentId": null,
+        "timestamp": "2026-10-10T02:21:38.885Z",
+        "provider": "openai-codex",
+        "modelId": "gpt-6.1-sol"
+      }
+    ],
+    "thinkingChanges": [
+      {
+        "type": "thinking_level_change",
+        "id": "11139d18",
+        "parentId": "4c8b80a7",
+        "timestamp": "2026-10-10T02:21:38.886Z",
+        "thinkingLevel": "high"
+      }
+    ],
+    "userMessageCount": 1,
+    "hasParentSession": false,
+    "resourceDisablingFlags": [
+      "--no-extensions",
+      "--no-mcp",
+      "--no-skills",
+      "--no-prompt-templates",
+      "--no-context-files"
+    ],
+    "toolErrors": 0,
+    "retryEvents": [],
+    "compactionEntries": 0
+  },
+  "allThreeSessionsSettledSuccessfully": true
+}
