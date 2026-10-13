@@ -1,16 +1,24 @@
 # Agent-native Learning School
 
-本项目可以根据给定的学习材料与学习目标，生成独立的互动学习网站（School）。课程深度影响涉及的知识范围、理解深度与学习路线，教学模式决定互动节奏。网站负责维护学生身份和进度；Pi 是当前的默认生成与教学入口，但课程与进度协议与具体 Harness 解耦，具备文件读写、终端和 HTTP 访问能力的 Coding Agent 也可以直接生成课程或担任教师。
+把学习材料和学习目标做成一所独立网站（School）。网站发给学生一串身份并记住进度；关卡上的提示词交给 Coding Agent，就可以按课程讲解、问答和练习，下次用同一身份接着学。课程深度决定学什么，教学模式决定互动节奏。Pi 是默认的生成和教学入口；具备文件读写、终端和 HTTP 访问能力的 Coding Agent 也可以建校或授课。各 Harness 的验证范围见 [HARNESS-VALIDATION.md](HARNESS-VALIDATION.md)。
 
-七年级数学可以在 [https://math.gravityai.top](https://math.gravityai.top) 直接试用：不需要注册，打开后领取一串「形容词-名词-四位数字」的身份，复制页面上的提示词即可学习。进度写在服务器上，刷新后还在。这个地址走的是自定义域名；`*.vercel.app` 在中国大陆可能打不开。
+七年级数学可以在 [https://math.gravityai.top](https://math.gravityai.top) 直接试用：不用注册，打开后领取一串「形容词-名词-四位数字」的身份，复制页面上的提示词即可学习。进度写在服务器上。这个地址是自定义域名；`*.vercel.app` 在中国大陆可能打不开。
 
-## 交给你的 Coding Agent
+## 核心能力
 
-最省心的方式是直接使用自然语言：把下面任意一段提示词发给支持终端工具的 Coding Agent，无需提前学习 CLI 命令、无需手写配置文件，也不必安装特定 Skill。Agent 会自动定位项目、检查环境、调用现有工具并启动网站。启动后，你在网页中领取学习身份，把关卡提供的启动 Prompt 发给兼容教学协议的 Agent 即可开始互动。
+- **材料直接变成课程网站。** 来源可以是 GitHub 仓库、公开网页或文档、论文 PDF，以及本地文件或目录。深度、已有基础和学习偏好可以用自然语言说明。
+- **用 Agent 创建，也用 Agent 上课。** 把下面的提示词交给支持终端工具的 Coding Agent 即可。当前 Agent 按协议写课程时不必安装 Pi；默认 CLI 的自动生成和 `teach` 会调用 Pi。
+- **进度留在网站上。** 完成当关互动后，教师通过进度 API 记下进度。教学模式可以在网页或对话里切换，不必重新生成课程。关卡完成表示参与了当关互动并得到反馈。学生身份是轻量标识，没有账号和权限系统。
+- **文档站可以一次取多页。** HTTP(S) HTML 文档会自动判断是否抓取，默认跟随同站链接，最多 500 页。写入课程的仍是生成时选中的页面。数学公式会在关卡页面中排版显示。
+- **同一份学校目录可以三处运行：** 本机、自有服务器、Vercel。
+
+## 快速开始
+
+复制下面任意一段，发给支持终端工具的 Coding Agent。无需先记 CLI，也无需手写配置或安装 Skill。Agent 会定位项目、检查环境并启动网站。你在网页领取身份后，把关卡上的启动 Prompt 交给教师 Agent。
 
 ### 首次使用：让 Agent 克隆项目
 
-复制下面的指令，按需替换学习来源、目标和偏好：
+按需替换学习来源、目标和偏好：
 
 ```text
 请在当前可写工作区克隆 https://github.com/bilppppp/Agent-native-Learning-School.git；如果已有该仓库，请复用它，不要覆盖现有文件。
@@ -24,7 +32,7 @@
 
 ### 已克隆：让 Agent 使用本地项目
 
-将 `<本地仓库绝对路径>` 替换成你的路径（含空格的路径也可），然后复制：
+把 `<本地仓库绝对路径>` 换成你的路径（路径里可以有空格）：
 
 ```text
 请使用本地仓库 <本地仓库绝对路径> 中的 Agent-native Learning School，先阅读 README.md、AGENT_GUIDE.md 和 AGENTS.md。
@@ -33,148 +41,107 @@
 完成后给我实际可访问的网站地址、可编辑的课程位置，以及在我使用的 Agent 中开始学习和恢复进度的步骤。未指定的设置使用项目默认值。
 ```
 
-学习来源支持 GitHub 仓库、公开网页/文档、论文 PDF 以及本地文件或目录。你可以直接在提示词中说明想学的深度和已有基础。课程深度决定知识范围、理解深度与学习路线，教学模式（Simple / Immersive）调节交互节奏，学习过程中可以随时切换。如果由当前 Coding Agent 直接按协议生成课程，不需要安装 Pi；如果使用默认的一键 CLI 创建或运行 `teach`，则会调用 Pi。
+未说明的设置使用默认值：系统深度、基础按需了解、中文、简单（Simple）模式。沉浸（Immersive）模式只改变提问节奏，不删减课程内容。
 
-供 Agent 阅读的详细执行指引见 [AGENT_GUIDE.md](AGENT_GUIDE.md)；维护或修改仓库代码请参考 [AGENTS.md](AGENTS.md)。如果你习惯在终端中直接操作，也可以参考下面的 CLI 用法。
+执行细节见 [AGENT_GUIDE.md](AGENT_GUIDE.md)。修改仓库代码见 [AGENTS.md](AGENTS.md)。
 
-## CLI：准备与创建
+### 打开网站学习
 
-环境要求：Node.js 22.12+（开发测试使用的是 24.16）、Python 3、Git、curl，以及可调用的 Coding Agent。若使用默认 CLI 自动生成，需要本地安装并配置好模型的 Pi；若由 Agent 直接读取协议生成，则无需安装 Pi。首次使用前先初始化：
+1. 打开启动后的网址，选择 Simple 或 Immersive，领取学习身份。
+2. 进入关卡，复制启动 Prompt 交给教师 Agent。使用 Pi 时，可粘贴进会话，或运行 `npm run school -- teach NAME --student 网页身份`。其他 Agent 加 `--prompt-only`，只生成通用提示词。已部署的学校加上 `--origin https://学校地址`（不能与 `--port` 同时使用）。
+3. 按提示问答、推演或做实验。在网页上切换模式后，教师下一轮会读到新设置；对话里也可以直接要求放慢或展开推导。
+4. 教师上报进度后，网页会记下完成情况。新对话带上同一身份即可续学。
+
+教师需要能读取 HTTP、调用 REST，并遵守站点 `/llms.txt`。课程和材料通过关卡 API 与 `/sources/` 访问，进度接口见 `/api/openapi.json`。只有 Pi 需要阅读 `/harness/pi.txt`。
+
+## CLI
+
+需要 Node.js 22.12+（开发测试使用 24.16）、Python 3、Git、curl。PDF 还需当前 Python 能导入 `pypdf`。
 
 ```sh
 npm run school -- setup
-# PDF 需要 pypdf；可在自己的 Python 环境安装
 python3 -m pip install pypdf
 ```
 
-默认 Pi 自动生成入口（直接传入自然语言描述，无需手写配置文件）：
+默认由 Pi 根据自然语言创建并生成课程：
 
 ```sh
 npm run school -- create "学习 https://github.com/sindresorhus/p-limit，目标是理解并发限制和核心实现。我熟悉 Promise，希望深入源码，教学先用简单模式"
+npm run school -- start my-school
 ```
 
-也可以直接传入明确参数，跳过模型对自然语言请求的解析：
+也可以直接传参数，跳过对自然语言的解析：
 
 ```sh
 npm run school -- create --source https://github.com/sindresorhus/p-limit \
   --goal "理解异步并发限制，并能正确使用 p-limit" --name my-school \
   --depth 深入 --background "熟悉 JavaScript 和 Promise" --mode simple
-npm run school -- start my-school
 ```
 
-如果不依赖 Pi，可以让当前 Coding Agent 将自然语言请求映射为上述参数，并加上 `--prepare-only`：
+由当前 Agent 写课程时加上 `--prepare-only`。它只准备材料、网站骨架和 `schools/my-school/GENERATION.md`（通用生成协议加上这次的输入）。Agent 读完材料并写入课程后：
 
 ```sh
-npm run school -- create --source "来源 URL 或本地绝对路径" \
-  --goal "学习目标" --name my-school --depth 深入 --mode simple --prepare-only
-# 当前 Agent 阅读 schools/my-school/GENERATION.md，读取来源并写入课程
 npm run school -- finish my-school
 npm run school -- start my-school
 ```
 
-`GENERATION.md` 将通用生成协议与用户的具体输入组装在一起，并非另一套提示词。`--prepare-only` 负责拉取材料并搭建网站骨架，之后的课程正文需要 Agent 实际读取材料并撰写；写完后执行 `finish` 进行校验并完成构建。整个过程无需用户手动编写输入 JSON。
+`--source` 可重复。`--ref` 指定 Git 分支或 Tag，并记录解析到的 commit。`--depth`、`--background`、`--style` 可用自然语言。`--language`、`--port`、`--model` 可选。不带参数执行 `create` 时，交互终端会询问来源和目标。Pi 模型定义在 `scripts/pi.mjs`，可用环境变量 `SCHOOL_MODEL` 或 `--model` 切换，只影响 Pi 这条路径。
 
-`--source` 可重复传入，支持 GitHub 仓库、HTTP(S) 网页或文档、论文以及本地文件/目录。HTTP(S) HTML 来源会按下文规则自动判断是否抓取多页文档。抓取时默认按 siteone-crawler 自己的同站链接跟随，不限制在入口路径；未启用抓取、信号不足或抓取失败时只保存入口页。材料不够时，在仓库根目录运行 `npm run school -- supplement NAME` 用同一方式补齐。入口页包含 GitHub 编辑或源文件链接时，单页路径会提示改用对应仓库的 `--source`，多页保存成功后也会打印文档源码仓库地址。`--ref` 用于指定 Git 仓库的分支或 Tag；默认会记录当前解析出的具体 commit。单页 HTML、PDF、DOCX 等文件会保留原始文件并提取纯文本；多页抓取保存入口 HTML、各页派生 Markdown 和来源记录，普通纯文本则直接读取。默认配置为：系统深度、基础未知（教学中按需了解）、中文课程、简单（Simple）教学模式。`--depth`、`--background`、`--style` 均支持自然语言自由描述；`--language`、`--port`、`--model` 为可选参数。若在终端执行 `create` 且未提供参数，会以交互形式询问来源与目标。默认 Pi 路径使用的模型定义在 `scripts/pi.mjs` 中，可以通过环境变量 `SCHOOL_MODEL` 或 `--model` 切换为已配置的其他模型。如果由外部 Agent 直接生成，则使用该 Agent 自带的模型，这些 Pi 参数不会影响外部 Agent。
+同名 School 已存在时会报错退出，不会覆盖。生成通常需要数分钟。中断后可查看保留的材料再运行 `npm run school -- retry NAME`；`retry` 会重写课程。已有学习进度时，直接改课程文件，并保持关卡 `slug` 不变。
+
+| 命令 | 作用 |
+| --- | --- |
+| `list` | 列出已有 School |
+| `start NAME [--port 端口]` | 本机启动。换端口后，页面中的 API 和提示词会使用新地址 |
+| `teach NAME --student 身份` | 用 Pi 授课。可选 `--mode`、`--lesson` |
+| `teach ... --prompt-only` | 只输出通用教师提示词 |
+| `finish NAME` | 检查 Agent 写的课程并构建 |
+| `build NAME` | 构建。先停止该 School 的开发服务；不要同时开发并构建 |
+| `supplement NAME` | 补齐已保存的网页文档 |
+| `retry NAME` | 用 Pi 重新生成课程 |
+| `setup` | 准备模板依赖 |
 
 ### 多页文档站
 
-GitHub 仓库、arXiv 论文、GitHub blob 文件、PDF、DOCX、图片、纯文本和本地路径仍按原来的方式准备。只有「非上述特例、且响应是 HTML」的 HTTP(S) 来源才会进入下面的判断。不需要为了文档站额外加参数；判断从确定规则开始，信号不足时只给出提示，不抓取。
+GitHub 仓库、论文、PDF、DOCX、纯文本和本地路径按单份来源准备。HTTP(S) HTML 文档站会自动判断是否抓取，一般不必额外加参数。默认从入口页跟随同一域名下的链接，最多 500 页。没有明确的文档站信号时只保存入口页。导航信号不足，或给出的地址是站点首页时，会提示改用文档区地址或加上 `--crawl`。
 
-1. `--no-crawl`：只保存入口页。它与 `--crawl`、`--crawl-prefix` 不能同时使用。
-2. `--crawl`，或指定了 `--crawl-prefix`：对 HTML 来源抓取。非 HTML 会警告并仍走单页。
-3. 否则自动判断，命中即停：
-   - **主机**：第一个标签是 `docs` 或 `documentation`；或主机是 / 以 `.readthedocs.io`、`.readthedocs.org`、`.gitbook.io` 结尾。
-   - **路径段**（大小写不敏感，必须是整段）：`docs`、`documentation`、`guide`、`guides`、`manual`、`reference`。例如 `https://pi.dev/docs/latest` 命中 `docs`。
-   - **生成器**：`<meta name="generator">`（`name` 与 `content` 的顺序不限）包含 `readthedocs`、`sphinx`、`gitbook`、`docusaurus`、`mkdocs`、`vitepress`。Sphinx 用来识别常见的 Read the Docs 页面。
-   - **框架标记**：页面含 `id="__docusaurus"`、`data-docusaurus`、`__VP_HASH_MAP__` 或 `id="VPContent"`。
-   - **导航**：在 `<nav>`、`<aside>`，或 class/id 含 `sidebar`、`toc`、`menu`、`navigation` 的区域里，统计与入口页同主机、且位于入口路径前缀下的不同链接。不少于 8 个则抓取；3 到 7 个则不抓取，并提示可以加 `--crawl`。站点根路径（前缀 `/`）即使菜单链接很多也不自动整站抓取，只提示改用文档区 URL 或 `--crawl`。
-   - **其余**：只保存入口页，与以前相同。
+- `--crawl` 强制抓取；`--no-crawl` 只保存入口页。二者不能同时使用，也不能把 `--no-crawl` 用于 `supplement`。
+- `--crawl-prefix /docs/latest` 把范围限制在该路径。
+- `--max-pages` 为 1–10000，默认 500。`--crawl-workers` 为 1–8，默认 2。
+- `npm run school -- supplement NAME` 用同样的同站跟随，补齐已保存的 HTTP HTML 来源。仓库克隆和本地文件不动。
+- 抓取失败或正文太少时退回入口页，建校继续。未安装抓取工具时会下载到 `tools/cache`（不纳入 Git）。
+- 入口页若有 GitHub 编辑或源文件链接，会提示对应仓库。只保存了入口页时，会建议改用该仓库作为 `--source`。
 
-默认不把范围限制在入口路径。siteone-crawler 从入口 URL 出发，跟随同一域名下的页面链接；一个具体文档页因此也能走到站内其他文档页。只有显式传入 `--crawl-prefix /docs/latest` 时，才额外加上包含该路径的过滤。前缀的计算是：去掉末尾斜杠，若最后一段是 `.html`、`.htm`、`.md`、`.php`、`.aspx` 或 `.xhtml` 则再去掉文件名。
+单页来源保留原件和提取文本。多页抓取还会保存各页文本和来源记录，供生成课程时选读。
 
-上限默认 500 页（`--max-pages`，1–10000），并发默认 2（`--crawl-workers`，1–8）。实现使用 [siteone-crawler](https://github.com/janreges/siteone-crawler) v2.5.1，保留它自己的同站跟随，不下载资源，导出时排除 `nav` 和 `footer`，不排除 `header`（排除 header 会丢掉 H1）。标题旁的 `[Copied](#...)` 会在保存前删掉。爬虫不执行页面脚本；抓到的正文太少（少于 2 页，或其中不足 2 页达到 200 字，或合计不足 800 字）时，会警告并退回原来的单页提取。
+### 课程文件
 
-已有 School 的材料若支撑不起学习目标，在仓库根目录运行 `npm run school -- supplement NAME`。它只重抓已保存的 HTTP HTML 来源，同样按爬虫自己的同站跟随；仓库克隆和本地文件不动。补齐失败时保留原来的单页。
+- `schools/NAME/COURSE.md`：路线、来源和深度取舍。
+- `src/content/lessons/*.md`：关卡正文和教学指引。调整顺序时改 frontmatter 的 `order`。
+- `public/sources/`、`public/activities/`：供 HTTP 读取的参考材料、标明身份的派生文本，以及练习代码。
+- `school.settings.json`：创建时的配置和默认模式。
 
-若 PATH 中没有 v2.5.1 或更新的 `siteone-crawler`，会从 GitHub Releases 下载对应的 Linux x64/arm64 或 macOS x64/arm64 官方包，校验 SHA-256 后放到 `tools/cache/siteone-crawler/2.5.1/`（已 gitignore），并打印说明它是自动下载的以及路径。Linux 优先使用 glibc 构建（Ubuntu 24.04）；若因 glibc 无法运行，再下载 musl 静态构建。下载和入口页请求由 curl 发出，遵循 `HTTPS_PROXY`、`HTTP_PROXY` 及对应的小写变量。爬虫另外收到 `--proxy=host:port`；代理 URL 里的用户名和密码不会传给爬虫。下载失败、压缩包校验失败或爬虫失败且没有得到足够有效页面时，警告并退回单页，不中断建校。异常退出但已有足够有效页面时警告并保存这些页面。
+开发服务会在课程修改后自动刷新。
 
-抓取成功时，材料目录里会有：
+## 部署
 
-- `pages/`：按 URL 路径保存的 Markdown（派生阅读文本，不是原始 HTML）
-- `provenance.json`：来源 URL、最终 URL、抓取日期、crawler 版本、范围（同站跟随，或显式路径前缀）、判断原因和每一页的 URL
-- `entry.html`：入口页原始响应
+同一份 `schools/NAME`：
 
-抓取成功后，先阅读 `materials/material-N/provenance.json`，再按课程目标和必要前置知识检索、选读 `pages/` 中的相关页面，不要求读完全部抓取页。`pages/` 是派生 Markdown 阅读文本，不是原始 HTML；`entry.html` 仅是入口页原始响应，其他页面的原始 HTML 未包含在这次抓取中。按生成协议将实际引用的派生文本、`provenance.json` 和 `entry.html` 保存到 `public/sources/material-N/`，保留材料目录内的相对路径，标明派生文本身份，并同时引用原始页面 URL 与本地地址。在 `COURSE.md` 记录实际阅读的页面。
+| 位置 | 运行方式 |
+| --- | --- |
+| 本机 | `npm run school -- start NAME`，使用 `DEPLOY_TARGET=dev`。进度在 `.wrangler/` |
+| 自有服务器 | 在学校目录执行 `./script/serve`，使用 `DEPLOY_TARGET=node`。进度在 `.school-data/` |
+| Vercel | 项目根目录指向该学校，配置 `DEPLOY_TARGET=vercel` 和 `BLOB_READ_WRITE_TOKEN` |
 
-生成过程通常需要数分钟。生成器会保存原始输入、材料、生成的 Markdown 课程文件以及模型的运行记录，并在生成结束后构建网站。如果遇到错误会直接报错退出，不会覆盖已存在的同名 School。若生成中断或失败，可在检查错误信息和保留的文件后，通过 `npm run school -- retry NAME` 重新尝试；需要注意 `retry` 会重新生成课程，并非无损断点续写。对于已有学习进度的课程，建议直接手动调整文件，以保持各关卡 `slug` 的稳定。
+迁移或备份时保留 `.wrangler/`。环境变量和域名见该学校的 `DEPLOYMENT.md`。
 
-## 开始学习
-
-1. 打开 `start` 命令输出的本地网址，选择教学模式（Simple / Immersive），点击 Enroll 领取学习身份。
-2. 进入具体关卡，复制页面上的启动 Prompt 交给你的教师 Agent。如果使用 Pi，可直接粘贴进会话，或运行 `npm run school -- teach NAME --student 网页身份`；部署后的学校加上 `--origin https://school.example.com`（不能与 `--port` 同时使用）。如果使用其他 Agent 或 Harness，无需加载 Pi 适配文件，运行 `npm run school -- teach NAME --student 网页身份 --prompt-only` 即可生成通用续学提示词。
-3. 按照提示与教师展开问答、推演或动手实验。如果在网页上切换了教学模式，教师在下一轮对话时会自动读取最新设置；你也可以在对话中直接让教师放慢节奏或展开推导，无需重新生成课程。
-4. 完成关卡活动后，教师 Agent 会调用本地进度 API，网页会自动记录完成并可继续下一关。开启新的对话时，带上相同的学生身份即可继续上一次的进度。
-
-说明：这里的“关卡完成”代表你参与了当关的教学互动并获得了反馈，并非正式考试。教学模式只改变互动节奏与提问方式，不会删减深入课程中的知识点。网页中的学生身份是本地轻量标识，没有账号安全或权限系统。
-
-## 编辑、运行与迁移
-
-课程与网站文件结构如下：
-
-- `schools/NAME/COURSE.md`：记录课程路线规划、材料来源与深度取舍。
-- `src/content/lessons/*.md`：包含各关卡的完整正文与教学指引。
-- `public/sources/` 与 `public/activities/`：分别存放供 HTTP 读取的原始参考材料、明确标注的派生阅读文本及来源记录，以及标记为模型生成的实验/练习代码。
-- `school.settings.json`：保存创建时的配置与默认模式。
-
-修改课程后，开发服务会自动刷新。若需要调整关卡顺序，修改 frontmatter 中的 `order` 即可，建议不要修改已有进度关卡的 `slug`。
-
-构建时，请先停止该 School 的开发服务，再运行 `npm run school -- build NAME`（同一 School 不应同时执行开发与构建）。每所 School 拥有独立的缓存目录以及位于 `.wrangler/` 的本地进度数据库，迁移或备份时请保留 `.wrangler/`。自有服务器上的 Node 进度写在 `.school-data/`。如果遇到端口冲突，可以通过 `start NAME --port 新端口` 指定端口，网站内的所有 API 和提示词链接会自动适配新地址。
-
-School Kit 现在也管运行底座。同一份学校目录：
-
-- 本机：`npm run school -- start NAME`，固定传入 `DEPLOY_TARGET=dev`
-- 自有服务器：在学校目录执行 `./script/serve`（`DEPLOY_TARGET=node`）
-- Vercel：项目根目录指向该学校，配置 `DEPLOY_TARGET=vercel` 和 `BLOB_READ_WRITE_TOKEN`
-
-详见该学校的 `DEPLOYMENT.md`。
-
-如需脱离本仓库独立运行某所 School：将对应的 `schools/NAME` 目录完整复制出去，在该目录下执行 `npm ci` 后，本机可用 `npm run dev`，自有服务器执行 `./script/serve`。各 School 均内置了完整的源码与依赖锁定文件，`node_modules` 必须是真实目录。脚本测试在本地完成。线上与自有服务器的验收记录见 [更新时间线](#更新时间线)。
-
-教学协议要求教师 Agent 能够读取 HTTP 内容、调用 REST API、保持多轮上下文，并遵循站点 `/llms.txt` 约定的教学规则。课程与参考材料通过关卡 API 及 `/sources/` 访问，学习进度由进度 API 维护（接口定义见 `/api/openapi.json`）。只有使用 Pi 时才需要读取 `/harness/pi.txt` 里的专用工具说明；其他教师 Harness 无需遵循 Pi 的工具命名或交互格式。关于不同 Harness 的验证情况与已知边界，可参考 [HARNESS-VALIDATION.md](HARNESS-VALIDATION.md)。
-
-## 更新时间线
-
-每一条都按三列写：**问题**是当时卡住的地方，**做了什么**是这次改动，**现在可以**是改完之后实际做得到的事。
-
-### 2026-10-13
-
-| 问题 | 做了什么 | 现在可以 |
-| --- | --- | --- |
-| 同一所学校要在本机、自有服务器和 Vercel 上跑，代码被拆开维护 | 一个学校目录用 `DEPLOY_TARGET` 区分这三处 | 同一份目录在三处运行。七年级数学第 1 关已在 Vercel 和 `./script/serve` 上领过身份、上过课、保存过进度 |
-| 关卡里的 `$...$` 在页面上原样显示 | 公式改为 KaTeX 渲染 | 关卡中的数学公式显示为排好的式子 |
-| 能看图的模型写课时只读抽取文本，看不到教材插图 | 生成协议要求写课前先查看页面图像 | 模型能看图时，会先看至少一页来源图像再写课 |
-| 文档页带有 GitHub 源文件链接，材料准备却只留下入口页，也不指出仓库 | 识别编辑或源文件链接，并在终端提示对应仓库 | 单页保存时会提示改用该仓库的 `--source`；多页保存成功后也会打印仓库地址 |
-| 抓取被锁在入口路径上。`https://docs.astro.build/zh-cn/getting-started/` 只留下 1 页，侧栏里的其他文档没有进来 | 改为沿用 siteone-crawler 自己的同站链接跟随。材料不够时运行 `npm run school -- supplement NAME` | 从一个具体文档页补齐同站页面，默认最多 500 页。这次补齐得到 471 页，其中中文 397 页、英文 74 页。写到第 2 关时停住，课程尚未完成 |
-
-### 2026-10-10
-
-| 问题 | 做了什么 | 现在可以 |
-| --- | --- | --- |
-| 关卡说明写得过宽，教学模式一变，教师指引对不上 | 收紧关卡说明，让教学指引随教学模式变化，并补上实验材料 | 授课按当前教学模式走；实验记录留在仓库里 |
-
-### 2026-10-09
-
-| 问题 | 做了什么 | 现在可以 |
-| --- | --- | --- |
-| 建校步骤散落，Agent 不能按文档自己创建一所学校 | 仓库成为可复用的建校工具，界面语言跟随课程配置 | Agent 阅读 README、AGENT_GUIDE 和 AGENTS 后，用现有命令创建并启动 School。Codex CLI 独立创建了 `process-results`，并作为教师完成一关真实对话、来源读取、进度上报和新会话续学，记录见 [HARNESS-VALIDATION.md](HARNESS-VALIDATION.md)。Pi 仍是默认入口 |
+要脱离本仓库运行：复制整个 `schools/NAME`，在该目录执行 `npm ci`。本机用 `npm run dev`，自有服务器用 `./script/serve`。`node_modules` 必须是真实目录。
 
 ## 参考与致谢
 
-本项目参考或复用了以下开源项目：
-
-- [School Template](https://github.com/agentschools/school-template)：网站模板的直接来源。本项目派生自该模板，复用了课程页面、学生 Profile、课程获取以及基于本地 KV 的进度接口，并在 `scripts/school.mjs` 的 `setup` 中固定了特定版本。
-- [Pi School](https://github.com/agentschools/pi-school)：学习体验的主要参考，包括对话授课、问题引导以及网站与进度配合的交互方式。本项目网站代码派生自 School Template，而非 Pi School。
-- [OpenCode School](https://github.com/agentschools/opencode.school)：早期 Agent 学习网站参考；School Template 上游文档注明其架构源自该项目。
-- [Pi](https://github.com/badlogic/pi-mono)（现重定向至 [earendil-works/pi](https://github.com/earendil-works/pi)）：当前默认的生成与教学 Harness。本项目课程与教学协议保持 Harness 中立，Pi 不是唯一教师，也不是必须安装的依赖。
-- [siteone-crawler](https://github.com/janreges/siteone-crawler)（MIT，固定 v2.5.1）：多页文档站的抓取工具。未安装时从官方 GitHub Release 下载到 `tools/cache`，不作为仓库文件提交。
-- 此外，项目在课程化组织与材料整理思路上，参考了 [codebase-to-course](https://github.com/zarazhangrui/codebase-to-course)（将代码库组织为课程的 Claude Code Skill）、[Repo2NotebookLM](https://github.com/bilppppp/Repo2NotebookLM)（仓库材料提取）以及 [archify](https://github.com/tt-a1i/archify)（交互图解释代码与概念）。这些项目仅作为方向参考，未作为运行依赖集成。
+- [School Template](https://github.com/agentschools/school-template)：网站模板的直接来源。本项目复用其课程页面、学生 Profile、课程获取和基于本地 KV 的进度接口，并在 `scripts/school.mjs` 的 `setup` 中固定了特定版本。
+- [Pi School](https://github.com/agentschools/pi-school)：学习体验的主要参考，包括对话授课、问题引导，以及网站与进度的配合。本项目网站代码派生自 School Template。
+- [OpenCode School](https://github.com/agentschools/opencode.school)：早期 Agent 学习网站参考。School Template 上游文档注明其架构源自该项目。
+- [Pi](https://github.com/badlogic/pi-mono)（现重定向至 [earendil-works/pi](https://github.com/earendil-works/pi)）：默认的生成与教学 Harness。课程与教学协议保持 Harness 中立。
+- [siteone-crawler](https://github.com/janreges/siteone-crawler)（MIT）：多页文档站的抓取工具。未安装时从官方 GitHub Release 下载到 `tools/cache`，不作为仓库文件提交。
+- 课程化组织还参考了 [codebase-to-course](https://github.com/zarazhangrui/codebase-to-course)、[Repo2NotebookLM](https://github.com/bilppppp/Repo2NotebookLM) 和 [archify](https://github.com/tt-a1i/archify)。这些项目提供了方向，没有作为运行依赖集成。
