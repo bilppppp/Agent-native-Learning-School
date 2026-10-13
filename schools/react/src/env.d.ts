@@ -4,6 +4,10 @@
 
 /// <reference types="astro/client" />
 
+interface ImportMetaEnv {
+	readonly SCHOOL_DEPLOY_TARGET?: string;
+}
+
 interface CloudflareEnv {
 	PROGRESS: KVNamespace;
 }

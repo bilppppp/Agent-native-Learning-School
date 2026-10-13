@@ -1,0 +1,191 @@
+---
+import settings from "../../school.settings.json";
+import { normalizeTeachingMode } from "../lib/teaching";
+
+const defaultMode = normalizeTeachingMode(settings.teachingMode);
+
+import { t } from "../lib/ui";
+---
+
+<section
+  id="teaching-mode-control"
+  class="mb-8 rounded-xl border border-gray-200 bg-gray-50/70 p-5 dark:border-stone-800 dark:bg-stone-900/50"
+  data-default-mode={defaultMode}
+>
+  <div class="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between">
+    <h2 class="font-mono text-sm font-semibold uppercase tracking-wider text-gray-700 dark:text-stone-300">{t("teachingMode")}</h2>
+    <p class="text-xs text-gray-500 dark:text-stone-500">{t("modeAnytime")}</p>
+  </div>
+  <p class="mt-2 text-sm text-gray-600 dark:text-stone-400">{t("modeScope")}</p>
+  <div class="mt-4 grid gap-2 sm:grid-cols-2" role="group" aria-label={t("teachingMode")}>
+    <button
+      type="button"
+      class="teaching-mode-option rounded-lg border px-3 py-3 text-left transition-colors"
+      data-teaching-mode="simple"
+      aria-pressed="false"
+    >
+      <span class="block font-medium">{t("simple")}</span>
+      <span class="mt-1 block text-xs text-gray-500 dark:text-stone-500">{t("simpleDescription")}</span>
+    </button>
+    <button
+      type="button"
+      class="teaching-mode-option rounded-lg border px-3 py-3 text-left transition-colors"
+      data-teaching-mode="immersive"
+      aria-pressed="false"
+    >
+      <span class="block font-medium">{t("immersive")}</span>
+      <span class="mt-1 block text-xs text-gray-500 dark:text-stone-500">{t("immersiveDescription")}</span>
+    </button>
+  </div>
+  <p id="teaching-mode-status" class="mt-3 text-xs text-gray-500 dark:text-stone-500" role="status" aria-live="polite"></p>
+  <p id="teaching-mode-error" class="mt-3 hidden text-xs text-red-600 dark:text-red-400" role="alert"></p>
+</section>
+
+<script is:inline>
+  (function() {
+    var root = document.getElementById("teaching-mode-control");
+    if (!root) return;
+    var buttons = Array.prototype.slice.call(root.querySelectorAll("[data-teaching-mode]"));
+    var status = document.getElementById("teaching-mode-status");
+    var error = document.getElementById("teaching-mode-error");
+    var defaultMode = root.getAttribute("data-default-mode") === "immersive" ? "immersive" : "simple";
+    var pending = false;
+    var selectionRevision = 0;
+
+    function localMode() {
+      try {
+        var value = localStorage.getItem("teachingMode");
+        return value === "immersive" || value === "simple" ? value : defaultMode;
+      } catch (_) {
+        return defaultMode;
+      }
+    }
+
+    function setLocalMode(mode) {
+      try { localStorage.setItem("teachingMode", mode); } catch (_) {}
+    }
+
+    function setVisualMode(mode) {
+      buttons.forEach(function(button) {
+        var selected = button.getAttribute("data-teaching-mode") === mode;
+        button.setAttribute("aria-pressed", selected ? "true" : "false");
+        button.classList.toggle("theme-active-nav", selected);
+        button.classList.toggle("border-gray-300", !selected);
+        button.classList.toggle("dark:border-stone-700", !selected);
+        button.classList.toggle("border-transparent", selected);
+      });
+    }
+
+    function setButtonsDisabled(disabled) {
+      buttons.forEach(function(button) {
+        button.disabled = disabled;
+        button.classList.toggle("cursor-wait", disabled);
+        button.classList.toggle("opacity-60", disabled);
+      });
+    }
+
+    function setStatus(message) {
+      if (status) status.textContent = message || "";
+      if (error) error.classList.add("hidden");
+    }
+
+    function setError(message) {
+      if (!error) return;
+      error.textContent = message;
+      error.classList.remove("hidden");
+    }
+
+    async function saveForStudent(mode, studentId) {
+      if (!studentId) {
+        setStatus(window.schoolUI.t("modeBrowserSaved"));
+        return true;
+      }
+      var response = await fetch("/api/profile/" + encodeURIComponent(studentId), {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ teachingMode: mode }),
+      });
+      if (!response.ok) throw new Error(window.schoolUI.t("modeSaveError"));
+      var data = await response.json();
+      if (window.school && typeof window.school.getCachedProgress === "function") {
+        var progress = window.school.getCachedProgress() || {};
+        progress.profile = data.profile;
+        if (typeof window.school.setCachedProgress === "function") window.school.setCachedProgress(progress);
+        window.dispatchEvent(new CustomEvent("school:progress", { detail: progress }));
+      }
+      setStatus(window.schoolUI.t("modeProfileSaved"));
+      return true;
+    }
+
+    async function choose(mode) {
+      if (mode !== "simple" && mode !== "immersive") return;
+      if (pending) return;
+      var previousMode = localMode();
+      selectionRevision += 1;
+      pending = true;
+      setLocalMode(mode);
+      setVisualMode(mode);
+      setButtonsDisabled(true);
+      setStatus(window.school && window.school.getStudentId() ? window.schoolUI.t("saving") : window.schoolUI.t("modeBrowserSaved"));
+      if (error) error.classList.add("hidden");
+      try {
+        await saveForStudent(mode, window.school && window.school.getStudentId());
+      } catch (err) {
+        if (window.school && window.school.getStudentId()) {
+          setLocalMode(previousMode);
+          setVisualMode(previousMode);
+        }
+        setError(window.schoolUI.t("modeSaveRetry"));
+      } finally {
+        pending = false;
+        setButtonsDisabled(false);
+      }
+    }
+
+    buttons.forEach(function(button) {
+      button.addEventListener("click", function() {
+        choose(button.getAttribute("data-teaching-mode"));
+      });
+    });
+
+    var current = localMode();
+    setVisualMode(current);
+    if (window.school && window.school.getStudentId()) {
+      var profileLoadRevision = selectionRevision;
+      fetch("/api/profile/" + encodeURIComponent(window.school.getStudentId()))
+        .then(function(response) { if (!response.ok) throw new Error(window.schoolUI.t("profileUnavailable")); return response.json(); })
+        .then(function(data) {
+          if (selectionRevision !== profileLoadRevision) {
+            setStatus(window.schoolUI.t("modeSelected"));
+            return;
+          }
+          var profileMode = data && data.profile && data.profile.teachingMode;
+          var mode = profileMode === "immersive" || profileMode === "simple" ? profileMode : current;
+          setLocalMode(mode);
+          setVisualMode(mode);
+          setStatus(window.schoolUI.t("modeLoaded"));
+        })
+        .catch(function() { setStatus(window.schoolUI.t("modeBrowserFallback")); });
+    } else {
+      setStatus(window.schoolUI.t("modeChoose"));
+    }
+
+    window.addEventListener("school:progress", function(event) {
+      if (pending) return;
+      var progress = event && event.detail;
+      var profile = progress && progress.profile;
+      var profileMode = profile && profile.teachingMode;
+      if (profileMode !== "simple" && profileMode !== "immersive") return;
+      setLocalMode(profileMode);
+      setVisualMode(profileMode);
+      setStatus(window.schoolUI.t("modeUpdated"));
+    });
+
+    window.addEventListener("school:enrolled", function() {
+      var id = window.school && window.school.getStudentId();
+      saveForStudent(localMode(), id).catch(function(err) {
+        setError(window.schoolUI.t("modeEnrollError"));
+      });
+    });
+  })();
+</script>

@@ -33,28 +33,28 @@ describe("generateStudentId", () => {
 		expect(ids.size).toBe(20);
 	});
 
-	it("retries when KV returns a collision", async () => {
+	it("retries when the store returns a collision", async () => {
 		let calls = 0;
-		const mockKv = {
+		const mockStore = {
 			get: vi.fn(async () => {
 				calls++;
 				return calls <= 2 ? '{"some":"data"}' : null;
 			}),
-		} as unknown as KVNamespace;
+		};
 
-		const id = await generateStudentId(mockKv);
+		const id = await generateStudentId(mockStore);
 		expect(isValidStudentId(id)).toBe(true);
-		expect(mockKv.get).toHaveBeenCalledTimes(3);
+		expect(mockStore.get).toHaveBeenCalledTimes(3);
 	});
 
 	it("throws after exhausting retries", async () => {
-		const mockKv = {
+		const mockStore = {
 			get: vi.fn(async () => '{"some":"data"}'),
-		} as unknown as KVNamespace;
+		};
 
-		await expect(generateStudentId(mockKv, 3)).rejects.toThrow(
+		await expect(generateStudentId(mockStore, 3)).rejects.toThrow(
 			"Failed to generate a unique student ID after retries",
 		);
-		expect(mockKv.get).toHaveBeenCalledTimes(3);
+		expect(mockStore.get).toHaveBeenCalledTimes(3);
 	});
 });

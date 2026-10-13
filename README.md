@@ -2,6 +2,8 @@
 
 本项目可以根据给定的学习材料与学习目标，生成独立的互动学习网站（School）。课程深度影响涉及的知识范围、理解深度与学习路线，教学模式决定互动节奏。网站负责维护学生身份和进度；Pi 是当前的默认生成与教学入口，但课程与进度协议与具体 Harness 解耦，具备文件读写、终端和 HTTP 访问能力的 Coding Agent 也可以直接生成课程或担任教师。
 
+七年级数学可以在 [https://math.gravityai.top](https://math.gravityai.top) 直接试用：不需要注册，打开后领取一串「形容词-名词-四位数字」的身份，复制页面上的提示词即可学习。进度写在服务器上，刷新后还在。这个地址走的是自定义域名；`*.vercel.app` 在中国大陆可能打不开。
+
 ## 交给你的 Coding Agent
 
 最省心的方式是直接使用自然语言：把下面任意一段提示词发给支持终端工具的 Coding Agent，无需提前学习 CLI 命令、无需手写配置文件，也不必安装特定 Skill。Agent 会自动定位项目、检查环境、调用现有工具并启动网站。启动后，你在网页中领取学习身份，把关卡提供的启动 Prompt 发给兼容教学协议的 Agent 即可开始互动。
@@ -79,7 +81,7 @@ npm run school -- start my-school
 ## 开始学习
 
 1. 打开 `start` 命令输出的本地网址，选择教学模式（Simple / Immersive），点击 Enroll 领取学习身份。
-2. 进入具体关卡，复制页面上的启动 Prompt 交给你的教师 Agent。如果使用 Pi，可直接粘贴进会话，或运行 `npm run school -- teach NAME --student 网页身份`；如果使用其他 Agent 或 Harness，无需加载 Pi 适配文件，运行 `npm run school -- teach NAME --student 网页身份 --prompt-only` 即可生成通用续学提示词。
+2. 进入具体关卡，复制页面上的启动 Prompt 交给你的教师 Agent。如果使用 Pi，可直接粘贴进会话，或运行 `npm run school -- teach NAME --student 网页身份`；部署后的学校加上 `--origin https://school.example.com`（不能与 `--port` 同时使用）。如果使用其他 Agent 或 Harness，无需加载 Pi 适配文件，运行 `npm run school -- teach NAME --student 网页身份 --prompt-only` 即可生成通用续学提示词。
 3. 按照提示与教师展开问答、推演或动手实验。如果在网页上切换了教学模式，教师在下一轮对话时会自动读取最新设置；你也可以在对话中直接让教师放慢节奏或展开推导，无需重新生成课程。
 4. 完成关卡活动后，教师 Agent 会调用本地进度 API，网页会自动记录完成并可继续下一关。开启新的对话时，带上相同的学生身份即可继续上一次的进度。
 
@@ -96,9 +98,17 @@ npm run school -- start my-school
 
 修改课程后，开发服务会自动刷新。若需要调整关卡顺序，修改 frontmatter 中的 `order` 即可，建议不要修改已有进度关卡的 `slug`。
 
-构建时，请先停止该 School 的开发服务，再运行 `npm run school -- build NAME`（同一 School 不应同时执行开发与构建）。每所 School 拥有独立的缓存目录以及位于 `.wrangler/` 的本地进度数据库，迁移或备份时请保留 `.wrangler/`。如果遇到端口冲突，可以通过 `start NAME --port 新端口` 指定端口，网站内的所有 API 和提示词链接会自动适配新地址。
+构建时，请先停止该 School 的开发服务，再运行 `npm run school -- build NAME`（同一 School 不应同时执行开发与构建）。每所 School 拥有独立的缓存目录以及位于 `.wrangler/` 的本地进度数据库，迁移或备份时请保留 `.wrangler/`。自有服务器上的 Node 进度写在 `.school-data/`。如果遇到端口冲突，可以通过 `start NAME --port 新端口` 指定端口，网站内的所有 API 和提示词链接会自动适配新地址。
 
-如需脱离本仓库独立运行某所 School：将对应的 `schools/NAME` 目录完整复制出去，移除指向本项目模板依赖的 `node_modules` 链接，在该目录下执行 `npm ci` 与 `npm run dev` 即可。各 School 均内置了完整的源码与依赖锁定文件，无需依赖根目录脚本。当前所有测试与验证均在本地环境完成，尚未进行公网部署验证。
+School Kit 现在也管运行底座。同一份学校目录：
+
+- 本机：`npm run school -- start NAME`，固定传入 `DEPLOY_TARGET=dev`
+- 自有服务器：在学校目录执行 `./script/serve`（`DEPLOY_TARGET=node`）
+- Vercel：项目根目录指向该学校，配置 `DEPLOY_TARGET=vercel` 和 `BLOB_READ_WRITE_TOKEN`
+
+详见该学校的 `DEPLOYMENT.md`。
+
+如需脱离本仓库独立运行某所 School：将对应的 `schools/NAME` 目录完整复制出去，在该目录下执行 `npm ci` 后，本机可用 `npm run dev`，自有服务器执行 `./script/serve`。各 School 均内置了完整的源码与依赖锁定文件，`node_modules` 必须是真实目录。脚本测试在本地完成。线上的数学课是这次双托管改动之前部署的；这份新代码还没有在自有服务器和 Vercel 上各做一次真实教学验收。
 
 教学协议要求教师 Agent 能够读取 HTTP 内容、调用 REST API、保持多轮上下文，并遵循站点 `/llms.txt` 约定的教学规则。课程与参考材料通过关卡 API 及 `/sources/` 访问，学习进度由进度 API 维护（接口定义见 `/api/openapi.json`）。只有使用 Pi 时才需要读取 `/harness/pi.txt` 里的专用工具说明；其他教师 Harness 无需遵循 Pi 的工具命名或交互格式。关于不同 Harness 的验证情况与已知边界，可参考 [HARNESS-VALIDATION.md](HARNESS-VALIDATION.md)。
 

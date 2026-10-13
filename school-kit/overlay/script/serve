@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+set -e
+cd "$(dirname "$0")/.."
+
+if [ -L node_modules ]; then
+	echo "script/serve: node_modules is a symlink" >&2
+	exit 1
+fi
+
+start_only=0
+if [ "${1:-}" = "--start-only" ]; then
+	start_only=1
+	shift
+fi
+if [ "$#" -ne 0 ]; then
+	echo "usage: script/serve [--start-only]" >&2
+	exit 1
+fi
+
+export DEPLOY_TARGET=node
+export HOST="${HOST:-0.0.0.0}"
+export PORT="${PORT:-4321}"
+
+if [ "$start_only" -eq 0 ]; then
+	npm ci
+	npm run build
+fi
+
+exec node dist/server/entry.mjs

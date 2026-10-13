@@ -7,13 +7,14 @@ import { spawn } from 'node:child_process';
 import { command, prepareMaterials } from './materials.mjs';
 import { piPrint, defaultModel } from './pi.mjs';
 import { generate, generationPrompt, validateGeneration } from './generate.mjs';
+import { resolveTeachOrigin, teachAccessError, teachModeWriteError } from './teach-origin.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const originalCwd = process.cwd();
 const args = process.argv.slice(2);
 const operation = args.shift();
 const options = {}, positionals = [];
-const allowed = new Set(['source', 'goal', 'name', 'depth', 'background', 'style', 'mode', 'language', 'model', 'port', 'ref', 'student', 'lesson', 'help', 'prepare-only', 'prompt-only']);
+const allowed = new Set(['source', 'goal', 'name', 'depth', 'background', 'style', 'mode', 'language', 'model', 'port', 'origin', 'ref', 'student', 'lesson', 'help', 'prepare-only', 'prompt-only']);
 function parse() {
   while (args.length) {
     const arg = args.shift();
@@ -44,7 +45,8 @@ function help() {
 运行与学习：
   npm run school -- list
   npm run school -- start NAME [--port 4323]
-  npm run school -- teach NAME --student STUDENT_ID [--mode immersive] [--lesson SLUG]
+  npm run school -- teach NAME --student STUDENT_ID [--mode immersive] [--lesson SLUG] [--origin https://school.example.com]
+  --origin 指定学校公开地址，进度预检、模式写入和提示词都用它；不能与 --port 同时使用。没传时仍用本机端口。
   添加 --prompt-only 输出通用教师提示词，不启动 Pi。
   npm run school -- finish NAME      # 检查 Agent 生成的课程并构建，不调用 Pi
   npm run school -- build NAME
@@ -179,7 +181,7 @@ async function main() {
   if (operation === 'start') {
     const chosen = port(options.port || s.port);
     console.log(`打开 http://localhost:${chosen}；Ctrl+C 停止。`);
-    await command('npm', ['run', 'dev', '--', '--host', '127.0.0.1', '--port', String(chosen)], { cwd: path, inherit: true });
+    await command('npm', ['run', 'dev', '--', '--host', '127.0.0.1', '--port', String(chosen)], { cwd: path, inherit: true, env: { DEPLOY_TARGET: 'dev' } });
   } else if (operation === 'build') {
     await command('npm', ['run', 'build'], { cwd: path, inherit: true, rejectOnErrorLog: true });
   } else if (operation === 'finish') {
@@ -211,13 +213,24 @@ async function main() {
   } else if (operation === 'teach') {
     const student = options.student || await ask('网页显示的学习身份：');
     if (!/^[a-z]+-[a-z]+-\d{4}$/.test(student)) throw new Error('Invalid student ID. Copy the identity from the website.');
-    const origin = `http://localhost:${port(options.port || s.port)}`;
+    const origin = resolveTeachOrigin(options, s, port);
     let progress;
-    try { const r = await fetch(`${origin}/api/progress/${student}`); if (!r.ok) throw new Error(`HTTP ${r.status}`); progress = await r.json(); }
-    catch (error) { throw new Error(`Cannot access this student: ${error.message}. Start the School and enroll on its website first.`); }
+    try {
+      const response = await fetch(`${origin}/api/progress/${student}`);
+      if (!response.ok) throw teachAccessError({ origin, student, status: response.status });
+      progress = await response.json();
+    } catch (error) {
+      if (error instanceof Error && error.message.startsWith('Cannot access this student at ')) throw error;
+      throw teachAccessError({ origin, student, cause: error });
+    }
     if (options.mode) {
-      const response = await fetch(`${origin}/api/profile/${student}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ teachingMode: mode(options.mode) }) });
-      if (!response.ok) throw new Error(`Could not save teaching mode: HTTP ${response.status}`);
+      try {
+        const response = await fetch(`${origin}/api/profile/${student}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ teachingMode: mode(options.mode) }) });
+        if (!response.ok) throw teachModeWriteError({ origin, student, status: response.status });
+      } catch (error) {
+        if (error instanceof Error && error.message.startsWith('Could not save teaching mode at ')) throw error;
+        throw teachModeWriteError({ origin, student, cause: error });
+      }
     }
     if (options['prompt-only']) {
       console.log(`我是 ${s.name} 的学生，ID 是 ${student}。请读取 ${origin}/llms.txt 和 ${origin}/api/openapi.json，然后按服务器进度${options.lesson ? `学习 ${options.lesson}` : '继续课程'}。使用你当前的 HTTP/终端工具读取课程和来源，在实际活动完成后通过进度 API 上报并确认成功。不要重新生成课程。`);

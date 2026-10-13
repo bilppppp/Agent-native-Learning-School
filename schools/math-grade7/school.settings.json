@@ -1,0 +1,24 @@
+{
+  "name": "math-grade7",
+  "goal": "帮助一位小学毕业生理解并应用这本教材中七年级上册的核心数学知识，结合温度、购物、分配等简单生活问题，建立必要概念与解题思路",
+  "depth": "systematic",
+  "background": "已有小学数学基础",
+  "learningStyle": "结合温度、购物、分配等简单生活问题",
+  "teachingMode": "simple",
+  "language": "zh",
+  "port": 4325,
+  "request": "帮助一位小学毕业生理解并应用这本教材中七年级上册的核心数学知识，结合温度、购物、分配等简单生活问题，建立必要概念与解题思路",
+  "sources": [
+    "/Users/gravity/Desktop/AI/Agent-native Learning School/义务教育教科书·数学七年级上册.pdf"
+  ],
+  "output": "schools/math-grade7",
+  "sourceRoot": "schools/math-grade7/materials",
+  "materials": [
+    {
+      "path": "material-1/义务教育教科书·数学七年级上册.pdf",
+      "originalPath": "/Users/gravity/Desktop/AI/Agent-native Learning School/义务教育教科书·数学七年级上册.pdf",
+      "version": "local file",
+      "readableText": "material-1/义务教育教科书·数学七年级上册.pdf.txt"
+    }
+  ]
+}

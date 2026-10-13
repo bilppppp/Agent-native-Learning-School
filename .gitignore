@@ -15,3 +15,9 @@ __pycache__/
 .env
 .env.*
 !.env.example
+
+# Article drafts, screenshots, and rendered WeChat HTML
+/article-agent-native-learning-school/
+
+# Local Vercel project link and build output
+.vercel/

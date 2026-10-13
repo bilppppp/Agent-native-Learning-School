@@ -6,6 +6,8 @@ from __future__ import annotations
 import argparse
 import json
 import re
+import stat
+import subprocess
 import sys
 import importlib.util
 from pathlib import Path
@@ -15,16 +17,48 @@ ROOT = Path(__file__).resolve().parents[1]
 OVERLAY = ROOT / "school-kit" / "overlay"
 
 OVERLAY_FILES = (
+    Path("astro.config.mjs"),
     Path("src/lib/ui.ts"),
     Path("src/lib/ui-messages.json"),
     Path("src/components/ClientUI.astro"),
     Path("src/components/AgentPrompt.astro"),
     Path("src/components/TeachingMode.astro"),
     Path("src/lib/teaching.ts"),
+    Path("src/lib/deploy-target.ts"),
+    Path("src/lib/public-origin.ts"),
+    Path("src/lib/store.ts"),
+    Path("src/lib/store-dev.ts"),
+    Path("src/lib/store-node.ts"),
+    Path("src/lib/store-vercel.ts"),
+    Path("src/lib/progress.ts"),
+    Path("src/lib/student-id.ts"),
+    Path("src/pages/api/enroll.ts"),
+    Path("src/pages/api/lessons/index.ts"),
     Path("src/pages/api/lessons/[slug].ts"),
+    Path("src/pages/api/exercises/index.ts"),
+    Path("src/pages/api/exercises/[slug].ts"),
+    Path("src/pages/api/openapi.json.ts"),
+    Path("src/pages/api/progress/[studentId].ts"),
+    Path("src/pages/api/profile/[studentId].ts"),
     Path("src/pages/harness/pi.txt.ts"),
     Path("src/pages/llms.txt.ts"),
+    Path("script/serve"),
+    Path("DEPLOYMENT.md"),
+    Path(".env.example"),
 )
+
+LEGACY_RUNTIME_FILES = (
+    Path("src/lib/blob-kv.ts"),
+    Path("src/lib/cf-workers-stub.ts"),
+)
+
+KIT_DEPENDENCIES = {
+    "@astrojs/node": "10.0.2",
+    "@astrojs/vercel": "^10.0.8",
+    "@vercel/blob": "^2.8.1",
+}
+
+NPMRC_CONTENTS = "legacy-peer-deps=true\n"
 
 
 def write_if_changed(path: Path, content: str) -> bool:
@@ -269,6 +303,49 @@ def patch_openapi(openapi_path: Path) -> bool:
     return write_if_changed(openapi_path, text) if text != original else False
 
 
+def merge_runtime_dependencies(package_path: Path) -> bool:
+    data = json.loads(package_path.read_text())
+    dependencies = data.setdefault("dependencies", {})
+    changed = False
+    for name, spec in KIT_DEPENDENCIES.items():
+        if dependencies.get(name) != spec:
+            dependencies[name] = spec
+            changed = True
+    if not changed:
+        return False
+    return write_if_changed(package_path, json.dumps(data, indent=2) + "\n")
+
+
+def ensure_npmrc(target: Path) -> bool:
+    return write_if_changed(target / ".npmrc", NPMRC_CONTENTS)
+
+
+def ensure_gitignore(target: Path) -> bool:
+    path = target / ".gitignore"
+    markers = {".school-data", ".school-data/"}
+    if path.exists():
+        lines = path.read_text().splitlines()
+        if any(line.strip() in markers for line in lines):
+            return False
+        text = path.read_text()
+        if text and not text.endswith("\n"):
+            text += "\n"
+        return write_if_changed(path, text + ".school-data/\n")
+    return write_if_changed(path, ".school-data/\n")
+
+
+def ensure_serve_executable(target: Path) -> None:
+    serve = target / "script" / "serve"
+    if not serve.is_file():
+        return
+    mode = serve.stat().st_mode
+    serve.chmod(mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH)
+
+
+def install_runtime_dependencies(target: Path) -> None:
+    subprocess.run(["npm", "install"], cwd=target, check=True)
+
+
 def ensure_settings(target: Path) -> bool:
     settings_path = target / "school.settings.json"
     if settings_path.exists():
@@ -295,6 +372,13 @@ def apply(target: Path) -> list[str]:
     changed: list[str] = []
     if ensure_settings(target):
         changed.append("school.settings.json")
+    package_changed = merge_runtime_dependencies(target / "package.json")
+    if package_changed:
+        changed.append("package.json")
+    if ensure_npmrc(target):
+        changed.append(".npmrc")
+    if ensure_gitignore(target):
+        changed.append(".gitignore")
     if add_teaching_mode_profile_field(target / "school.config.ts"):
         changed.append("school.config.ts (added profileFields.teachingMode)")
 
@@ -316,6 +400,15 @@ def apply(target: Path) -> list[str]:
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     changed.extend(module.apply_language(target))
+    for leftover in LEGACY_RUNTIME_FILES:
+        path = target / leftover
+        if path.exists():
+            path.unlink()
+            changed.append(f"removed {leftover}")
+    ensure_serve_executable(target)
+    if package_changed:
+        install_runtime_dependencies(target)
+        changed.append("package-lock.json")
     return changed
 
 
@@ -326,7 +419,7 @@ def main() -> int:
     target = args.school if args.school.is_absolute() else ROOT / args.school
     try:
         changed = apply(target.resolve())
-    except (OSError, ValueError) as error:
+    except (OSError, ValueError, subprocess.CalledProcessError) as error:
         print(f"apply-school-kit: error: {error}", file=sys.stderr)
         return 1
     if changed:

@@ -1,6 +1,5 @@
 """Copy the upstream template and apply the shared, harness-neutral School Kit."""
 import json
-import os
 import re
 import shutil
 import sys
@@ -18,7 +17,6 @@ shutil.copytree(template, out, ignore=shutil.ignore_patterns(
 for folder in ("src/content/lessons", "src/content/exercises"):
     for example in (out / folder).glob("*.mdx"):
         example.unlink()
-(out / "node_modules").symlink_to(os.path.relpath(template / "node_modules", out), target_is_directory=True)
 wrangler = {"name": out.name + "-school", "compatibility_date": "2026-03-12",
     "compatibility_flags": ["nodejs_compat"], "assets": {"directory": "./dist/client"},
     "kv_namespaces": [{"binding": "PROGRESS", "id": "local-" + out.name + "-progress"}]}
@@ -47,4 +45,9 @@ text = re.sub(r"    <p>Enroll above, then use your AI agent of choice.*?</p>\n\n
     '    <p>{t("orientation")}</p>', text, flags=re.S)
 home.write_text(text)
 subprocess.run([sys.executable, str(root / "scripts/apply-school-kit.py"), str(out)], check=True)
+node_modules = out / "node_modules"
+if node_modules.is_symlink() or not node_modules.is_dir():
+    if node_modules.is_symlink():
+        node_modules.unlink()
+    subprocess.run(["npm", "install"], cwd=out, check=True)
 print(f"Scaffolded {out.relative_to(root)} using school-template; local KV and shared teacher contract.")

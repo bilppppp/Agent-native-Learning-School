@@ -4,9 +4,9 @@ import { spawn } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 const extractor = fileURLToPath(new URL('./extract-material.py', import.meta.url));
 
-export function command(executable, args, { cwd, inherit = false, rejectOnErrorLog = false, timeoutMs = 0 } = {}) {
+export function command(executable, args, { cwd, inherit = false, rejectOnErrorLog = false, timeoutMs = 0, env } = {}) {
   return new Promise((accept, reject) => {
-    const child = spawn(executable, args, { cwd, stdio: inherit && !rejectOnErrorLog ? 'inherit' : ['ignore', 'pipe', 'pipe'] });
+    const child = spawn(executable, args, { cwd, env: env ? { ...process.env, ...env } : undefined, stdio: inherit && !rejectOnErrorLog ? 'inherit' : ['ignore', 'pipe', 'pipe'] });
     let stdout = '', stderr = '';
     const timer = timeoutMs ? setTimeout(() => { stderr += `\nTimed out after ${timeoutMs}ms`; child.kill('SIGTERM'); }, timeoutMs) : undefined;
     timer?.unref();

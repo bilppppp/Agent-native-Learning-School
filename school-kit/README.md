@@ -32,8 +32,24 @@ The existing progress refresh emits a small browser event so a mode changed by
 the teacher API updates the control without adding another polling loop.
 
 The overlay can be reapplied after regenerating a school. It does not touch
-`src/content/lessons`, `src/content/exercises`, `public/sources`, progress
-storage, or existing profile values.
+`src/content/lessons`, `src/content/exercises`, `public/sources`, or existing
+profile values. Existing progress records in `.wrangler/` and `.school-data/`
+stay where they are.
+
+The kit also owns the runtime base. `astro.config.mjs` selects the adapter from
+`DEPLOY_TARGET`, progress storage, `publicOrigin`, `script/serve`, and the
+dependency pins (`@astrojs/node@10.0.2`, `@astrojs/vercel`, `@vercel/blob`).
+The same school directory runs as:
+
+- local `start` with `DEPLOY_TARGET=dev`
+- `./script/serve` on a self-hosted Node process
+- Vercel with `DEPLOY_TARGET=vercel` and `BLOB_READ_WRITE_TOKEN`
+
+Applying the kit merges those dependencies into the school's `package.json`,
+writes `.npmrc` (`legacy-peer-deps=true`), and runs `npm install` only when the
+dependency list actually changed. It does not rewrite a lockfile that is already
+consistent. `node_modules` must be a real directory, not a symlink to the
+template.
 
 ## Website language
 
