@@ -74,7 +74,35 @@ npm run school -- start my-school
 
 `GENERATION.md` 将通用生成协议与用户的具体输入组装在一起，并非另一套提示词。`--prepare-only` 负责拉取材料并搭建网站骨架，之后的课程正文需要 Agent 实际读取材料并撰写；写完后执行 `finish` 进行校验并完成构建。整个过程无需用户手动编写输入 JSON。
 
-`--source` 可重复传入，支持 GitHub 仓库、HTTP(S) 网页或文档、论文以及本地文件/目录。HTTP(S) HTML 来源仅保存当前入口页；若页面包含 GitHub 编辑或源文件链接，会提示改用对应仓库的 `--source`，本次仍按原流程处理单页。`--ref` 用于指定 Git 仓库的分支或 Tag；默认会记录当前解析出的具体 commit。对于 HTML、PDF、DOCX 等文件，工具会保存原始文件并提取纯文本供模型阅读，普通纯文本则直接读取。默认配置为：系统深度、基础未知（教学中按需了解）、中文课程、简单（Simple）教学模式。`--depth`、`--background`、`--style` 均支持自然语言自由描述；`--language`、`--port`、`--model` 为可选参数。若在终端执行 `create` 且未提供参数，会以交互形式询问来源与目标。默认 Pi 路径使用的模型定义在 `scripts/pi.mjs` 中，可以通过环境变量 `SCHOOL_MODEL` 或 `--model` 切换为已配置的其他模型。如果由外部 Agent 直接生成，则使用该 Agent 自带的模型，这些 Pi 参数不会影响外部 Agent。
+`--source` 可重复传入，支持 GitHub 仓库、HTTP(S) 网页或文档、论文以及本地文件/目录。HTTP(S) HTML 来源会按下文规则自动判断是否抓取入口路径前缀下的多页文档；未启用抓取、信号不足或抓取失败时只保存入口页。入口页包含 GitHub 编辑或源文件链接时，单页路径会提示改用对应仓库的 `--source`，多页保存成功后也会打印文档源码仓库地址。`--ref` 用于指定 Git 仓库的分支或 Tag；默认会记录当前解析出的具体 commit。单页 HTML、PDF、DOCX 等文件会保留原始文件并提取纯文本；多页抓取保存入口 HTML、各页派生 Markdown 和来源记录，普通纯文本则直接读取。默认配置为：系统深度、基础未知（教学中按需了解）、中文课程、简单（Simple）教学模式。`--depth`、`--background`、`--style` 均支持自然语言自由描述；`--language`、`--port`、`--model` 为可选参数。若在终端执行 `create` 且未提供参数，会以交互形式询问来源与目标。默认 Pi 路径使用的模型定义在 `scripts/pi.mjs` 中，可以通过环境变量 `SCHOOL_MODEL` 或 `--model` 切换为已配置的其他模型。如果由外部 Agent 直接生成，则使用该 Agent 自带的模型，这些 Pi 参数不会影响外部 Agent。
+
+### 多页文档站
+
+GitHub 仓库、arXiv 论文、GitHub blob 文件、PDF、DOCX、图片、纯文本和本地路径仍按原来的方式准备。只有「非上述特例、且响应是 HTML」的 HTTP(S) 来源才会进入下面的判断。不需要为了文档站额外加参数；判断从确定规则开始，信号不足时只给出提示，不抓取。
+
+1. `--no-crawl`：只保存入口页。它与 `--crawl`、`--crawl-prefix` 不能同时使用。
+2. `--crawl`，或指定了 `--crawl-prefix`：对 HTML 来源抓取。非 HTML 会警告并仍走单页。
+3. 否则自动判断，命中即停：
+   - **主机**：第一个标签是 `docs` 或 `documentation`；或主机是 / 以 `.readthedocs.io`、`.readthedocs.org`、`.gitbook.io` 结尾。
+   - **路径段**（大小写不敏感，必须是整段）：`docs`、`documentation`、`guide`、`guides`、`manual`、`reference`。例如 `https://pi.dev/docs/latest` 命中 `docs`。
+   - **生成器**：`<meta name="generator">`（`name` 与 `content` 的顺序不限）包含 `readthedocs`、`sphinx`、`gitbook`、`docusaurus`、`mkdocs`、`vitepress`。Sphinx 用来识别常见的 Read the Docs 页面。
+   - **框架标记**：页面含 `id="__docusaurus"`、`data-docusaurus`、`__VP_HASH_MAP__` 或 `id="VPContent"`。
+   - **导航**：在 `<nav>`、`<aside>`，或 class/id 含 `sidebar`、`toc`、`menu`、`navigation` 的区域里，统计与入口页同主机、且位于入口路径前缀下的不同链接。不少于 8 个则抓取；3 到 7 个则不抓取，并提示可以加 `--crawl`。站点根路径（前缀 `/`）即使菜单链接很多也不自动整站抓取，只提示改用文档区 URL 或 `--crawl`。
+   - **其余**：只保存入口页，与以前相同。
+
+默认只抓入口 URL 的路径前缀：去掉末尾斜杠，若最后一段是 `.html`、`.htm`、`.md`、`.php`、`.aspx` 或 `.xhtml` 则再去掉文件名。`https://pi.dev/docs/latest` 的范围是 `/docs/latest`；`https://pi.dev/docs/latest/install.html` 的范围是 `/docs/latest`。若入口发生跳转，仍尽量保持你给出的前缀；只有跳转离开了该前缀，或入口本身是站点根，才改用最终地址的前缀。`--crawl-prefix /docs/latest` 可以替换这个范围。
+
+上限默认 500 页（`--max-pages`，1–10000），并发默认 2（`--crawl-workers`，1–8）。实现使用 [siteone-crawler](https://github.com/janreges/siteone-crawler) v2.5.1：只跟随该前缀下的页面，不下载资源，导出时排除 `nav` 和 `footer`，不排除 `header`（排除 header 会丢掉 H1）。标题旁的 `[Copied](#...)` 会在保存前删掉。爬虫不执行页面脚本；JavaScript 站点如果抓到的正文太少（少于 2 页，或其中不足 2 页达到 200 字，或合计不足 800 字），会警告并退回原来的单页提取。
+
+若 PATH 中没有 v2.5.1 或更新的 `siteone-crawler`，会从 GitHub Releases 下载对应的 Linux x64/arm64 或 macOS x64/arm64 官方包，校验 SHA-256 后放到 `tools/cache/siteone-crawler/2.5.1/`（已 gitignore），并打印说明它是自动下载的以及路径。Linux 优先使用 glibc 构建（Ubuntu 24.04）；若因 glibc 无法运行，再下载 musl 静态构建。下载和入口页请求由 curl 发出，遵循 `HTTPS_PROXY`、`HTTP_PROXY` 及对应的小写变量。爬虫另外收到 `--proxy=host:port`；代理 URL 里的用户名和密码不会传给爬虫。下载失败、压缩包校验失败或爬虫失败且没有得到足够有效页面时，警告并退回单页，不中断建校。异常退出但已有足够有效页面时警告并保存这些页面。
+
+抓取成功时，材料目录里会有：
+
+- `pages/`：按 URL 路径保存的 Markdown（派生阅读文本，不是原始 HTML）
+- `provenance.json`：来源 URL、最终 URL、抓取日期、crawler 版本、路径前缀、判断原因和每一页的 URL
+- `entry.html`：入口页原始响应
+
+抓取成功后，先阅读 `materials/material-N/provenance.json`，再按课程目标和必要前置知识检索、选读 `pages/` 中的相关页面，不要求读完全部抓取页。`pages/` 是派生 Markdown 阅读文本，不是原始 HTML；`entry.html` 仅是入口页原始响应，其他页面的原始 HTML 未包含在这次抓取中。按生成协议将实际引用的派生文本、`provenance.json` 和 `entry.html` 保存到 `public/sources/material-N/`，保留材料目录内的相对路径，标明派生文本身份，并同时引用原始页面 URL 与本地地址。在 `COURSE.md` 记录实际阅读的页面。
 
 生成过程通常需要数分钟。生成器会保存原始输入、材料、生成的 Markdown 课程文件以及模型的运行记录，并在生成结束后构建网站。如果遇到错误会直接报错退出，不会覆盖已存在的同名 School。若生成中断或失败，可在检查错误信息和保留的文件后，通过 `npm run school -- retry NAME` 重新尝试；需要注意 `retry` 会重新生成课程，并非无损断点续写。对于已有学习进度的课程，建议直接手动调整文件，以保持各关卡 `slug` 的稳定。
 
@@ -93,7 +121,7 @@ npm run school -- start my-school
 
 - `schools/NAME/COURSE.md`：记录课程路线规划、材料来源与深度取舍。
 - `src/content/lessons/*.md`：包含各关卡的完整正文与教学指引。
-- `public/sources/` 与 `public/activities/`：分别存放供 HTTP 读取的原始参考材料，以及标记为模型生成的实验/练习代码。
+- `public/sources/` 与 `public/activities/`：分别存放供 HTTP 读取的原始参考材料、明确标注的派生阅读文本及来源记录，以及标记为模型生成的实验/练习代码。
 - `school.settings.json`：保存创建时的配置与默认模式。
 
 修改课程后，开发服务会自动刷新。若需要调整关卡顺序，修改 frontmatter 中的 `order` 即可，建议不要修改已有进度关卡的 `slug`。
@@ -126,6 +154,8 @@ School Kit 现在也管运行底座。同一份学校目录：
 
 材料准备新增文档源码仓库提示，解决多页文档只保存入口页时缺少仓库来源指引的问题。
 
+材料准备新增多页文档自动抓取，解决未改用源码仓库时只能读取入口页的问题。
+
 ### 2026-10-10
 
 收紧了关卡说明和随教学模式变化的教学指引，并补充了实验材料。
@@ -142,4 +172,5 @@ School Kit 现在也管运行底座。同一份学校目录：
 - [Pi School](https://github.com/agentschools/pi-school)：学习体验的主要参考，包括对话授课、问题引导以及网站与进度配合的交互方式。本项目网站代码派生自 School Template，而非 Pi School。
 - [OpenCode School](https://github.com/agentschools/opencode.school)：早期 Agent 学习网站参考；School Template 上游文档注明其架构源自该项目。
 - [Pi](https://github.com/badlogic/pi-mono)（现重定向至 [earendil-works/pi](https://github.com/earendil-works/pi)）：当前默认的生成与教学 Harness。本项目课程与教学协议保持 Harness 中立，Pi 不是唯一教师，也不是必须安装的依赖。
+- [siteone-crawler](https://github.com/janreges/siteone-crawler)（MIT，固定 v2.5.1）：多页文档站的抓取工具。未安装时从官方 GitHub Release 下载到 `tools/cache`，不作为仓库文件提交。
 - 此外，项目在课程化组织与材料整理思路上，参考了 [codebase-to-course](https://github.com/zarazhangrui/codebase-to-course)（将代码库组织为课程的 Claude Code Skill）、[Repo2NotebookLM](https://github.com/bilppppp/Repo2NotebookLM)（仓库材料提取）以及 [archify](https://github.com/tt-a1i/archify)（交互图解释代码与概念）。这些项目仅作为方向参考，未作为运行依赖集成。

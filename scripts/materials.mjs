@@ -1,7 +1,8 @@
-import { cpSync, existsSync, mkdirSync, readFileSync, lstatSync, renameSync } from 'node:fs';
+import { cpSync, existsSync, mkdirSync, readFileSync, lstatSync, renameSync, rmSync, writeFileSync } from 'node:fs';
 import { basename, extname, join, relative, resolve } from 'node:path';
 import { spawn } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import { choosePrefix, decideCrawl, ensureCrawler, runCrawl, writePages } from './site-crawl.mjs';
 const extractor = fileURLToPath(new URL('./extract-material.py', import.meta.url));
 
 export function command(executable, args, { cwd, inherit = false, rejectOnErrorLog = false, timeoutMs = 0, env, forwardStderr = false } = {}) {
@@ -25,7 +26,69 @@ function safeURL(value) {
   if (url.username || url.password) throw new Error('Do not put credentials in material URLs. Supply a local exported copy instead.');
   return url;
 }
-export async function prepareMaterials(sources, directory, { ref } = {}) {
+function readSample(file, max = 2_000_000) {
+  const data = readFileSync(file);
+  return data.subarray(0, Math.min(data.length, max)).toString('utf8');
+}
+function looksLikeHtml(file) {
+  const sample = readFileSync(file).subarray(0, 512).toString('utf8').trim().toLowerCase();
+  return sample.startsWith('<!doctype html') || sample.startsWith('<html') || sample.startsWith('<head');
+}
+async function saveSinglePage(download, extension, target, directory, value, finalURL) {
+  const file = join(target, `original${extension}`);
+  renameSync(download, file);
+  const record = { path: relative(directory, file), url: value, fetchedURL: finalURL, retrieved: new Date().toISOString().slice(0, 10) };
+  if (['.pdf', '.docx', '.html', '.htm'].includes(extension)) {
+    const html = ['.html', '.htm'].includes(extension);
+    const text = await command(
+      'python3',
+      [extractor, file, extension, ...(html ? [finalURL] : [])],
+      { forwardStderr: html },
+    );
+    record.readableText = relative(directory, text);
+    if (readFileSync(text, 'utf8').trim().length < 100) throw new Error('Source returned too little readable text. Provide another accessible source or an exported file.');
+  }
+  return record;
+}
+async function saveCrawledSite({ download, target, directory, value, finalURL, prefix, decision, maxPages, workers }) {
+  console.log(`判定为多页文档（${decision.detail}），抓取 ${prefix} 下的页面，最多 ${maxPages} 页。`);
+  const crawler = await ensureCrawler({ run: command });
+  const crawled = await runCrawl({
+    run: command, executable: crawler.executable, url: finalURL, directory: target,
+    prefix, maxPages, workers,
+  });
+  writePages(target, crawled.pages);
+  renameSync(download, join(target, 'entry.html'));
+  const retrieved = new Date().toISOString().slice(0, 10);
+  const provenance = {
+    source: value, fetchedURL: finalURL, retrieved, tool: 'siteone-crawler', version: crawled.version,
+    prefix, maxPages, workers, decision: decision.reason, detail: decision.detail,
+    entryHtml: 'entry.html',
+    pages: crawled.pages.map(({ file, url, chars }) => ({ file, url, chars })),
+  };
+  writeFileSync(join(target, 'provenance.json'), `${JSON.stringify(provenance, null, 2)}\n`);
+  const record = {
+    path: relative(directory, target), url: value, fetchedURL: finalURL, retrieved,
+    version: `siteone-crawler ${crawled.version}`, provenance: relative(directory, join(target, 'provenance.json')),
+    pages: relative(directory, join(target, 'pages')),
+    crawl: {
+      tool: 'siteone-crawler', version: crawled.version, prefix, maxPages, workers,
+      pageCount: crawled.pages.length, decision: decision.reason,
+    },
+  };
+  console.log(`已保存 ${crawled.pages.length} 个文档页面到 ${record.pages}（前缀 ${prefix}，siteone-crawler ${crawled.version}，${retrieved}）。`);
+  try {
+    await command(
+      'python3',
+      [extractor, join(target, 'entry.html'), '.html', finalURL, '--github-hints-only'],
+      { forwardStderr: true },
+    );
+  } catch {
+    console.warn('警告：无法检查入口页的文档源码仓库链接；已保存的多页文档仍可使用。');
+  }
+  return record;
+}
+export async function prepareMaterials(sources, directory, { ref, crawl = 'auto', maxPages = 500, crawlPrefix: prefixOverride, crawlWorkers = 2 } = {}) {
   mkdirSync(directory, { recursive: true });
   const records = [];
   for (let i = 0; i < sources.length; i++) {
@@ -56,17 +119,28 @@ export async function prepareMaterials(sources, directory, { ref } = {}) {
       let extension = extname(new URL(finalURL).pathname).toLowerCase();
       const header = readFileSync(download).subarray(0, 5).toString();
       if (header === '%PDF-' || type?.includes('application/pdf')) extension = '.pdf';
-      else if (type?.includes('text/html')) extension = '.html';
+      else if (type?.includes('html') || ['.html', '.htm', '.xhtml'].includes(extension) || (!extension && looksLikeHtml(download))) extension = '.html';
       else if (!extension || extension.length > 10) extension = '.txt';
-      const file = join(target, 'original' + extension); renameSync(download, file);
-      const record = { path: relative(directory, file), url: value, fetchedURL: finalURL, retrieved: new Date().toISOString().slice(0, 10) };
-      if (['.pdf', '.docx', '.html', '.htm'].includes(extension)) {
-        const html = ['.html', '.htm'].includes(extension);
-        const text = await command('python3', [extractor, file, extension, ...(html ? [finalURL] : [])], { forwardStderr: html });
-        record.readableText = relative(directory, text);
-        if (readFileSync(text, 'utf8').trim().length < 100) throw new Error('Source returned too little readable text. Provide another accessible source or an exported file.');
-      }
-      records.push(record);
+      const htmlLike = extension === '.html';
+      const mode = crawl === true ? 'force' : crawl === false ? 'off' : crawl;
+      if (htmlLike && mode !== 'off') {
+        const sample = readSample(download);
+        const decision = decideCrawl({ href: finalURL, html: sample, override: mode === 'force' ? 'force' : 'auto' });
+        const prefix = choosePrefix(value, finalURL, prefixOverride);
+        if (mode === 'force' || decision.crawl) {
+          try {
+            records.push(await saveCrawledSite({ download, target, directory, value, finalURL, prefix, decision, maxPages, workers: crawlWorkers }));
+            continue;
+          } catch (error) {
+            console.warn(`警告：${error.message} 已改为只保存入口页。`);
+            rmSync(join(target, '.crawl-tmp'), { recursive: true, force: true });
+            rmSync(join(target, 'pages'), { recursive: true, force: true });
+            rmSync(join(target, 'provenance.json'), { force: true });
+            if (!existsSync(download) && existsSync(join(target, 'entry.html'))) renameSync(join(target, 'entry.html'), download);
+          }
+        } else if (decision.hint) console.warn(`提示：${decision.hint}`);
+      } else if (!htmlLike && mode === 'force') console.warn('警告：该来源不是 HTML，无法整站抓取，已按单页保存。');
+      records.push(await saveSinglePage(download, extension, target, directory, value, finalURL));
     } else {
       const path = resolve(value);
       if (!existsSync(path)) throw new Error(`Material is not a URL or accessible local path: ${value}`);

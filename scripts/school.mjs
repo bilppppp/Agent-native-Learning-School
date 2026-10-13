@@ -14,14 +14,14 @@ const originalCwd = process.cwd();
 const args = process.argv.slice(2);
 const operation = args.shift();
 const options = {}, positionals = [];
-const allowed = new Set(['source', 'goal', 'name', 'depth', 'background', 'style', 'mode', 'language', 'model', 'port', 'origin', 'ref', 'student', 'lesson', 'help', 'prepare-only', 'prompt-only']);
+const allowed = new Set(['source', 'goal', 'name', 'depth', 'background', 'style', 'mode', 'language', 'model', 'port', 'origin', 'ref', 'student', 'lesson', 'help', 'prepare-only', 'prompt-only', 'crawl', 'no-crawl', 'max-pages', 'crawl-prefix', 'crawl-workers']);
 function parse() {
   while (args.length) {
     const arg = args.shift();
     if (!arg.startsWith('--')) { positionals.push(arg); continue; }
     const [key, inline] = arg.slice(2).split(/=(.*)/s);
     if (!allowed.has(key)) throw new Error(`Unknown option --${key}. Use --help.`);
-    if (['help', 'prepare-only', 'prompt-only'].includes(key)) {
+    if (['help', 'prepare-only', 'prompt-only', 'crawl', 'no-crawl'].includes(key)) {
       if (inline !== undefined) throw new Error(`--${key} does not take a value.`);
       options[key] = true; continue;
     }
@@ -40,6 +40,9 @@ function help() {
   可选：--name NAME --background "已有基础" --style "偏好" --language zh --model PROVIDER/MODEL --ref TAG
   --prepare-only：不调用 Pi，准备材料和 GENERATION.md，交由当前 Coding Agent 生成，再运行 finish NAME。
   可多次 --source；默认深度系统、基础未知并按需补充、教学simple、语言zh。
+  多页文档会自动判断并抓取入口路径前缀下的 HTML（默认最多 500 页）。
+  --crawl 强制抓取；--no-crawl 只保存入口页。--max-pages N（1–10000）--crawl-workers N（1–8）--crawl-prefix /docs/latest
+  未安装 siteone-crawler v2.5.1+ 时自动下载到 tools/cache（不入库）。下载或抓取失败则退回单页。
   不带描述/参数时，只询问来源和目标。
 
 运行与学习：
@@ -82,6 +85,27 @@ function pickPort() {
   let port = 4323; while (used.has(port)) port++; return port;
 }
 function port(value) { const n = Number(value); if (!Number.isInteger(n) || n < 1024 || n > 65535) throw new Error('Port must be an integer from 1024 to 65535.'); return n; }
+function boundedInt(value, name, min, max, fallback) {
+  if (value === undefined) return fallback;
+  const n = Number(value);
+  if (!Number.isInteger(n) || n < min || n > max) throw new Error(`${name} must be an integer from ${min} to ${max}.`);
+  return n;
+}
+function crawlPrefixOption(value) {
+  if (!value) return undefined;
+  if (!value.startsWith('/') || value.includes('..') || /[\s?#]/.test(value)) throw new Error('--crawl-prefix must be an absolute path such as /docs/latest.');
+  return value.length > 1 && value.endsWith('/') ? value.slice(0, -1) : value;
+}
+function crawlOptions() {
+  if (options.crawl && options['no-crawl']) throw new Error('--crawl and --no-crawl cannot be used together.');
+  if (options['no-crawl'] && options['crawl-prefix']) throw new Error('--crawl-prefix cannot be used with --no-crawl.');
+  return {
+    crawl: options.crawl || options['crawl-prefix'] ? 'force' : options['no-crawl'] ? 'off' : 'auto',
+    maxPages: boundedInt(options['max-pages'], '--max-pages', 1, 10000, 500),
+    crawlWorkers: boundedInt(options['crawl-workers'], '--crawl-workers', 1, 8, 2),
+    ...(options['crawl-prefix'] ? { crawlPrefix: crawlPrefixOption(options['crawl-prefix']) } : {}),
+  };
+}
 async function intake(description) {
   console.log('正在理解学习请求…');
   const text = await piPrint(`Extract a School creation request from the user description. Return ONLY a JSON object with sources (array of actual public HTTP URLs or EXACT local paths supplied by the user), goal, name, slug (lowercase English directory name), depth (free text), background, learningStyle, teachingMode (simple or immersive), language. Preserve all depth/goal/background nuances. Default systematic depth, unknown background, simple teaching, Chinese language. Never fabricate a local path. For an unmistakably named well-known public work/repo you may give its canonical URL as a candidate; acquisition will verify it. For ambiguous or unknown sources use an empty sources array. Do not generate a curriculum. User request:\n${description}`, { model: options.model, thinking: 'medium' });
@@ -108,6 +132,7 @@ async function setup() {
 }
 async function create() {
   const description = positionals.join(' ');
+  const limits = crawlOptions();
   if (options['prepare-only'] && !(options.source?.length && options.goal)) throw new Error('--prepare-only requires --source and --goal. Let your Coding Agent map the request to these parameters; no Pi request parser is used.');
   const interpreted = description && !(options.source?.length && options.goal) ? await intake(description) : {};
   let sources = options.source || interpreted.sources;
@@ -129,6 +154,7 @@ async function create() {
     language: options.language || interpreted.language || 'zh',
     port: port(options.port || pickPort()),
     request: description || goal, sources, ref: options.ref,
+    ...limits,
     output: relative(root, output), sourceRoot: relative(root, join(output, 'materials'))
   };
   await setup();
@@ -143,7 +169,7 @@ async function create() {
   config = config.replace(/name: "My School"/, `name: ${JSON.stringify(spec.name)}`).replace(/description: "An interactive course about your subject\."/, `description: ${JSON.stringify(goal)}`);
   writeFileSync(configPath, config);
   console.log(`准备材料；课程深度：${spec.depth}；初始教学模式：${spec.teachingMode}`);
-  spec.materials = await prepareMaterials(sources, join(output, 'materials'), { ref: options.ref });
+  spec.materials = await prepareMaterials(sources, join(output, 'materials'), { ref: options.ref, crawl: spec.crawl, maxPages: spec.maxPages, crawlPrefix: spec.crawlPrefix, crawlWorkers: spec.crawlWorkers });
   writeFileSync(inputPath, JSON.stringify(spec, null, 2) + '\n');
   writeFileSync(join(output, 'school.settings.json'), JSON.stringify(spec, null, 2) + '\n');
   await command('python3', ['scripts/apply-school-kit.py', spec.output], { inherit: true });
@@ -203,7 +229,7 @@ async function main() {
     }
     if (!spec.materials?.length) {
       if (!spec.sources?.length) throw new Error('No saved material request. Existing files remain for inspection.');
-      spec.materials = await prepareMaterials(spec.sources, join(path, 'materials'), { ref: spec.ref });
+      spec.materials = await prepareMaterials(spec.sources, join(path, 'materials'), { ref: spec.ref, crawl: spec.crawl || 'auto', maxPages: spec.maxPages || 500, crawlPrefix: spec.crawlPrefix, crawlWorkers: spec.crawlWorkers || 2 });
       writeFileSync(inputPath, JSON.stringify(spec, null, 2) + '\n');
       writeFileSync(join(path, 'school.settings.json'), JSON.stringify(spec, null, 2) + '\n');
     }
