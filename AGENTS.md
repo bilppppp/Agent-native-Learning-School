@@ -6,7 +6,7 @@
 
 ## 项目结构与修改边界
 
-- `scripts/school.mjs` 是 CLI；`materials.mjs` / `extract-material.py` 准备来源，`scaffold.py` 初始化，`generate.mjs` 读取生成协议，`pi.mjs` 集中默认 Pi 模型运行细节；直接 Agent 生成路径使用同一协议及课程检查。多页 HTML 文档站由 `materials.mjs` 调用 siteone-crawler（未安装时下载到 gitignore 的 `tools/cache`）；判断、范围和 `--crawl` / `--no-crawl` 以 README 的「多页文档站」为准。GitHub 仓库、PDF 和本地文件仍走原来的单来源路径。
+- `scripts/school.mjs` 是 CLI；`materials.mjs` / `extract-material.py` 准备来源，`scaffold.py` 初始化，`generate.mjs` 读取生成协议，`pi.mjs` 集中默认 Pi 模型运行细节；直接 Agent 生成路径使用同一协议及课程检查。多页 HTML 文档站由 `materials.mjs` 调用 siteone-crawler（未安装时下载到 gitignore 的 `tools/cache`）；判断、范围和 `--crawl` / `--no-crawl` 以 README 的「多页文档站」为准。材料不够时用 `npm run school -- supplement NAME` 按爬虫自己的同站跟随补齐。GitHub 仓库、PDF 和本地文件仍走原来的单来源路径。
 - `school-kit/overlay/` 是共享网站增量的维护源，行为见 [school-kit/README.md](school-kit/README.md)。修改共享文件后，用 `python3 scripts/apply-school-kit.py schools/NAME` 应用到目标 School；不要只修改某个派生副本。
 - `schools/NAME/` 包含独立网站、`COURSE.md`、`src/content/lessons/`、`public/sources/` 和 `public/activities/`。`inputs/` 保存生成请求，`evidence/` 保存实际记录。`upstream/`、生成用 `materials/`、依赖和运行缓存不纳入 Git。
 

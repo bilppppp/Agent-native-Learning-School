@@ -45,9 +45,11 @@ npm run school -- finish new-school
 
 `--source` 可以重复；`--ref` 选择仓库分支/标签，`--language`、`--port`、`--model` 可选。字符串应安全引用，不把用户文字作为 shell 代码执行。非交互终端要传齐来源和目标，不使用无参数创建的交互问答。
 
-HTML 文档站不需要额外参数。`create` 会按 [README.md](README.md) 的「多页文档站」规则自动决定是否抓取入口路径前缀下的页面（默认最多 500 页）。用户没有要求整站或单页时，不要自行加上 `--crawl` 或 `--no-crawl`。只有用户明确要求，或自动判断给出了「信号不足」的提示而用户确实要整段文档时，才使用 `--crawl`。范围不够时用 `--crawl-prefix /路径`，页数或并发不够时用 `--max-pages`、`--crawl-workers`。`--no-crawl` 只保存入口页。
+HTML 文档站不需要额外参数。`create` 会按 [README.md](README.md) 的「多页文档站」规则自动决定是否抓取（默认最多 500 页）。命中后按 siteone-crawler 自己的同站链接跟随，不限制在入口路径。用户没有要求整站或单页时，不要自行加上 `--crawl` 或 `--no-crawl`。只有用户明确要求，或自动判断给出了「信号不足」的提示而用户确实要整段文档时，才使用 `--crawl`。用户要收窄范围时用 `--crawl-prefix /路径`，页数或并发不够时用 `--max-pages`、`--crawl-workers`。`--no-crawl` 只保存入口页。
 
-抓取成功后，先阅读 `materials/material-N/provenance.json`，再按课程目标和必要前置知识检索、选读 `pages/` 中的相关页面，不要求读完全部抓取页。`pages/` 是派生 Markdown 阅读文本，不是原始 HTML；`entry.html` 仅是入口页原始响应，其他页面的原始 HTML 未包含在这次抓取中。按生成协议将实际引用的派生文本、`provenance.json` 和 `entry.html` 保存到 `public/sources/material-N/`，保留材料目录内的相对路径，标明派生文本身份，并同时引用原始页面 URL 与本地地址。在 `COURSE.md` 记录实际阅读的页面。GitHub 仓库、PDF、DOCX 和本地文件的准备方式不变。PATH 中没有 siteone-crawler v2.5.1+ 时，工具会自动下载到 `tools/cache/` 并打印路径；该目录已 gitignore，不要提交二进制。下载或抓取失败时会退回单页并打印警告，这时不要把入口页说成整套文档。
+抓取成功后，先阅读 `materials/material-N/provenance.json`，再按课程目标和必要前置知识检索、选读 `pages/` 中的相关页面，不要求读完全部抓取页。`pages/` 是派生 Markdown 阅读文本，不是原始 HTML；`entry.html` 仅是入口页原始响应，其他页面的原始 HTML 未包含在这次抓取中。按生成协议将实际引用的派生文本、`provenance.json` 和 `entry.html` 保存到 `public/sources/material-N/`，保留材料目录内的相对路径，标明派生文本身份，并同时引用原始页面 URL 与本地地址。在 `COURSE.md` 记录实际阅读的页面。GitHub 仓库、PDF、DOCX 和本地文件的准备方式不变。PATH 中没有 siteone-crawler v2.5.1+ 时，工具会自动下载到 `tools/cache/` 并打印路径；该目录已 gitignore，不要提交二进制。下载或抓取失败时会退回单页并打印警告，这时不要把入口页说成整套文档。默认抓取按 siteone-crawler 自己的同站链接跟随，不限制在入口路径；只有用户给出 `--crawl-prefix` 才收窄范围。
+
+若已保存的材料支撑不起用户的学习目标，写课程前在仓库根目录运行 `npm run school -- supplement NAME`。它用同一套同站跟随补齐已保存的 HTTP HTML 来源。补齐失败时，继续使用已保存页面和你自己的网页工具，不要把入口页说成整套文档。
 
 默认 Pi 创建命令负责材料获取、初始化、模型生成与构建；直接 Agent 路径由当前 Agent 执行生成，使用相同输入与输出契约。保持长任务运行并等待真实退出结果。错误后先检查日志和保留文件；`retry NAME` 会重新通过 Pi 生成且可能改写已有课程，不保证无损续写。不要把骨架、构建成功或静态检查当成真实教学证据。
 

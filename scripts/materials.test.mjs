@@ -91,7 +91,7 @@ async function fromHttp(html, source = 'https://docs.example.com/guide', extra =
   process.env.FAKE_GIT_LOG = gitLog;
   resetLogs();
   const out = temp('materials-out-');
-  const { result: records, stderr } = await captureStderr(() => prepareMaterials([source], out));
+  const { result: records, stderr } = await captureStderr(() => prepareMaterials([source], out, { crawl: 'off' }));
   return {
     records,
     out,
@@ -311,7 +311,7 @@ describe('prepareMaterials HTML GitHub hints', { concurrency: 1 }, () => {
     const shortOut = temp('materials-short-out-');
     let shortErr;
     try {
-      await captureStderr(() => prepareMaterials(['https://docs.example.com/short'], shortOut));
+      await captureStderr(() => prepareMaterials(['https://docs.example.com/short'], shortOut, { crawl: 'off' }));
     } catch (error) {
       shortErr = error;
     }
@@ -331,7 +331,7 @@ describe('prepareMaterials HTML GitHub hints', { concurrency: 1 }, () => {
     resetLogs();
     const failOut = temp('materials-fail-out-');
     await assert.rejects(
-      () => prepareMaterials(['https://docs.example.com/fail'], failOut),
+      () => prepareMaterials(['https://docs.example.com/fail'], failOut, { crawl: 'off' }),
       /python3 failed/,
     );
     assert.deepEqual(readFileSync(join(failOut, 'material-1/original.html')), Buffer.from(readFileSync(failBody)));

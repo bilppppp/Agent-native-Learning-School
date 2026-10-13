@@ -5,7 +5,7 @@ import { execFileSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { command, prepareMaterials } from './materials.mjs';
+import { command, prepareMaterials, supplementMaterials } from './materials.mjs';
 const extractor = fileURLToPath(new URL('./extract-material.py', import.meta.url));
 const originalPath = process.env.PATH;
 const realPython = execFileSync('which', ['python3'], { encoding: 'utf8' }).trim();
@@ -131,6 +131,9 @@ describe('crawl scope and output cleanup', () => {
     assert.equal(args.some(arg => arg.includes('exclude-selector=header')), false);
     assert.equal(args.some(arg => arg === '--markdown-exclude-selector=nav'), true);
     assert.equal(args.some(arg => arg.startsWith('--include-regex=')), true);
+    const open = buildCrawlArgs({ url: 'https://pi.dev/docs/latest', markdownDir: 'markdown', jsonFile: 'crawl.json', prefix: null, maxPages: 500, workers: 2 });
+    assert.equal(open.some(arg => arg.startsWith('--include-regex=')), false);
+    assert.equal(open[0], '--url=https://pi.dev/docs/latest');
     assert.equal(args.some(arg => arg === '--disable-all-assets'), true);
   });
 });
@@ -360,13 +363,13 @@ describe('offline crawl integration', { concurrency: 1 }, () => {
     assert.match(crawlerArgs, /--max-visited-urls=500/);
     assert.match(crawlerArgs, /--workers=2/);
     assert.match(crawlerArgs, /--url=https:\/\/docs\.example\.com\/guide/);
-    assert.match(crawlerArgs, /--include-regex=.*guide/);
+    assert.equal(crawlerArgs.includes('--include-regex='), false);
     assert.equal(records[0].path, 'material-1');
     assert.equal(records[0].readableText, undefined);
     assert.equal(records[0].crawl.pageCount, 2);
     assert.equal(records[0].crawl.maxPages, 500);
     assert.equal(records[0].crawl.workers, 2);
-    assert.equal(records[0].crawl.prefix, '/guide');
+    assert.equal(records[0].crawl.prefix, null);
     assert.deepEqual(readFileSync(join(out, 'material-1/entry.html')), Buffer.from(original));
     const provenance = JSON.parse(readFileSync(join(out, records[0].provenance), 'utf8'));
     assert.equal(provenance.source, source);
@@ -378,6 +381,31 @@ describe('offline crawl integration', { concurrency: 1 }, () => {
     assert.equal(existsSync(join(out, 'material-1/original.html')), false);
     assert.equal(existsSync(join(out, 'material-1/.crawl-tmp')), false);
     assert.equal(stderr.includes('本次仍仅保存入口页'), false);
+  });
+
+  it('limits the crawler to a path only when crawlPrefix is set', async () => {
+    const source = 'https://docs.example.com/guide';
+    const { crawlerArgs, records } = await fromCrawl(htmlPage('<p>Docs home</p>'), source, { options: { crawlPrefix: '/guide' } });
+    assert.match(crawlerArgs, /--include-regex=.*guide/);
+    assert.equal(records[0].crawl.prefix, '/guide');
+  });
+
+  it('supplements a saved HTML page with same-domain following and leaves a git clone alone', async () => {
+    const source = 'https://docs.example.com/guide';
+    const { records, out } = await fromCrawl(htmlPage('<p>Docs home</p>'), source, { options: { crawl: 'off' } });
+    assert.equal(records[0].path, 'material-1/original.html');
+    assert.equal(records[0].crawl, undefined);
+    writeFileSync(crawlerLog, '');
+    const git = { path: 'material-2', url: 'https://github.com/acme/docs', commit: 'abc' };
+    const filled = await supplementMaterials([records[0], git], out);
+    const args = readFileSync(crawlerLog, 'utf8');
+    assert.equal(args.includes('--include-regex='), false);
+    assert.match(args, /--url=https:\/\/docs\.example\.com\/guide/);
+    assert.equal(filled[0].crawl.pageCount, 2);
+    assert.equal(filled[0].crawl.prefix, null);
+    assert.equal(existsSync(join(out, 'material-1/original.html')), false);
+    assert.equal(existsSync(join(out, 'material-1/pages')), true);
+    assert.deepEqual(filled[1], git);
   });
 
   it('prints multi-page GitHub hints once per repo and not the single-page advice', async () => {
@@ -465,17 +493,23 @@ describe('offline crawl integration', { concurrency: 1 }, () => {
 
   it('falls back to the single page when crawled text is too thin, keeping the entry bytes', async () => {
     const source = 'https://docs.example.com/guide';
-    const html = htmlPage('<p>thin crawl</p>');
+    const finalURL = 'https://docs.example.com/guide?utm=1';
+    const html = htmlPage('<a href="https://github.com/acme/docs/blob/main/README.md">source</a>');
     const pages = [
       { file: 'guide.md', url: source, body: 'short\n' },
       { file: 'guide/a.md', url: `${source}/a`, body: 'also short\n' },
     ];
-    const { records, out, html: original, stderr } = await fromCrawl(html, source, { pages });
+    const { records, out, html: original, stderr } = await fromCrawl(html, source, { finalURL, pages });
     assert.equal(records[0].path, 'material-1/original.html');
+    assert.equal(records[0].fetchedURL, finalURL);
+    assert.equal(records[0].readableText, 'material-1/original.html.txt');
     assert.deepEqual(readFileSync(join(out, 'material-1/original.html')), Buffer.from(original));
+    assert.equal(stderr.includes(SINGLE_HINT('acme/docs')), true);
+    assert.equal(stderr.includes('本次仍仅保存入口页'), true);
     assert.match(stderr, /已改为只保存入口页/);
     assert.equal(existsSync(join(out, 'material-1/pages')), false);
     assert.equal(existsSync(join(out, 'material-1/provenance.json')), false);
+    assert.equal(existsSync(join(out, 'material-1/.crawl-tmp')), false);
   });
 
   it('keeps a useful crawl after a non-zero crawler exit and prints the multi-page hint', async () => {
@@ -504,5 +538,19 @@ describe('offline crawl integration', { concurrency: 1 }, () => {
     assert.equal(result, '');
     assert.equal(existsSync(`${file}.txt`), false);
     assert.equal(stderr.trim(), MULTI_HINT('acme/handbook'));
+  });
+
+  it('exits cleanly from --github-hints-only when the entry has no valid GitHub source links', async () => {
+    const dir = tempCrawl('hints-only-none-');
+    const file = join(dir, 'entry.html');
+    writeFileSync(file, htmlPage('<p>No repository links here.</p><a href="https://github.com/acme/docs">homepage</a>'));
+    const { result, stderr } = await captureStderr(() => command(
+      'python3',
+      [extractor, file, '.html', 'https://docs.example.com/guide', '--github-hints-only'],
+      { forwardStderr: true },
+    ));
+    assert.equal(result, '');
+    assert.equal(existsSync(`${file}.txt`), false);
+    assert.equal(stderr.includes('文档源码仓库'), false);
   });
 });

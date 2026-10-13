@@ -273,7 +273,7 @@ export function guessPageUrl(file, origin) {
 export function buildCrawlArgs({ url, markdownDir, jsonFile, prefix, maxPages, workers, proxy }) {
   const args = [
     `--url=${url}`,
-    `--include-regex=${includeRegex(prefix)}`,
+    ...(prefix ? [`--include-regex=${includeRegex(prefix)}`] : []),
     `--workers=${workers}`,
     `--max-visited-urls=${maxPages}`,
     '--disable-all-assets',
@@ -440,7 +440,8 @@ export function finalizePages({ markdownDir, manifest, origin, retrieved, versio
     const body = stripCopiedMarkers(readFileSync(sourcePath, 'utf8'));
     const chars = body.trim().length;
     const url = known.get(file) || guessPageUrl(file, origin);
-    const stamped = `<!-- source: ${url} -->\n<!-- retrieved: ${retrieved}; tool: siteone-crawler ${version}; prefix: ${prefix} -->\n\n${body}`;
+    const scope = prefix ? `prefix: ${prefix}` : 'scope: siteone-domain';
+    const stamped = `<!-- source: ${url} -->\n<!-- retrieved: ${retrieved}; tool: siteone-crawler ${version}; ${scope} -->\n\n${body}`;
     pages.push({ file: `pages/${file}`, url, chars, text: stamped });
   }
   pages.sort((a, b) => a.file.localeCompare(b.file));
@@ -480,7 +481,7 @@ export async function runCrawl({ run, executable, url, directory, prefix, maxPag
   if (!crawlIsUseful(pages)) {
     const chars = pages.reduce((sum, page) => sum + page.chars, 0);
     const reason = failure ? `爬虫未成功结束（${failure.message.split('\n')[0]}）` : `抓取结果过少（${pages.length} 页，约 ${chars} 字）`;
-    throw new Error(`${reason}。可能是需要 JavaScript 渲染的站点，或该前缀下没有足够的 HTML 页面。`);
+    throw new Error(`${reason}。可能是需要 JavaScript 渲染的站点，或同站没有足够的 HTML 页面。`);
   }
   if (failure) console.warn(`警告：爬虫退出异常，但已得到 ${pages.length} 页，仍保存这些页面。${failure.message.split('\n')[0]}`);
   return { pages, version: version || CRAWLER_VERSION };

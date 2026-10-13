@@ -74,7 +74,7 @@ npm run school -- start my-school
 
 `GENERATION.md` 将通用生成协议与用户的具体输入组装在一起，并非另一套提示词。`--prepare-only` 负责拉取材料并搭建网站骨架，之后的课程正文需要 Agent 实际读取材料并撰写；写完后执行 `finish` 进行校验并完成构建。整个过程无需用户手动编写输入 JSON。
 
-`--source` 可重复传入，支持 GitHub 仓库、HTTP(S) 网页或文档、论文以及本地文件/目录。HTTP(S) HTML 来源会按下文规则自动判断是否抓取入口路径前缀下的多页文档；未启用抓取、信号不足或抓取失败时只保存入口页。入口页包含 GitHub 编辑或源文件链接时，单页路径会提示改用对应仓库的 `--source`，多页保存成功后也会打印文档源码仓库地址。`--ref` 用于指定 Git 仓库的分支或 Tag；默认会记录当前解析出的具体 commit。单页 HTML、PDF、DOCX 等文件会保留原始文件并提取纯文本；多页抓取保存入口 HTML、各页派生 Markdown 和来源记录，普通纯文本则直接读取。默认配置为：系统深度、基础未知（教学中按需了解）、中文课程、简单（Simple）教学模式。`--depth`、`--background`、`--style` 均支持自然语言自由描述；`--language`、`--port`、`--model` 为可选参数。若在终端执行 `create` 且未提供参数，会以交互形式询问来源与目标。默认 Pi 路径使用的模型定义在 `scripts/pi.mjs` 中，可以通过环境变量 `SCHOOL_MODEL` 或 `--model` 切换为已配置的其他模型。如果由外部 Agent 直接生成，则使用该 Agent 自带的模型，这些 Pi 参数不会影响外部 Agent。
+`--source` 可重复传入，支持 GitHub 仓库、HTTP(S) 网页或文档、论文以及本地文件/目录。HTTP(S) HTML 来源会按下文规则自动判断是否抓取多页文档。抓取时默认按 siteone-crawler 自己的同站链接跟随，不限制在入口路径；未启用抓取、信号不足或抓取失败时只保存入口页。材料不够时，在仓库根目录运行 `npm run school -- supplement NAME` 用同一方式补齐。入口页包含 GitHub 编辑或源文件链接时，单页路径会提示改用对应仓库的 `--source`，多页保存成功后也会打印文档源码仓库地址。`--ref` 用于指定 Git 仓库的分支或 Tag；默认会记录当前解析出的具体 commit。单页 HTML、PDF、DOCX 等文件会保留原始文件并提取纯文本；多页抓取保存入口 HTML、各页派生 Markdown 和来源记录，普通纯文本则直接读取。默认配置为：系统深度、基础未知（教学中按需了解）、中文课程、简单（Simple）教学模式。`--depth`、`--background`、`--style` 均支持自然语言自由描述；`--language`、`--port`、`--model` 为可选参数。若在终端执行 `create` 且未提供参数，会以交互形式询问来源与目标。默认 Pi 路径使用的模型定义在 `scripts/pi.mjs` 中，可以通过环境变量 `SCHOOL_MODEL` 或 `--model` 切换为已配置的其他模型。如果由外部 Agent 直接生成，则使用该 Agent 自带的模型，这些 Pi 参数不会影响外部 Agent。
 
 ### 多页文档站
 
@@ -90,16 +90,18 @@ GitHub 仓库、arXiv 论文、GitHub blob 文件、PDF、DOCX、图片、纯文
    - **导航**：在 `<nav>`、`<aside>`，或 class/id 含 `sidebar`、`toc`、`menu`、`navigation` 的区域里，统计与入口页同主机、且位于入口路径前缀下的不同链接。不少于 8 个则抓取；3 到 7 个则不抓取，并提示可以加 `--crawl`。站点根路径（前缀 `/`）即使菜单链接很多也不自动整站抓取，只提示改用文档区 URL 或 `--crawl`。
    - **其余**：只保存入口页，与以前相同。
 
-默认只抓入口 URL 的路径前缀：去掉末尾斜杠，若最后一段是 `.html`、`.htm`、`.md`、`.php`、`.aspx` 或 `.xhtml` 则再去掉文件名。`https://pi.dev/docs/latest` 的范围是 `/docs/latest`；`https://pi.dev/docs/latest/install.html` 的范围是 `/docs/latest`。若入口发生跳转，仍尽量保持你给出的前缀；只有跳转离开了该前缀，或入口本身是站点根，才改用最终地址的前缀。`--crawl-prefix /docs/latest` 可以替换这个范围。
+默认不把范围限制在入口路径。siteone-crawler 从入口 URL 出发，跟随同一域名下的页面链接；一个具体文档页因此也能走到站内其他文档页。只有显式传入 `--crawl-prefix /docs/latest` 时，才额外加上包含该路径的过滤。前缀的计算是：去掉末尾斜杠，若最后一段是 `.html`、`.htm`、`.md`、`.php`、`.aspx` 或 `.xhtml` 则再去掉文件名。
 
-上限默认 500 页（`--max-pages`，1–10000），并发默认 2（`--crawl-workers`，1–8）。实现使用 [siteone-crawler](https://github.com/janreges/siteone-crawler) v2.5.1：只跟随该前缀下的页面，不下载资源，导出时排除 `nav` 和 `footer`，不排除 `header`（排除 header 会丢掉 H1）。标题旁的 `[Copied](#...)` 会在保存前删掉。爬虫不执行页面脚本；JavaScript 站点如果抓到的正文太少（少于 2 页，或其中不足 2 页达到 200 字，或合计不足 800 字），会警告并退回原来的单页提取。
+上限默认 500 页（`--max-pages`，1–10000），并发默认 2（`--crawl-workers`，1–8）。实现使用 [siteone-crawler](https://github.com/janreges/siteone-crawler) v2.5.1，保留它自己的同站跟随，不下载资源，导出时排除 `nav` 和 `footer`，不排除 `header`（排除 header 会丢掉 H1）。标题旁的 `[Copied](#...)` 会在保存前删掉。爬虫不执行页面脚本；抓到的正文太少（少于 2 页，或其中不足 2 页达到 200 字，或合计不足 800 字）时，会警告并退回原来的单页提取。
+
+已有 School 的材料若支撑不起学习目标，在仓库根目录运行 `npm run school -- supplement NAME`。它只重抓已保存的 HTTP HTML 来源，同样按爬虫自己的同站跟随；仓库克隆和本地文件不动。补齐失败时保留原来的单页。
 
 若 PATH 中没有 v2.5.1 或更新的 `siteone-crawler`，会从 GitHub Releases 下载对应的 Linux x64/arm64 或 macOS x64/arm64 官方包，校验 SHA-256 后放到 `tools/cache/siteone-crawler/2.5.1/`（已 gitignore），并打印说明它是自动下载的以及路径。Linux 优先使用 glibc 构建（Ubuntu 24.04）；若因 glibc 无法运行，再下载 musl 静态构建。下载和入口页请求由 curl 发出，遵循 `HTTPS_PROXY`、`HTTP_PROXY` 及对应的小写变量。爬虫另外收到 `--proxy=host:port`；代理 URL 里的用户名和密码不会传给爬虫。下载失败、压缩包校验失败或爬虫失败且没有得到足够有效页面时，警告并退回单页，不中断建校。异常退出但已有足够有效页面时警告并保存这些页面。
 
 抓取成功时，材料目录里会有：
 
 - `pages/`：按 URL 路径保存的 Markdown（派生阅读文本，不是原始 HTML）
-- `provenance.json`：来源 URL、最终 URL、抓取日期、crawler 版本、路径前缀、判断原因和每一页的 URL
+- `provenance.json`：来源 URL、最终 URL、抓取日期、crawler 版本、范围（同站跟随，或显式路径前缀）、判断原因和每一页的 URL
 - `entry.html`：入口页原始响应
 
 抓取成功后，先阅读 `materials/material-N/provenance.json`，再按课程目标和必要前置知识检索、选读 `pages/` 中的相关页面，不要求读完全部抓取页。`pages/` 是派生 Markdown 阅读文本，不是原始 HTML；`entry.html` 仅是入口页原始响应，其他页面的原始 HTML 未包含在这次抓取中。按生成协议将实际引用的派生文本、`provenance.json` 和 `entry.html` 保存到 `public/sources/material-N/`，保留材料目录内的相对路径，标明派生文本身份，并同时引用原始页面 URL 与本地地址。在 `COURSE.md` 记录实际阅读的页面。
@@ -142,27 +144,29 @@ School Kit 现在也管运行底座。同一份学校目录：
 
 ## 更新时间线
 
+每一条都按三列写：**问题**是当时卡住的地方，**做了什么**是这次改动，**现在可以**是改完之后实际做得到的事。
+
 ### 2026-10-13
 
-同一份学校目录可以在本机、自有服务器和 Vercel 上运行，解决部署时要维护多套代码的问题。
-
-七年级数学完成线上和自有服务器的第 1 关验收，解决新运行方式尚未验证能否领身份、上课和保存进度的问题。
-
-关卡公式改为 KaTeX 渲染，解决 `$...$` 在页面上原样显示的问题。
-
-生成协议要求能看图的模型写课前查看页面图像，解决只读抽取文本、看不到教材插图的问题。
-
-材料准备新增文档源码仓库提示，解决多页文档只保存入口页时缺少仓库来源指引的问题。
-
-材料准备新增多页文档自动抓取，解决未改用源码仓库时只能读取入口页的问题。
+| 问题 | 做了什么 | 现在可以 |
+| --- | --- | --- |
+| 同一所学校要在本机、自有服务器和 Vercel 上跑，代码被拆开维护 | 一个学校目录用 `DEPLOY_TARGET` 区分这三处 | 同一份目录在三处运行。七年级数学第 1 关已在 Vercel 和 `./script/serve` 上领过身份、上过课、保存过进度 |
+| 关卡里的 `$...$` 在页面上原样显示 | 公式改为 KaTeX 渲染 | 关卡中的数学公式显示为排好的式子 |
+| 能看图的模型写课时只读抽取文本，看不到教材插图 | 生成协议要求写课前先查看页面图像 | 模型能看图时，会先看至少一页来源图像再写课 |
+| 文档页带有 GitHub 源文件链接，材料准备却只留下入口页，也不指出仓库 | 识别编辑或源文件链接，并在终端提示对应仓库 | 单页保存时会提示改用该仓库的 `--source`；多页保存成功后也会打印仓库地址 |
+| 抓取被锁在入口路径上。`https://docs.astro.build/zh-cn/getting-started/` 只留下 1 页，侧栏里的其他文档没有进来 | 改为沿用 siteone-crawler 自己的同站链接跟随。材料不够时运行 `npm run school -- supplement NAME` | 从一个具体文档页补齐同站页面，默认最多 500 页。这次补齐得到 471 页，其中中文 397 页、英文 74 页。写到第 2 关时停住，课程尚未完成 |
 
 ### 2026-10-10
 
-收紧了关卡说明和随教学模式变化的教学指引，并补充了实验材料。
+| 问题 | 做了什么 | 现在可以 |
+| --- | --- | --- |
+| 关卡说明写得过宽，教学模式一变，教师指引对不上 | 收紧关卡说明，让教学指引随教学模式变化，并补上实验材料 | 授课按当前教学模式走；实验记录留在仓库里 |
 
 ### 2026-10-09
 
-仓库成为可复用的建校工具：Agent 阅读 README、AGENT_GUIDE 和 AGENTS 后，用现有命令创建并启动 School。界面语言跟随课程配置。Codex CLI 独立创建了 `process-results`，并作为教师完成一关真实对话、来源读取、进度上报和新会话续学，记录见 [HARNESS-VALIDATION.md](HARNESS-VALIDATION.md)。Pi 仍是默认入口。
+| 问题 | 做了什么 | 现在可以 |
+| --- | --- | --- |
+| 建校步骤散落，Agent 不能按文档自己创建一所学校 | 仓库成为可复用的建校工具，界面语言跟随课程配置 | Agent 阅读 README、AGENT_GUIDE 和 AGENTS 后，用现有命令创建并启动 School。Codex CLI 独立创建了 `process-results`，并作为教师完成一关真实对话、来源读取、进度上报和新会话续学，记录见 [HARNESS-VALIDATION.md](HARNESS-VALIDATION.md)。Pi 仍是默认入口 |
 
 ## 参考与致谢
 

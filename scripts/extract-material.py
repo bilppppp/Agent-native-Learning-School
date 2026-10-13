@@ -66,7 +66,7 @@ def github_repo_url(href, base=None):
         return None
     return f"https://github.com/{owner.lower()}/{repo.lower()}"
 
-def hint_github_repos(hrefs, base):
+def hint_github_repos(hrefs, base, single_page=True):
     seen = set()
     for href in hrefs:
         try:
@@ -76,11 +76,16 @@ def hint_github_repos(hrefs, base):
         if not repo or repo in seen:
             continue
         seen.add(repo)
-        print(f"提示：页面的编辑/源文件链接指向文档源码仓库 {repo}；如需多页文档，建议改用 --source {repo}。本次仍仅保存入口页。", file=sys.stderr, flush=True)
+        if single_page:
+            print(f"提示：页面的编辑/源文件链接指向文档源码仓库 {repo}；如需多页文档，建议改用 --source {repo}。本次仍仅保存入口页。", file=sys.stderr, flush=True)
+        else:
+            print(f"提示：入口页的编辑/源文件链接指向文档源码仓库 {repo}。", file=sys.stderr, flush=True)
 
-path = Path(sys.argv[1])
-kind = sys.argv[2] if len(sys.argv) > 2 else path.suffix.lower()
-page_url = sys.argv[3] if len(sys.argv) > 3 else ""
+hints_only = "--github-hints-only" in sys.argv[1:]
+argv = [a for a in sys.argv[1:] if a != "--github-hints-only"]
+path = Path(argv[0])
+kind = argv[1] if len(argv) > 1 else path.suffix.lower()
+page_url = argv[2] if len(argv) > 2 else ""
 hrefs = []
 if kind == ".pdf":
     try:
@@ -102,6 +107,13 @@ elif kind in (".html", ".htm"):
     hrefs = parser.hrefs
 else:
     raise SystemExit(f"Unsupported extraction format: {kind}")
+if hints_only:
+    if page_url:
+        try:
+            hint_github_repos(hrefs, page_url, single_page=False)
+        except Exception:
+            pass
+    sys.exit(0)
 out = path.with_name(path.name + ".txt")
 out.write_text(text, encoding="utf-8")
 if page_url:

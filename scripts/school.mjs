@@ -4,7 +4,7 @@ import { resolve, dirname, join, relative, basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createInterface } from 'node:readline/promises';
 import { spawn } from 'node:child_process';
-import { command, prepareMaterials } from './materials.mjs';
+import { command, prepareMaterials, supplementMaterials } from './materials.mjs';
 import { piPrint, defaultModel } from './pi.mjs';
 import { generate, generationPrompt, validateGeneration } from './generate.mjs';
 import { resolveTeachOrigin, teachAccessError, teachModeWriteError } from './teach-origin.mjs';
@@ -40,8 +40,9 @@ function help() {
   可选：--name NAME --background "已有基础" --style "偏好" --language zh --model PROVIDER/MODEL --ref TAG
   --prepare-only：不调用 Pi，准备材料和 GENERATION.md，交由当前 Coding Agent 生成，再运行 finish NAME。
   可多次 --source；默认深度系统、基础未知并按需补充、教学simple、语言zh。
-  多页文档会自动判断并抓取入口路径前缀下的 HTML（默认最多 500 页）。
-  --crawl 强制抓取；--no-crawl 只保存入口页。--max-pages N（1–10000）--crawl-workers N（1–8）--crawl-prefix /docs/latest
+  多页文档会自动判断。默认按 siteone-crawler 自己的同站链接跟随抓取，最多 500 页；--crawl-prefix /docs/latest 才把范围限制在该路径。
+  --crawl 强制抓取；--no-crawl 只保存入口页。--max-pages N（1–10000）--crawl-workers N（1–8）
+  npm run school -- supplement NAME：材料不够时，用同样的同站跟随补齐已保存的 HTTP HTML 来源。
   未安装 siteone-crawler v2.5.1+ 时自动下载到 tools/cache（不入库）。下载或抓取失败则退回单页。
   不带描述/参数时，只询问来源和目标。
 
@@ -188,7 +189,7 @@ async function main() {
   if (!operation || options.help || ['help', '--help', '-h'].includes(operation)) { help(); return; }
   if (options['prepare-only'] && operation !== 'create') throw new Error('--prepare-only is only valid with create.');
   if (options['prompt-only'] && operation !== 'teach') throw new Error('--prompt-only is only valid with teach.');
-  if (!['setup', 'create', 'list', 'start', 'build', 'retry', 'teach', 'finish'].includes(operation)) throw new Error(`Unknown command ${operation}. Use --help.`);
+  if (!['setup', 'create', 'list', 'start', 'build', 'retry', 'teach', 'finish', 'supplement'].includes(operation)) throw new Error(`Unknown command ${operation}. Use --help.`);
   if (operation === 'setup') { await setup(); return; }
   if (operation === 'create') { await create(); return; }
   process.chdir(root);
@@ -214,6 +215,23 @@ async function main() {
     const count = validateGeneration(join(root, 'inputs', basename(path) + '.json'));
     await command('npm', ['run', 'build'], { cwd: path, inherit: true, rejectOnErrorLog: true });
     console.log(`School 已检查并构建：${basename(path)}（${count} 关）。启动：npm run school -- start ${basename(path)}。真实教学尚未验证。`);
+  } else if (operation === 'supplement') {
+    if (options['no-crawl']) throw new Error('--no-crawl cannot be used with supplement.');
+    const opts = crawlOptions();
+    s.materials = await supplementMaterials(s.materials, join(path, 'materials'), {
+      maxPages: options['max-pages'] ? opts.maxPages : s.maxPages || 500,
+      crawlWorkers: options['crawl-workers'] ? opts.crawlWorkers : s.crawlWorkers || 2,
+      ...(options['crawl-prefix'] ? { crawlPrefix: opts.crawlPrefix } : {}),
+    });
+    writeFileSync(join(path, 'school.settings.json'), JSON.stringify(s, null, 2) + '\n');
+    const inputPath = join(root, 'inputs', `${basename(path)}.json`);
+    if (existsSync(inputPath)) {
+      const input = JSON.parse(readFileSync(inputPath, 'utf8'));
+      input.materials = s.materials;
+      writeFileSync(inputPath, JSON.stringify(input, null, 2) + '\n');
+    }
+    const counts = (s.materials || []).map(item => item.crawl?.pageCount).filter(count => Number.isInteger(count));
+    console.log(`已用 siteone-crawler 的同站跟随补齐 ${basename(path)}。${counts.length ? `抓取页数：${counts.join('、')}。` : ''}`);
   } else if (operation === 'retry') {
     const inputPath = join(root, 'inputs', basename(path) + '.json');
     if (!existsSync(inputPath)) throw new Error('No saved creation input. Existing School was not modified.');

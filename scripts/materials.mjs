@@ -51,13 +51,16 @@ async function saveSinglePage(download, extension, target, directory, value, fin
   return record;
 }
 async function saveCrawledSite({ download, target, directory, value, finalURL, prefix, decision, maxPages, workers }) {
-  console.log(`判定为多页文档（${decision.detail}），抓取 ${prefix} 下的页面，最多 ${maxPages} 页。`);
+  const scope = prefix ? `只抓取 ${prefix} 下的页面` : '按 siteone-crawler 自己的同站链接跟随抓取';
+  console.log(`判定为多页文档（${decision.detail}）。${scope}，最多 ${maxPages} 页。`);
   const crawler = await ensureCrawler({ run: command });
   const crawled = await runCrawl({
     run: command, executable: crawler.executable, url: finalURL, directory: target,
     prefix, maxPages, workers,
   });
   writePages(target, crawled.pages);
+  rmSync(join(target, 'original.html'), { force: true });
+  rmSync(join(target, 'original.html.txt'), { force: true });
   renameSync(download, join(target, 'entry.html'));
   const retrieved = new Date().toISOString().slice(0, 10);
   const provenance = {
@@ -76,7 +79,8 @@ async function saveCrawledSite({ download, target, directory, value, finalURL, p
       pageCount: crawled.pages.length, decision: decision.reason,
     },
   };
-  console.log(`已保存 ${crawled.pages.length} 个文档页面到 ${record.pages}（前缀 ${prefix}，siteone-crawler ${crawled.version}，${retrieved}）。`);
+  const where = prefix ? `前缀 ${prefix}` : '同站跟随';
+  console.log(`已保存 ${crawled.pages.length} 个文档页面到 ${record.pages}（${where}，siteone-crawler ${crawled.version}，${retrieved}）。`);
   try {
     await command(
       'python3',
@@ -88,11 +92,11 @@ async function saveCrawledSite({ download, target, directory, value, finalURL, p
   }
   return record;
 }
-export async function prepareMaterials(sources, directory, { ref, crawl = 'auto', maxPages = 500, crawlPrefix: prefixOverride, crawlWorkers = 2 } = {}) {
+export async function prepareMaterials(sources, directory, { ref, crawl = 'auto', maxPages = 500, crawlPrefix: prefixOverride, crawlWorkers = 2, targetNames = null } = {}) {
   mkdirSync(directory, { recursive: true });
   const records = [];
   for (let i = 0; i < sources.length; i++) {
-    const value = sources[i], target = join(directory, `material-${i + 1}`);
+    const value = sources[i], target = join(directory, targetNames?.[i] || `material-${i + 1}`);
     if (/^https?:\/\//i.test(value)) {
       const url = safeURL(value);
       const repo = url.hostname === 'github.com' && url.pathname.match(/^\/([^/]+)\/([^/]+?)(?:\.git)?\/?$/);
@@ -126,7 +130,7 @@ export async function prepareMaterials(sources, directory, { ref, crawl = 'auto'
       if (htmlLike && mode !== 'off') {
         const sample = readSample(download);
         const decision = decideCrawl({ href: finalURL, html: sample, override: mode === 'force' ? 'force' : 'auto' });
-        const prefix = choosePrefix(value, finalURL, prefixOverride);
+        const prefix = prefixOverride ? choosePrefix(value, finalURL, prefixOverride) : null;
         if (mode === 'force' || decision.crawl) {
           try {
             records.push(await saveCrawledSite({ download, target, directory, value, finalURL, prefix, decision, maxPages, workers: crawlWorkers }));
@@ -165,4 +169,22 @@ export async function prepareMaterials(sources, directory, { ref, crawl = 'auto'
     }
   }
   return records;
+}
+
+export async function supplementMaterials(records, directory, { maxPages = 500, crawlPrefix, crawlWorkers = 2 } = {}) {
+  const next = [];
+  for (const record of records || []) {
+    const folder = typeof record?.path === 'string' ? record.path.split('/')[0] : '';
+    if (record?.commit || !/^material-\d+$/.test(folder) || !/^https?:\/\//i.test(record.url || '')) {
+      next.push(record);
+      continue;
+    }
+    const [saved] = await prepareMaterials([record.url], directory, {
+      crawl: 'force', maxPages, crawlWorkers,
+      ...(crawlPrefix ? { crawlPrefix } : {}),
+      targetNames: [folder],
+    });
+    next.push(saved);
+  }
+  return next;
 }
