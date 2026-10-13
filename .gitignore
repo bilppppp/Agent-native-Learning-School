@@ -10,6 +10,8 @@ __pycache__/
 /upstream/
 /sources/react/
 /schools/*/materials/
+/schools/workbuddy/
+/inputs/workbuddy.json
 
 # Local credentials
 .env

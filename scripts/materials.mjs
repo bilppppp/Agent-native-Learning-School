@@ -4,7 +4,7 @@ import { spawn } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 const extractor = fileURLToPath(new URL('./extract-material.py', import.meta.url));
 
-export function command(executable, args, { cwd, inherit = false, rejectOnErrorLog = false, timeoutMs = 0, env } = {}) {
+export function command(executable, args, { cwd, inherit = false, rejectOnErrorLog = false, timeoutMs = 0, env, forwardStderr = false } = {}) {
   return new Promise((accept, reject) => {
     const child = spawn(executable, args, { cwd, env: env ? { ...process.env, ...env } : undefined, stdio: inherit && !rejectOnErrorLog ? 'inherit' : ['ignore', 'pipe', 'pipe'] });
     let stdout = '', stderr = '';
@@ -12,7 +12,7 @@ export function command(executable, args, { cwd, inherit = false, rejectOnErrorL
     timer?.unref();
     child.once('close', () => clearTimeout(timer));
     child.stdout?.on('data', data => { stdout += data; if (inherit) process.stdout.write(data); });
-    child.stderr?.on('data', data => { stderr += data; if (inherit) process.stderr.write(data); });
+    child.stderr?.on('data', data => { stderr += data; if (inherit || forwardStderr) process.stderr.write(data); });
     child.on('error', reject);
     child.on('close', code => code === 0 && !(rejectOnErrorLog && /\[ERROR\]/.test(stdout + stderr)) ? accept(stdout.trim()) : reject(new Error(`${executable} failed (${code}): ${stderr.trim() || (code === 0 ? 'Build output contains a rendering error; files were preserved.' : 'Command did not complete successfully; files were preserved.')}`)));
     const stop = () => child.kill('SIGINT'); process.once('SIGINT', stop);
@@ -61,7 +61,8 @@ export async function prepareMaterials(sources, directory, { ref } = {}) {
       const file = join(target, 'original' + extension); renameSync(download, file);
       const record = { path: relative(directory, file), url: value, fetchedURL: finalURL, retrieved: new Date().toISOString().slice(0, 10) };
       if (['.pdf', '.docx', '.html', '.htm'].includes(extension)) {
-        const text = await command('python3', [extractor, file, extension]);
+        const html = ['.html', '.htm'].includes(extension);
+        const text = await command('python3', [extractor, file, extension, ...(html ? [finalURL] : [])], { forwardStderr: html });
         record.readableText = relative(directory, text);
         if (readFileSync(text, 'utf8').trim().length < 100) throw new Error('Source returned too little readable text. Provide another accessible source or an exported file.');
       }
