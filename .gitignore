@@ -8,6 +8,8 @@ __pycache__/
 
 # Downloaded upstream checkouts and generation workspaces (recreated by setup/create)
 /upstream/
+# Auto-downloaded siteone-crawler binaries
+/tools/cache/
 /sources/react/
 /schools/*/materials/
 

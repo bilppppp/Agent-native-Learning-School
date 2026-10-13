@@ -45,6 +45,10 @@ npm run school -- finish new-school
 
 `--source` 可以重复；`--ref` 选择仓库分支/标签，`--language`、`--port`、`--model` 可选。字符串应安全引用，不把用户文字作为 shell 代码执行。非交互终端要传齐来源和目标，不使用无参数创建的交互问答。
 
+HTML 文档站不需要额外参数。`create` 会按 [README.md](README.md) 的「多页文档站」规则自动决定是否抓取入口路径前缀下的页面（默认最多 500 页）。用户没有要求整站或单页时，不要自行加上 `--crawl` 或 `--no-crawl`。只有用户明确要求，或自动判断给出了「信号不足」的提示而用户确实要整段文档时，才使用 `--crawl`。范围不够时用 `--crawl-prefix /路径`，页数或并发不够时用 `--max-pages`、`--crawl-workers`。`--no-crawl` 只保存入口页。
+
+抓取成功后，阅读 `materials/material-N/pages/` 里的每一页和同目录的 `provenance.json`（来源 URL、抓取日期、crawler 版本、前缀）。`entry.html` 只是入口页原文。生成课程时把实际引用的页面按相对路径复制到 `public/sources/`，并写上 provenance 里的原始 URL。GitHub 仓库、PDF、DOCX 和本地文件的准备方式不变。PATH 中没有 siteone-crawler v2.5.1+ 时，工具会自动下载到 `tools/cache/` 并打印路径；该目录已 gitignore，不要提交二进制。下载或抓取失败时会退回单页并打印警告，这时不要把入口页说成整套文档。
+
 默认 Pi 创建命令负责材料获取、初始化、模型生成与构建；直接 Agent 路径由当前 Agent 执行生成，使用相同输入与输出契约。保持长任务运行并等待真实退出结果。错误后先检查日志和保留文件；`retry NAME` 会重新通过 Pi 生成且可能改写已有课程，不保证无损续写。不要把骨架、构建成功或静态检查当成真实教学证据。
 
 ## 4. 启动并确认交付
