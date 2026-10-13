@@ -108,9 +108,25 @@ School Kit 现在也管运行底座。同一份学校目录：
 
 详见该学校的 `DEPLOYMENT.md`。
 
-如需脱离本仓库独立运行某所 School：将对应的 `schools/NAME` 目录完整复制出去，在该目录下执行 `npm ci` 后，本机可用 `npm run dev`，自有服务器执行 `./script/serve`。各 School 均内置了完整的源码与依赖锁定文件，`node_modules` 必须是真实目录。脚本测试在本地完成。线上的数学课是这次双托管改动之前部署的；这份新代码还没有在自有服务器和 Vercel 上各做一次真实教学验收。
+如需脱离本仓库独立运行某所 School：将对应的 `schools/NAME` 目录完整复制出去，在该目录下执行 `npm ci` 后，本机可用 `npm run dev`，自有服务器执行 `./script/serve`。各 School 均内置了完整的源码与依赖锁定文件，`node_modules` 必须是真实目录。脚本测试在本地完成。线上与自有服务器的验收记录见 [更新时间线](#更新时间线)。
 
 教学协议要求教师 Agent 能够读取 HTTP 内容、调用 REST API、保持多轮上下文，并遵循站点 `/llms.txt` 约定的教学规则。课程与参考材料通过关卡 API 及 `/sources/` 访问，学习进度由进度 API 维护（接口定义见 `/api/openapi.json`）。只有使用 Pi 时才需要读取 `/harness/pi.txt` 里的专用工具说明；其他教师 Harness 无需遵循 Pi 的工具命名或交互格式。关于不同 Harness 的验证情况与已知边界，可参考 [HARNESS-VALIDATION.md](HARNESS-VALIDATION.md)。
+
+## 更新时间线
+
+### 2026-10-13
+
+同一份学校目录可以在本机、自有服务器和 Vercel 上运行。本机 `start` 传入 `DEPLOY_TARGET=dev`；自有服务器在学校目录执行 `./script/serve`；Vercel 配置 `DEPLOY_TARGET=vercel` 和 `BLOB_READ_WRITE_TOKEN`。
+
+七年级数学 [https://math.gravityai.top](https://math.gravityai.top) 已用这版代码重新部署。Vercel 和本机 `./script/serve` 各做了一次第 1 关验收：浏览器领取身份，Cursor 中的 Grok 4.7 读取关卡、完成数轴提问与反馈，再以 `source: "agent"`、`model: "grok-4.7"` 写入进度，刷新后勾选还在。学生回答是在同一次验收会话里给出的。教材 PDF 没有放进 Git，线上该文件返回 404，关卡正文仍从接口读取。
+
+### 2026-10-10
+
+收紧了关卡说明和随教学模式变化的教学指引，并补充了实验材料。
+
+### 2026-10-09
+
+仓库成为可复用的建校工具：Agent 阅读 README、AGENT_GUIDE 和 AGENTS 后，用现有命令创建并启动 School。界面语言跟随课程配置。Codex CLI 独立创建了 `process-results`，并作为教师完成一关真实对话、来源读取、进度上报和新会话续学，记录见 [HARNESS-VALIDATION.md](HARNESS-VALIDATION.md)。Pi 仍是默认入口。
 
 ## 参考与致谢
 
