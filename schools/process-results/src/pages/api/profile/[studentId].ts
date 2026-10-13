@@ -1,4 +1,3 @@
-import { env } from "cloudflare:workers";
 import type { APIRoute } from "astro";
 import config from "../../../../school.config";
 import {
@@ -6,6 +5,7 @@ import {
 	type StudentProfile,
 	updateProfile,
 } from "../../../lib/progress";
+import { runWithProgressStore } from "../../../lib/store";
 import { isValidStudentId } from "../../../lib/student-id";
 
 const corsHeaders = {
@@ -32,21 +32,22 @@ export const OPTIONS: APIRoute = async () => {
 	return new Response(null, { status: 204, headers: corsHeaders });
 };
 
-export const GET: APIRoute = async ({ params }) => {
-	const { studentId } = params;
-	if (!studentId || !isValidStudentId(studentId)) {
-		return badRequest("Invalid student ID format");
-	}
+export const GET: APIRoute = async ({ params }) =>
+	runWithProgressStore(corsHeaders, async () => {
+		const { studentId } = params;
+		if (!studentId || !isValidStudentId(studentId)) {
+			return badRequest("Invalid student ID format");
+		}
 
-	const profile = await getProfile(env.PROGRESS, studentId);
-	if (profile === null) {
-		return notFound("Student not found");
-	}
+		const profile = await getProfile(studentId);
+		if (profile === null) {
+			return notFound("Student not found");
+		}
 
-	return new Response(JSON.stringify({ profile }), {
-		headers: { "Content-Type": "application/json", ...corsHeaders },
+		return new Response(JSON.stringify({ profile }), {
+			headers: { "Content-Type": "application/json", ...corsHeaders },
+		});
 	});
-};
 
 function validateProfile(body: Record<string, unknown>): {
 	profile: Partial<StudentProfile>;
@@ -89,33 +90,34 @@ function validateProfile(body: Record<string, unknown>): {
 	return { profile, errors };
 }
 
-export const PUT: APIRoute = async ({ params, request }) => {
-	const { studentId } = params;
-	if (!studentId || !isValidStudentId(studentId)) {
-		return badRequest("Invalid student ID format");
-	}
+export const PUT: APIRoute = async ({ params, request }) =>
+	runWithProgressStore(corsHeaders, async () => {
+		const { studentId } = params;
+		if (!studentId || !isValidStudentId(studentId)) {
+			return badRequest("Invalid student ID format");
+		}
 
-	let body: Record<string, unknown>;
-	try {
-		body = await request.json();
-	} catch {
-		return badRequest("Invalid JSON body");
-	}
+		let body: Record<string, unknown>;
+		try {
+			body = await request.json();
+		} catch {
+			return badRequest("Invalid JSON body");
+		}
 
-	const { profile, errors } = validateProfile(body);
-	if (errors.length > 0) {
-		return badRequest(errors.join("; "));
-	}
-	if (Object.keys(profile).length === 0) {
-		return badRequest("No valid profile fields provided");
-	}
+		const { profile, errors } = validateProfile(body);
+		if (errors.length > 0) {
+			return badRequest(errors.join("; "));
+		}
+		if (Object.keys(profile).length === 0) {
+			return badRequest("No valid profile fields provided");
+		}
 
-	const updated = await updateProfile(env.PROGRESS, studentId, profile);
-	if (updated === null) {
-		return notFound("Student not found");
-	}
+		const updated = await updateProfile(studentId, profile);
+		if (updated === null) {
+			return notFound("Student not found");
+		}
 
-	return new Response(JSON.stringify({ profile: updated }), {
-		headers: { "Content-Type": "application/json", ...corsHeaders },
+		return new Response(JSON.stringify({ profile: updated }), {
+			headers: { "Content-Type": "application/json", ...corsHeaders },
+		});
 	});
-};

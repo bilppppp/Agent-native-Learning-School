@@ -5,6 +5,7 @@
 import { getCollection } from "astro:content";
 import type { APIRoute } from "astro";
 import { mdxToProse } from "../../../lib/mdx-to-prose";
+import { publicOrigin } from "../../../lib/public-origin";
 
 const corsHeaders = {
 	"Access-Control-Allow-Origin": "*",
@@ -17,7 +18,7 @@ export const OPTIONS: APIRoute = async () => {
 };
 
 export const GET: APIRoute = async ({ params, request }) => {
-	const origin = new URL(request.url).origin;
+	const origin = publicOrigin(request);
 	const exercises = await getCollection("exercises");
 	const exercise = exercises.find((e) => e.data.slug === params.slug);
 

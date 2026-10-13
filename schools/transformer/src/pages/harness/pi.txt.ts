@@ -1,7 +1,8 @@
 import type { APIRoute } from "astro";
+import { publicOrigin } from "../../lib/public-origin";
 
 export const GET: APIRoute = ({ request }) => {
-  const origin = new URL(request.url).origin;
+  const origin = publicOrigin(request);
   const content = `# Pi teacher adapter
 
 This file contains only the runtime instructions for Pi. The shared teaching contract is at ${origin}/llms.txt and the API schema is at ${origin}/api/openapi.json.

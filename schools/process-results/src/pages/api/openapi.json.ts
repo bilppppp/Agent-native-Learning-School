@@ -1,8 +1,9 @@
 import type { APIRoute } from "astro";
 import config from "../../../school.config";
+import { publicOrigin } from "../../lib/public-origin";
 
 export const GET: APIRoute = (context) => {
-	const origin = new URL(context.request.url).origin;
+	const origin = publicOrigin(context.request);
 
 	const spec = {
 		openapi: "3.1.0",

@@ -12,79 +12,134 @@ import {
 	markLessonIncomplete,
 	resetProgress,
 } from "./progress";
+import { getProgressStore, type ProgressStore } from "./store";
 
-/** Simple in-memory KV mock. */
-function createMockKv(): KVNamespace {
-	const store = new Map<string, string>();
+vi.mock("./store", () => ({
+	getProgressStore: vi.fn(),
+}));
+
+function createMockStore(): ProgressStore {
+	const data = new Map<string, string>();
+	const chains = new Map<string, Promise<void>>();
 	return {
-		get: vi.fn(async (key: string, format?: string) => {
-			const val = store.get(key) ?? null;
-			if (val && format === "json") return JSON.parse(val);
-			return val;
-		}),
-		put: vi.fn(async (key: string, value: string) => {
-			store.set(key, value);
-		}),
-		delete: vi.fn(async (key: string) => {
-			store.delete(key);
-		}),
-		list: vi.fn(),
-		getWithMetadata: vi.fn(),
-	} as unknown as KVNamespace;
+		get(key: string, format?: "json") {
+			const val = data.get(key) ?? null;
+			if (val !== null && format === "json") return Promise.resolve(JSON.parse(val));
+			return Promise.resolve(val);
+		},
+		put(key: string, value: string) {
+			data.set(key, value);
+			return Promise.resolve();
+		},
+		withLock(key, operation) {
+			const previous = chains.get(key) ?? Promise.resolve();
+			const current = previous.then(operation, operation);
+			chains.set(
+				key,
+				current.then(
+					() => undefined,
+					() => undefined,
+				),
+			);
+			return current;
+		},
+	} as ProgressStore;
 }
 
 describe("createStudent", () => {
-	it("creates a new student with empty progress", async () => {
-		const kv = createMockKv();
-		const progress = await createStudent(kv, "curious-hacker-1234");
+	let store: ProgressStore;
 
-		expect(progress.completedLessons).toEqual([]);
-		expect(progress.createdAt).toBeTruthy();
-		expect(progress.updatedAt).toBeTruthy();
-		expect(progress.deviceId).toBeUndefined();
-		expect(kv.put).toHaveBeenCalledWith(
-			"student:curious-hacker-1234",
+	beforeEach(() => {
+		store = createMockStore();
+		vi.mocked(getProgressStore).mockResolvedValue(store);
+	});
+
+	it("creates a new student with empty progress", async () => {
+		const progress = await createStudent("curious-hacker-1234");
+
+		expect(progress).not.toBeNull();
+		expect(progress?.completedLessons).toEqual([]);
+		expect(progress?.createdAt).toBeTruthy();
+		expect(progress?.updatedAt).toBeTruthy();
+		expect(progress?.deviceId).toBeUndefined();
+		expect(await store.get("student:curious-hacker-1234")).toEqual(
 			expect.any(String),
 		);
 	});
 
 	it("stores deviceId when provided", async () => {
-		const kv = createMockKv();
 		const deviceId = "550e8400-e29b-41d4-a716-446655440000";
-		const progress = await createStudent(kv, "crafty-tinkerer-7890", deviceId);
+		const progress = await createStudent("crafty-tinkerer-7890", deviceId);
 
-		expect(progress.deviceId).toBe(deviceId);
+		expect(progress?.deviceId).toBe(deviceId);
 		const stored = JSON.parse(
-			(await kv.get("student:crafty-tinkerer-7890")) as string,
+			(await store.get("student:crafty-tinkerer-7890")) as string,
 		);
 		expect(stored.deviceId).toBe(deviceId);
 	});
 
 	it("omits deviceId from stored record when not provided", async () => {
-		const kv = createMockKv();
-		await createStudent(kv, "vibing-operator-1111");
+		await createStudent("vibing-operator-1111");
 		const stored = JSON.parse(
-			(await kv.get("student:vibing-operator-1111")) as string,
+			(await store.get("student:vibing-operator-1111")) as string,
 		);
 		expect(stored.deviceId).toBeUndefined();
+	});
+
+	it("does not overwrite an existing student", async () => {
+		const first = await createStudent("keeper-id-1000", "device-one");
+		const second = await createStudent("keeper-id-1000", "device-two");
+
+		expect(first?.deviceId).toBe("device-one");
+		expect(second).toBeNull();
+		const stored = await getProgress("keeper-id-1000");
+		expect(stored?.deviceId).toBe("device-one");
+	});
+
+	it("does not let concurrent creates overwrite the same id", async () => {
+		const inner = store;
+		const delayed: ProgressStore = {
+			async get(key: string, format?: "json") {
+				await new Promise((resolve) => setTimeout(resolve, 20));
+				if (format === "json") return inner.get(key, "json");
+				return inner.get(key);
+			},
+			put: (key, value) => inner.put(key, value),
+			withLock: (key, operation) => inner.withLock(key, operation),
+		};
+		vi.mocked(getProgressStore).mockResolvedValue(delayed);
+
+		const [first, second] = await Promise.all([
+			createStudent("racy-student-4242", "device-one"),
+			createStudent("racy-student-4242", "device-two"),
+		]);
+
+		const created = [first, second].filter((entry) => entry !== null);
+		expect(created).toHaveLength(1);
+		const stored = await getProgress("racy-student-4242");
+		expect(stored?.deviceId).toBe(created[0]?.deviceId);
+		expect(
+			stored?.deviceId === "device-one" || stored?.deviceId === "device-two",
+		).toBe(true);
 	});
 });
 
 describe("getProgress", () => {
-	let kv: KVNamespace;
+	let store: ProgressStore;
 
 	beforeEach(() => {
-		kv = createMockKv();
+		store = createMockStore();
+		vi.mocked(getProgressStore).mockResolvedValue(store);
 	});
 
 	it("returns null for a non-existent student", async () => {
-		const result = await getProgress(kv, "nobody-here-0000");
+		const result = await getProgress("nobody-here-0000");
 		expect(result).toBeNull();
 	});
 
 	it("returns progress for an existing student", async () => {
-		await createStudent(kv, "sharp-coder-5678");
-		const result = await getProgress(kv, "sharp-coder-5678");
+		await createStudent("sharp-coder-5678");
+		const result = await getProgress("sharp-coder-5678");
 
 		expect(result).not.toBeNull();
 		expect(result?.completedLessons).toEqual([]);
@@ -96,9 +151,9 @@ describe("getProgress", () => {
 			createdAt: "2025-01-01T00:00:00.000Z",
 			updatedAt: "2025-06-15T00:00:00.000Z",
 		};
-		await kv.put("student:legacy-user-1111", JSON.stringify(legacy));
+		await store.put("student:legacy-user-1111", JSON.stringify(legacy));
 
-		const result = await getProgress(kv, "legacy-user-1111");
+		const result = await getProgress("legacy-user-1111");
 		expect(result).not.toBeNull();
 		expect(result?.completedLessons).toHaveLength(2);
 		expect(result?.completedLessons[0]).toEqual({
@@ -115,28 +170,18 @@ describe("getProgress", () => {
 });
 
 describe("markLessonComplete", () => {
-	let kv: KVNamespace;
-
 	beforeEach(() => {
-		kv = createMockKv();
+		vi.mocked(getProgressStore).mockResolvedValue(createMockStore());
 	});
 
 	it("returns null for a non-existent student", async () => {
-		const result = await markLessonComplete(
-			kv,
-			"nobody-here-0000",
-			"enrollment",
-		);
+		const result = await markLessonComplete("nobody-here-0000", "enrollment");
 		expect(result).toBeNull();
 	});
 
 	it("marks a lesson complete", async () => {
-		await createStudent(kv, "clever-maker-3333");
-		const result = await markLessonComplete(
-			kv,
-			"clever-maker-3333",
-			"enrollment",
-		);
+		await createStudent("clever-maker-3333");
+		const result = await markLessonComplete("clever-maker-3333", "enrollment");
 
 		expect(result).not.toBeNull();
 		expect(result?.completedLessons).toHaveLength(1);
@@ -145,9 +190,8 @@ describe("markLessonComplete", () => {
 	});
 
 	it("accepts a source parameter", async () => {
-		await createStudent(kv, "nimble-wizard-4444");
+		await createStudent("nimble-wizard-4444");
 		const result = await markLessonComplete(
-			kv,
 			"nimble-wizard-4444",
 			"install-opencode",
 			"agent",
@@ -157,22 +201,17 @@ describe("markLessonComplete", () => {
 	});
 
 	it("is idempotent — marking the same lesson twice does not duplicate", async () => {
-		await createStudent(kv, "smooth-builder-5555");
-		await markLessonComplete(kv, "smooth-builder-5555", "enrollment");
-		const result = await markLessonComplete(
-			kv,
-			"smooth-builder-5555",
-			"enrollment",
-		);
+		await createStudent("smooth-builder-5555");
+		await markLessonComplete("smooth-builder-5555", "enrollment");
+		const result = await markLessonComplete("smooth-builder-5555", "enrollment");
 
 		expect(result?.completedLessons).toHaveLength(1);
 	});
 
 	it("can mark multiple different lessons", async () => {
-		await createStudent(kv, "lucky-scholar-6666");
-		await markLessonComplete(kv, "lucky-scholar-6666", "enrollment");
+		await createStudent("lucky-scholar-6666");
+		await markLessonComplete("lucky-scholar-6666", "enrollment");
 		const result = await markLessonComplete(
-			kv,
 			"lucky-scholar-6666",
 			"install-opencode",
 		);
@@ -186,28 +225,21 @@ describe("markLessonComplete", () => {
 });
 
 describe("markLessonIncomplete", () => {
-	let kv: KVNamespace;
-
 	beforeEach(() => {
-		kv = createMockKv();
+		vi.mocked(getProgressStore).mockResolvedValue(createMockStore());
 	});
 
 	it("returns null for a non-existent student", async () => {
-		const result = await markLessonIncomplete(
-			kv,
-			"nobody-here-0000",
-			"enrollment",
-		);
+		const result = await markLessonIncomplete("nobody-here-0000", "enrollment");
 		expect(result).toBeNull();
 	});
 
 	it("removes a completed lesson", async () => {
-		await createStudent(kv, "eager-learner-1111");
-		await markLessonComplete(kv, "eager-learner-1111", "enrollment");
-		await markLessonComplete(kv, "eager-learner-1111", "installation");
+		await createStudent("eager-learner-1111");
+		await markLessonComplete("eager-learner-1111", "enrollment");
+		await markLessonComplete("eager-learner-1111", "installation");
 
 		const result = await markLessonIncomplete(
-			kv,
 			"eager-learner-1111",
 			"enrollment",
 		);
@@ -217,11 +249,10 @@ describe("markLessonIncomplete", () => {
 	});
 
 	it("is a no-op for a lesson that was not completed", async () => {
-		await createStudent(kv, "calm-coder-2222");
-		await markLessonComplete(kv, "calm-coder-2222", "enrollment");
+		await createStudent("calm-coder-2222");
+		await markLessonComplete("calm-coder-2222", "enrollment");
 
 		const result = await markLessonIncomplete(
-			kv,
 			"calm-coder-2222",
 			"installation",
 		);
@@ -232,15 +263,12 @@ describe("markLessonIncomplete", () => {
 });
 
 describe("markExerciseIncomplete", () => {
-	let kv: KVNamespace;
-
 	beforeEach(() => {
-		kv = createMockKv();
+		vi.mocked(getProgressStore).mockResolvedValue(createMockStore());
 	});
 
 	it("returns null for a non-existent student", async () => {
 		const result = await markExerciseIncomplete(
-			kv,
 			"nobody-here-0000",
 			"build-a-website",
 		);
@@ -248,12 +276,11 @@ describe("markExerciseIncomplete", () => {
 	});
 
 	it("removes a completed exercise", async () => {
-		await createStudent(kv, "brave-builder-3333");
-		await markExerciseComplete(kv, "brave-builder-3333", "build-a-website");
-		await markExerciseComplete(kv, "brave-builder-3333", "edit-videos");
+		await createStudent("brave-builder-3333");
+		await markExerciseComplete("brave-builder-3333", "build-a-website");
+		await markExerciseComplete("brave-builder-3333", "edit-videos");
 
 		const result = await markExerciseIncomplete(
-			kv,
 			"brave-builder-3333",
 			"build-a-website",
 		);
@@ -263,10 +290,9 @@ describe("markExerciseIncomplete", () => {
 	});
 
 	it("is a no-op for an exercise that was not completed", async () => {
-		await createStudent(kv, "quick-thinker-4444");
+		await createStudent("quick-thinker-4444");
 
 		const result = await markExerciseIncomplete(
-			kv,
 			"quick-thinker-4444",
 			"build-a-website",
 		);
@@ -276,24 +302,25 @@ describe("markExerciseIncomplete", () => {
 });
 
 describe("resetProgress", () => {
-	let kv: KVNamespace;
+	let store: ProgressStore;
 
 	beforeEach(() => {
-		kv = createMockKv();
+		store = createMockStore();
+		vi.mocked(getProgressStore).mockResolvedValue(store);
 	});
 
 	it("returns null for a non-existent student", async () => {
-		const result = await resetProgress(kv, "nobody-here-0000");
+		const result = await resetProgress("nobody-here-0000");
 		expect(result).toBeNull();
 	});
 
 	it("clears all lessons and exercises", async () => {
-		await createStudent(kv, "fresh-start-5555");
-		await markLessonComplete(kv, "fresh-start-5555", "enrollment");
-		await markLessonComplete(kv, "fresh-start-5555", "installation");
-		await markExerciseComplete(kv, "fresh-start-5555", "build-a-website");
+		await createStudent("fresh-start-5555");
+		await markLessonComplete("fresh-start-5555", "enrollment");
+		await markLessonComplete("fresh-start-5555", "installation");
+		await markExerciseComplete("fresh-start-5555", "build-a-website");
 
-		const result = await resetProgress(kv, "fresh-start-5555");
+		const result = await resetProgress("fresh-start-5555");
 
 		expect(result?.completedLessons).toEqual([]);
 		expect(result?.completedExercises).toEqual([]);
@@ -301,18 +328,18 @@ describe("resetProgress", () => {
 
 	it("preserves profile, createdAt, and deviceId", async () => {
 		const deviceId = "550e8400-e29b-41d4-a716-446655440000";
-		await createStudent(kv, "keeper-of-data-6666", deviceId);
-		await markLessonComplete(kv, "keeper-of-data-6666", "enrollment");
+		await createStudent("keeper-of-data-6666", deviceId);
+		await markLessonComplete("keeper-of-data-6666", "enrollment");
 
 		// Manually set a profile on the record
-		const progress = await getProgress(kv, "keeper-of-data-6666");
+		const progress = await getProgress("keeper-of-data-6666");
 		const stored = {
 			...progress,
 			profile: { codingExperience: "builder" as const },
 		};
-		await kv.put("student:keeper-of-data-6666", JSON.stringify(stored));
+		await store.put("student:keeper-of-data-6666", JSON.stringify(stored));
 
-		const result = await resetProgress(kv, "keeper-of-data-6666");
+		const result = await resetProgress("keeper-of-data-6666");
 
 		expect(result?.completedLessons).toEqual([]);
 		expect(result?.profile?.codingExperience).toBe("builder");

@@ -6,6 +6,7 @@ interface Props {
 
 const { title, prompt } = Astro.props;
 
+import "katex/dist/katex.min.css";
 import { t } from "../lib/ui";
 ---
 
@@ -62,3 +63,10 @@ import { t } from "../lib/ui";
     });
   })();
 </script>
+
+<style is:global>
+.katex .mord.text,
+.katex .cjk_fallback {
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+}
+</style>

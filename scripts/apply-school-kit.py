@@ -56,6 +56,9 @@ KIT_DEPENDENCIES = {
     "@astrojs/node": "10.0.2",
     "@astrojs/vercel": "^10.0.8",
     "@vercel/blob": "^2.8.1",
+    "remark-math": "^6.0.0",
+    "rehype-katex": "^7.0.1",
+    "katex": "^0.16.22",
 }
 
 NPMRC_CONTENTS = "legacy-peer-deps=true\n"

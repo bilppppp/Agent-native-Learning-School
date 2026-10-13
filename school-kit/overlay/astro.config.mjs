@@ -5,7 +5,9 @@ import vercel from "@astrojs/vercel";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "astro/config";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
+import rehypeKatex from "rehype-katex";
 import rehypeSlug from "rehype-slug";
+import remarkMath from "remark-math";
 import { assertVercelBuildEnv, resolveDeployTarget } from "./src/lib/deploy-target";
 
 const deployTarget = resolveDeployTarget();
@@ -43,12 +45,14 @@ export default defineConfig({
 	adapter,
 	integrations: [mdx()],
 	markdown: {
+		remarkPlugins: [remarkMath],
 		rehypePlugins: [
 			rehypeSlug,
 			[
 				rehypeAutolinkHeadings,
 				{ behavior: "wrap", properties: { class: "heading-anchor" } },
 			],
+			[rehypeKatex, { throwOnError: false }],
 		],
 		shikiConfig: {
 			theme: "vesper",

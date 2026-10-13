@@ -2,6 +2,8 @@
 // Licensed under the Apache 2.0 license found in the LICENSE file or at:
 //     https://opensource.org/licenses/Apache-2.0
 
+import { getProgressStore, type ProgressStore } from "./store";
+
 export type CompletionSource = "browser" | "agent";
 
 export interface CompletedLesson {
@@ -31,14 +33,17 @@ export interface StudentProgress {
 	deviceId?: string;
 }
 
-// Legacy records stored completedLessons as string[] and may lack completedExercises. Normalize on read.
-function normalizeProgress(raw: {
+type RawProgress = {
 	completedLessons: (string | CompletedLesson)[];
 	completedExercises?: (string | CompletedExercise)[];
 	profile?: StudentProfile;
 	createdAt: string;
 	updatedAt: string;
-}): StudentProgress {
+	deviceId?: string;
+};
+
+// Legacy records stored completedLessons as string[] and may lack completedExercises. Normalize on read.
+function normalizeProgress(raw: RawProgress): StudentProgress {
 	return {
 		...raw,
 		completedLessons: raw.completedLessons.map((entry) =>
@@ -66,37 +71,47 @@ function kvKey(studentId: string): string {
 	return `student:${studentId}`;
 }
 
-/** Fetch a student's progress from KV. Returns null if not found. */
-export async function getProgress(
-	kv: KVNamespace,
+async function readProgress(
+	store: ProgressStore,
 	studentId: string,
 ): Promise<StudentProgress | null> {
-	const raw = await kv.get<{
-		completedLessons: (string | CompletedLesson)[];
-		completedExercises?: (string | CompletedExercise)[];
-		profile?: StudentProfile;
-		createdAt: string;
-		updatedAt: string;
-	}>(kvKey(studentId), "json");
+	const raw = await store.get<RawProgress>(kvKey(studentId), "json");
 	return raw ? normalizeProgress(raw) : null;
 }
 
-/** Create a new student record in KV. Returns the initial progress object. */
+/** Fetch a student's progress. Returns null if not found. */
+export async function getProgress(
+	studentId: string,
+): Promise<StudentProgress | null> {
+	const store = await getProgressStore();
+	return readProgress(store, studentId);
+}
+
+/**
+ * Create a new student record if the ID is free. Returns null if that student
+ * already exists; never overwrites an existing record.
+ */
 export async function createStudent(
-	kv: KVNamespace,
 	studentId: string,
 	deviceId?: string,
-): Promise<StudentProgress> {
-	const now = new Date().toISOString();
-	const progress: StudentProgress = {
-		completedLessons: [],
-		completedExercises: [],
-		createdAt: now,
-		updatedAt: now,
-		...(deviceId ? { deviceId } : {}),
-	};
-	await kv.put(kvKey(studentId), JSON.stringify(progress));
-	return progress;
+): Promise<StudentProgress | null> {
+	const store = await getProgressStore();
+	const key = kvKey(studentId);
+	return store.withLock(key, async () => {
+		const existing = await store.get(key);
+		if (existing) return null;
+
+		const now = new Date().toISOString();
+		const progress: StudentProgress = {
+			completedLessons: [],
+			completedExercises: [],
+			createdAt: now,
+			updatedAt: now,
+			...(deviceId ? { deviceId } : {}),
+		};
+		await store.put(key, JSON.stringify(progress));
+		return progress;
+	});
 }
 
 /**
@@ -104,27 +119,30 @@ export async function createStudent(
  * lesson is a no-op. Returns the updated progress, or null if the student doesn't exist.
  */
 export async function markLessonComplete(
-	kv: KVNamespace,
 	studentId: string,
 	lessonSlug: string,
 	source: CompletionSource = "browser",
 	model?: string,
 ): Promise<StudentProgress | null> {
-	const progress = await getProgress(kv, studentId);
-	if (!progress) return null;
+	const store = await getProgressStore();
+	const key = kvKey(studentId);
+	return store.withLock(key, async () => {
+		const progress = await readProgress(store, studentId);
+		if (!progress) return null;
 
-	if (!progress.completedLessons.some((l) => l.slug === lessonSlug)) {
-		const entry: CompletedLesson = {
-			slug: lessonSlug,
-			completedAt: new Date().toISOString(),
-			source,
-		};
-		if (model) entry.model = model;
-		progress.completedLessons.push(entry);
-	}
-	progress.updatedAt = new Date().toISOString();
-	await kv.put(kvKey(studentId), JSON.stringify(progress));
-	return progress;
+		if (!progress.completedLessons.some((l) => l.slug === lessonSlug)) {
+			const entry: CompletedLesson = {
+				slug: lessonSlug,
+				completedAt: new Date().toISOString(),
+				source,
+			};
+			if (model) entry.model = model;
+			progress.completedLessons.push(entry);
+		}
+		progress.updatedAt = new Date().toISOString();
+		await store.put(key, JSON.stringify(progress));
+		return progress;
+	});
 }
 
 /**
@@ -132,27 +150,30 @@ export async function markLessonComplete(
  * exercise is a no-op. Returns the updated progress, or null if the student doesn't exist.
  */
 export async function markExerciseComplete(
-	kv: KVNamespace,
 	studentId: string,
 	exerciseSlug: string,
 	source: CompletionSource = "browser",
 	model?: string,
 ): Promise<StudentProgress | null> {
-	const progress = await getProgress(kv, studentId);
-	if (!progress) return null;
+	const store = await getProgressStore();
+	const key = kvKey(studentId);
+	return store.withLock(key, async () => {
+		const progress = await readProgress(store, studentId);
+		if (!progress) return null;
 
-	if (!progress.completedExercises.some((e) => e.slug === exerciseSlug)) {
-		const entry: CompletedExercise = {
-			slug: exerciseSlug,
-			completedAt: new Date().toISOString(),
-			source,
-		};
-		if (model) entry.model = model;
-		progress.completedExercises.push(entry);
-	}
-	progress.updatedAt = new Date().toISOString();
-	await kv.put(kvKey(studentId), JSON.stringify(progress));
-	return progress;
+		if (!progress.completedExercises.some((e) => e.slug === exerciseSlug)) {
+			const entry: CompletedExercise = {
+				slug: exerciseSlug,
+				completedAt: new Date().toISOString(),
+				source,
+			};
+			if (model) entry.model = model;
+			progress.completedExercises.push(entry);
+		}
+		progress.updatedAt = new Date().toISOString();
+		await store.put(key, JSON.stringify(progress));
+		return progress;
+	});
 }
 
 /**
@@ -161,19 +182,22 @@ export async function markExerciseComplete(
  * updated progress, or null if the student doesn't exist.
  */
 export async function markLessonIncomplete(
-	kv: KVNamespace,
 	studentId: string,
 	lessonSlug: string,
 ): Promise<StudentProgress | null> {
-	const progress = await getProgress(kv, studentId);
-	if (!progress) return null;
+	const store = await getProgressStore();
+	const key = kvKey(studentId);
+	return store.withLock(key, async () => {
+		const progress = await readProgress(store, studentId);
+		if (!progress) return null;
 
-	progress.completedLessons = progress.completedLessons.filter(
-		(l) => l.slug !== lessonSlug,
-	);
-	progress.updatedAt = new Date().toISOString();
-	await kv.put(kvKey(studentId), JSON.stringify(progress));
-	return progress;
+		progress.completedLessons = progress.completedLessons.filter(
+			(l) => l.slug !== lessonSlug,
+		);
+		progress.updatedAt = new Date().toISOString();
+		await store.put(key, JSON.stringify(progress));
+		return progress;
+	});
 }
 
 /**
@@ -182,19 +206,22 @@ export async function markLessonIncomplete(
  * updated progress, or null if the student doesn't exist.
  */
 export async function markExerciseIncomplete(
-	kv: KVNamespace,
 	studentId: string,
 	exerciseSlug: string,
 ): Promise<StudentProgress | null> {
-	const progress = await getProgress(kv, studentId);
-	if (!progress) return null;
+	const store = await getProgressStore();
+	const key = kvKey(studentId);
+	return store.withLock(key, async () => {
+		const progress = await readProgress(store, studentId);
+		if (!progress) return null;
 
-	progress.completedExercises = progress.completedExercises.filter(
-		(e) => e.slug !== exerciseSlug,
-	);
-	progress.updatedAt = new Date().toISOString();
-	await kv.put(kvKey(studentId), JSON.stringify(progress));
-	return progress;
+		progress.completedExercises = progress.completedExercises.filter(
+			(e) => e.slug !== exerciseSlug,
+		);
+		progress.updatedAt = new Date().toISOString();
+		await store.put(key, JSON.stringify(progress));
+		return progress;
+	});
 }
 
 /**
@@ -203,25 +230,27 @@ export async function markExerciseIncomplete(
  * Returns the updated progress, or null if the student doesn't exist.
  */
 export async function resetProgress(
-	kv: KVNamespace,
 	studentId: string,
 ): Promise<StudentProgress | null> {
-	const progress = await getProgress(kv, studentId);
-	if (!progress) return null;
+	const store = await getProgressStore();
+	const key = kvKey(studentId);
+	return store.withLock(key, async () => {
+		const progress = await readProgress(store, studentId);
+		if (!progress) return null;
 
-	progress.completedLessons = [];
-	progress.completedExercises = [];
-	progress.updatedAt = new Date().toISOString();
-	await kv.put(kvKey(studentId), JSON.stringify(progress));
-	return progress;
+		progress.completedLessons = [];
+		progress.completedExercises = [];
+		progress.updatedAt = new Date().toISOString();
+		await store.put(key, JSON.stringify(progress));
+		return progress;
+	});
 }
 
-/** Fetch a student's profile from KV. Returns null if the student doesn't exist. */
+/** Fetch a student's profile. Returns null if the student doesn't exist. */
 export async function getProfile(
-	kv: KVNamespace,
 	studentId: string,
 ): Promise<StudentProfile | null> {
-	const progress = await getProgress(kv, studentId);
+	const progress = await getProgress(studentId);
 	if (!progress) return null;
 	return progress.profile ?? {};
 }
@@ -231,15 +260,18 @@ export async function getProfile(
  * updated profile, or null if the student doesn't exist.
  */
 export async function updateProfile(
-	kv: KVNamespace,
 	studentId: string,
 	profile: Partial<StudentProfile>,
 ): Promise<StudentProfile | null> {
-	const progress = await getProgress(kv, studentId);
-	if (!progress) return null;
+	const store = await getProgressStore();
+	const key = kvKey(studentId);
+	return store.withLock(key, async () => {
+		const progress = await readProgress(store, studentId);
+		if (!progress) return null;
 
-	progress.profile = { ...progress.profile, ...profile };
-	progress.updatedAt = new Date().toISOString();
-	await kv.put(kvKey(studentId), JSON.stringify(progress));
-	return progress.profile;
+		progress.profile = { ...progress.profile, ...profile };
+		progress.updatedAt = new Date().toISOString();
+		await store.put(key, JSON.stringify(progress));
+		return progress.profile ?? {};
+	});
 }

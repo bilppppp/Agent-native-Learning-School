@@ -1,4 +1,5 @@
 import config from "../../school.config";
+import type { ProgressStore } from "./store";
 
 const { adjectives, nouns } = config;
 
@@ -13,18 +14,18 @@ function randomNumber(): number {
 /**
  * Generate a student ID like "curious-explorer-2019".
  *
- * If a KV namespace is provided, checks for collisions and retries
+ * If a progress store is provided, checks for collisions and retries
  * up to `maxRetries` times.
  */
 export async function generateStudentId(
-	kv?: KVNamespace,
+	store?: Pick<ProgressStore, "get">,
 	maxRetries = 10,
 ): Promise<string> {
 	for (let i = 0; i < maxRetries; i++) {
 		const id = `${pick(adjectives)}-${pick(nouns)}-${randomNumber()}`;
-		if (!kv) return id;
+		if (!store) return id;
 
-		const existing = await kv.get(`student:${id}`);
+		const existing = await store.get(`student:${id}`);
 		if (!existing) return id;
 	}
 	throw new Error("Failed to generate a unique student ID after retries");

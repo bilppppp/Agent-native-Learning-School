@@ -1,8 +1,11 @@
-import { env } from "cloudflare:workers";
 import { getCollection } from "astro:content";
 import type { APIRoute } from "astro";
 import config from "../../../../school.config";
 import { getProgress } from "../../../lib/progress";
+import {
+  ProgressStoreUnavailableError,
+  progressUnavailableResponse,
+} from "../../../lib/store";
 import { mdxToProse } from "../../../lib/mdx-to-prose";
 import { QUIZ_INSTRUCTIONS } from "../../../lib/quiz-instructions";
 import {
@@ -10,6 +13,7 @@ import {
   modeFromProfile,
   teachingGuidance,
 } from "../../../lib/teaching";
+import { publicOrigin } from "../../../lib/public-origin";
 
 function buildInterviewQuestions(): string {
   const entries = Object.entries(config.profileFields);
@@ -38,7 +42,7 @@ export const OPTIONS: APIRoute = async () =>
   new Response(null, { status: 204, headers: corsHeaders });
 
 export const GET: APIRoute = async ({ params, request }) => {
-  const origin = new URL(request.url).origin;
+  const origin = publicOrigin(request);
   const lessons = await getCollection("lessons");
   const lesson = lessons.find((l) => l.data.slug === params.slug);
 
@@ -61,8 +65,15 @@ export const GET: APIRoute = async ({ params, request }) => {
   const studentId = new URL(request.url).searchParams.get("studentId");
   let mode: "simple" | "immersive" = DEFAULT_TEACHING_MODE;
   if (studentId) {
-    const progress = await getProgress(env.PROGRESS, studentId);
-    mode = modeFromProfile(progress?.profile);
+    try {
+      const progress = await getProgress(studentId);
+      mode = modeFromProfile(progress?.profile);
+    } catch (error) {
+      if (error instanceof ProgressStoreUnavailableError) {
+        return progressUnavailableResponse(corsHeaders);
+      }
+      throw error;
+    }
   }
 
   const result = {
