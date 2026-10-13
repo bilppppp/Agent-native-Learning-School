@@ -1,0 +1,11 @@
+---
+// src/components/GreetingHeadline.astro
+interface Props {
+  greeting: string;
+  name: string;
+}
+
+const { greeting, name } = Astro.props;
+---
+
+<h2>{greeting}，{name}！</h2>

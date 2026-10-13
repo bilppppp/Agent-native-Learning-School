@@ -1,0 +1,2189 @@
+<!DOCTYPE html>
+<html lang="zh-CN" dir="ltr" data-theme="dark" data-has-sidebar data-has-hero class="astro-t7oisnxn">
+	<head>
+		<meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>入门指南 | Docs</title><link rel="canonical" href="https://docs.astro.build/zh-cn/getting-started/"/><link rel="alternate" hreflang="en" href="https://docs.astro.build/en/getting-started/"/><link rel="alternate" hreflang="de" href="https://docs.astro.build/de/getting-started/"/><link rel="alternate" hreflang="pt-BR" href="https://docs.astro.build/pt-br/getting-started/"/><link rel="alternate" hreflang="es" href="https://docs.astro.build/es/getting-started/"/><link rel="alternate" hreflang="zh-CN" href="https://docs.astro.build/zh-cn/getting-started/"/><link rel="alternate" hreflang="zh-TW" href="https://docs.astro.build/zh-tw/getting-started/"/><link rel="alternate" hreflang="fr" href="https://docs.astro.build/fr/getting-started/"/><link rel="alternate" hreflang="hi" href="https://docs.astro.build/hi/getting-started/"/><link rel="alternate" hreflang="ar" href="https://docs.astro.build/ar/getting-started/"/><link rel="alternate" hreflang="ja" href="https://docs.astro.build/ja/getting-started/"/><link rel="alternate" hreflang="ko" href="https://docs.astro.build/ko/getting-started/"/><link rel="alternate" hreflang="pl" href="https://docs.astro.build/pl/getting-started/"/><link rel="alternate" hreflang="ru" href="https://docs.astro.build/ru/getting-started/"/><link rel="alternate" hreflang="it" href="https://docs.astro.build/it/getting-started/"/><link rel="alternate" hreflang="x-default" href="https://docs.astro.build/en/getting-started/"/><link rel="sitemap" href="/sitemap-index.xml"/><link rel="icon" href="/favicon.ico" sizes="32x32"/><link rel="shortcut icon" href="/favicon.svg" type="image/svg+xml"/><meta name="generator" content="Astro v7.2.10"/><meta name="generator" content="Starlight v0.42.0"/><meta property="og:title" content="入门指南"/><meta property="og:type" content="article"/><meta property="og:url" content="https://docs.astro.build/zh-cn/getting-started/"/><meta property="og:locale" content="zh-CN"/><meta property="og:description" content="帮助你使用聚焦于内容驱动型网站的 web 框架 Astro 的指南、资源和 API 参考信息。"/><meta property="og:site_name" content="Docs"/><meta name="twitter:card" content="summary_large_image"/><meta name="description" content="帮助你使用聚焦于内容驱动型网站的 web 框架 Astro 的指南、资源和 API 参考信息。"/><meta property="og:image" content="https://docs.astro.build/open-graph/zh-cn/getting-started.webp"/><meta name="twitter:image" content="https://docs.astro.build/open-graph/zh-cn/getting-started.webp"/><meta name="twitter:site" content="astrodotbuild"/><meta name="docsearch:language" content="zh-CN"/><script src="https://cdn.usefathom.com/script.js" data-site="EZBHTSIG" data-canonical="true" defer></script>
+		
+		
+<script>
+	window.StarlightThemeProvider = (() => {
+		const storedTheme =
+			typeof localStorage !== 'undefined' && localStorage.getItem('starlight-theme');
+		const theme =
+			storedTheme ||
+			(window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+		document.documentElement.dataset.theme = theme === 'light' ? 'light' : 'dark';
+		return {
+			updatePickers(theme = storedTheme || 'auto') {
+				document.querySelectorAll('starlight-theme-select').forEach((picker) => {
+					const select = picker.querySelector('select');
+					if (select) select.value = theme;
+					/** @type {HTMLTemplateElement | null} */
+					const tmpl = document.querySelector(`#theme-icons`);
+					const newIcon = tmpl && tmpl.content.querySelector('.' + theme);
+					if (newIcon) {
+						const oldIcon = picker.querySelector('svg.label-icon');
+						if (oldIcon) {
+							oldIcon.replaceChildren(...newIcon.cloneNode(true).childNodes);
+						}
+					}
+				});
+			},
+		};
+	})();
+</script>
+
+<template id="theme-icons">
+	<svg aria-hidden="true" class="light astro-uuk7wde3" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M5 12a1 1 0 0 0-1-1H3a1 1 0 0 0 0 2h1a1 1 0 0 0 1-1Zm.64 5-.71.71a1 1 0 0 0 0 1.41 1 1 0 0 0 1.41 0l.71-.71A1 1 0 0 0 5.64 17ZM12 5a1 1 0 0 0 1-1V3a1 1 0 0 0-2 0v1a1 1 0 0 0 1 1Zm5.66 2.34a1 1 0 0 0 .7-.29l.71-.71a1 1 0 1 0-1.41-1.41l-.66.71a1 1 0 0 0 0 1.41 1 1 0 0 0 .66.29Zm-12-.29a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.71-.71a1.004 1.004 0 1 0-1.43 1.41l.73.71ZM21 11h-1a1 1 0 0 0 0 2h1a1 1 0 0 0 0-2Zm-2.64 6A1 1 0 0 0 17 18.36l.71.71a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.76-.66ZM12 6.5a5.5 5.5 0 1 0 5.5 5.5A5.51 5.51 0 0 0 12 6.5Zm0 9a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Zm0 3.5a1 1 0 0 0-1 1v1a1 1 0 0 0 2 0v-1a1 1 0 0 0-1-1Z"/></svg>
+	<svg aria-hidden="true" class="dark astro-uuk7wde3" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21.64 13a1 1 0 0 0-1.05-.14 8.049 8.049 0 0 1-3.37.73 8.15 8.15 0 0 1-8.14-8.1 8.59 8.59 0 0 1 .25-2A1 1 0 0 0 8 2.36a10.14 10.14 0 1 0 14 11.69 1 1 0 0 0-.36-1.05Zm-9.5 6.69A8.14 8.14 0 0 1 7.08 5.22v.27a10.15 10.15 0 0 0 10.14 10.14 9.784 9.784 0 0 0 2.1-.22 8.11 8.11 0 0 1-7.18 4.32v-.04Z"/></svg>
+	<svg aria-hidden="true" class="auto astro-uuk7wde3" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21 14h-1V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v7H3a1 1 0 0 0-1 1v2a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-2a1 1 0 0 0-1-1ZM6 7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7H6V7Zm14 10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-1h16v1Z"/></svg>
+</template>
+		<link rel="stylesheet" href="/_astro/print.ehPL0gv-.css" media="print">
+	<link rel="stylesheet" href="/_astro/middleware.McCM31Ap.css">
+<style>.action:where(.astro-ekguhzzh){color:var(--sl-color-white);line-height:1.1875;font-size:var(--sl-text-sm);border-radius:999rem;align-items:center;gap:.5em;padding:.5rem 1.125rem;text-decoration:none}.action:where(.astro-ekguhzzh).primary,.action:where(.astro-ekguhzzh).primary:hover{background:var(--sl-color-text-accent);color:var(--sl-color-black)}.action:where(.astro-ekguhzzh).secondary{background:var(--sl-color-black);border:2px solid}.action:where(.astro-ekguhzzh).minimal{padding-inline:0}@media (width>=50rem){.action:where(.astro-ekguhzzh){font-size:var(--sl-text-base);padding:1rem 1.25rem}}
+@layer starlight.components{:root{--sl-badge-default-border:var(--sl-color-accent);--sl-badge-default-bg:var(--sl-color-accent-low);--sl-badge-default-text:#fff;--sl-badge-note-border:var(--sl-color-blue);--sl-badge-note-bg:var(--sl-color-blue-low);--sl-badge-note-text:#fff;--sl-badge-danger-border:var(--sl-color-red);--sl-badge-danger-bg:var(--sl-color-red-low);--sl-badge-danger-text:#fff;--sl-badge-success-border:var(--sl-color-green);--sl-badge-success-bg:var(--sl-color-green-low);--sl-badge-success-text:#fff;--sl-badge-caution-border:var(--sl-color-orange);--sl-badge-caution-bg:var(--sl-color-orange-low);--sl-badge-caution-text:#fff;--sl-badge-tip-border:var(--sl-color-purple);--sl-badge-tip-bg:var(--sl-color-purple-low);--sl-badge-tip-text:#fff}[data-theme=light]:root{--sl-badge-default-bg:var(--sl-color-accent-high);--sl-badge-note-bg:var(--sl-color-blue-high);--sl-badge-danger-bg:var(--sl-color-red-high);--sl-badge-success-bg:var(--sl-color-green-high);--sl-badge-caution-bg:var(--sl-color-orange-high);--sl-badge-tip-bg:var(--sl-color-purple-high)}.sl-badge:where(.astro-d3dcjybh){border:1px solid var(--sl-color-border-badge);font-family:var(--sl-font-system-mono);color:var(--sl-color-text-badge);background-color:var(--sl-color-bg-badge);overflow-wrap:anywhere;border-radius:.25rem;line-height:normal;display:inline-block}.sidebar-content .sl-badge:where(.astro-d3dcjybh){line-height:1;font-size:var(--sl-text-xs);padding:.125rem .375rem}.sidebar-content a[aria-current=page]>.sl-badge:where(.astro-d3dcjybh){--sl-color-bg-badge:transparent;--sl-color-border-badge:currentColor;color:inherit}.default:where(.astro-d3dcjybh){--sl-color-bg-badge:var(--sl-badge-default-bg);--sl-color-border-badge:var(--sl-badge-default-border);--sl-color-text-badge:var(--sl-badge-default-text)}.note:where(.astro-d3dcjybh){--sl-color-bg-badge:var(--sl-badge-note-bg);--sl-color-border-badge:var(--sl-badge-note-border);--sl-color-text-badge:var(--sl-badge-note-text)}.danger:where(.astro-d3dcjybh){--sl-color-bg-badge:var(--sl-badge-danger-bg);--sl-color-border-badge:var(--sl-badge-danger-border);--sl-color-text-badge:var(--sl-badge-danger-text)}.success:where(.astro-d3dcjybh){--sl-color-bg-badge:var(--sl-badge-success-bg);--sl-color-border-badge:var(--sl-badge-success-border);--sl-color-text-badge:var(--sl-badge-success-text)}.tip:where(.astro-d3dcjybh){--sl-color-bg-badge:var(--sl-badge-tip-bg);--sl-color-border-badge:var(--sl-badge-tip-border);--sl-color-text-badge:var(--sl-badge-tip-text)}.caution:where(.astro-d3dcjybh){--sl-color-bg-badge:var(--sl-badge-caution-bg);--sl-color-border-badge:var(--sl-badge-caution-border);--sl-color-text-badge:var(--sl-badge-caution-text)}.small:where(.astro-d3dcjybh){font-size:var(--sl-text-xs);padding:.125rem .25rem}.medium:where(.astro-d3dcjybh){font-size:var(--sl-text-sm);padding:.175rem .35rem}.large:where(.astro-d3dcjybh){font-size:var(--sl-text-base);padding:.225rem .45rem}.sl-markdown-content :is(h1,h2,h3,h4,h5,h6) .sl-badge:where(.astro-d3dcjybh){vertical-align:middle}}.neutral-badge{border-color:var(--sl-color-gray-5);background-color:var(--sl-color-gray-6);color:var(--sl-color-text)}
+@layer starlight.components{.card-grid:where(.astro-svqvbsev){grid-template-columns:100%;gap:1rem;display:grid}.card-grid:where(.astro-svqvbsev)>*{margin-top:0!important}@media (width>=50rem){.card-grid:where(.astro-svqvbsev){grid-template-columns:1fr 1fr;gap:1.5rem}.stagger:where(.astro-svqvbsev){--stagger-height:5rem;padding-bottom:var(--stagger-height)}.stagger:where(.astro-svqvbsev)>:nth-child(2n){transform:translateY(var(--stagger-height))}}}
+</style>
+<link rel="stylesheet" href="/_astro/Discord.COsT-P3t.css">
+<style>@layer starlight.components{svg:where(.astro-uuk7wde3){color:var(--sl-icon-color);font-size:var(--sl-icon-size,1em);width:1em;height:1em}}
+@layer starlight.components{starlight-tabs:where(.astro-eacppcvt){display:block}.tablist-wrapper:where(.astro-eacppcvt){overflow-x:auto}:where(.astro-eacppcvt)[role=tablist]{border-bottom:2px solid var(--sl-color-gray-5);padding:0;list-style:none;display:flex}.tab:where(.astro-eacppcvt){display:flex}.tab:where(.astro-eacppcvt)>:where(.astro-eacppcvt)[role=tab]{--sl-tab-color-border:var(--sl-color-gray-5);line-height:var(--sl-line-height-headings);box-shadow:0 2px 0 var(--sl-tab-color-border);color:var(--sl-color-gray-3);outline-offset:var(--sl-outline-offset-inside);overflow-wrap:initial;align-items:center;gap:.5rem;padding:.275rem 1.25rem;text-decoration:none;display:flex}.tab:where(.astro-eacppcvt) :where(.astro-eacppcvt)[role=tab][aria-selected=true]{--sl-tab-color-border:var(--sl-color-text-accent);color:var(--sl-color-white);font-weight:600}.tablist-wrapper:where(.astro-eacppcvt)~[role=tabpanel]{margin-top:1rem}}
+@layer starlight.components{.sl-link-card:where(.astro-q26mfqil){border:1px solid var(--sl-color-gray-5);box-shadow:var(--sl-shadow-sm);border-radius:.5rem;grid-template-columns:1fr auto;gap:.5rem;padding:1rem;display:grid;position:relative}a:where(.astro-q26mfqil){line-height:var(--sl-line-height-headings);text-decoration:none}a:where(.astro-q26mfqil):before{content:"";position:absolute;inset:0}.stack:where(.astro-q26mfqil){flex-direction:column;gap:.5rem}.title:where(.astro-q26mfqil){color:var(--sl-color-white);font-weight:600;font-size:var(--sl-text-lg)}.description:where(.astro-q26mfqil){color:var(--sl-color-gray-3);line-height:1.5}.icon:where(.astro-q26mfqil){color:var(--sl-color-gray-3)}.sl-link-card:where(.astro-q26mfqil):hover{background:var(--sl-color-gray-7,var(--sl-color-gray-6));border-color:var(--sl-color-gray-2)}.sl-link-card:where(.astro-q26mfqil):hover .icon:where(.astro-q26mfqil){color:var(--sl-color-white)}}
+.logo:where(.astro-uivuhh7y){font-size:var(--logo-size);background-color:var(--logo-bg,#17181c);border:1px solid #ffffff1a;outline:1px solid #0000;place-content:center;width:1em;height:1em;display:flex;overflow:hidden}.circle:where(.astro-uivuhh7y){border-radius:50%}.rounded:where(.astro-uivuhh7y){border-radius:.125em}.logo:where(.astro-uivuhh7y) img:where(.astro-uivuhh7y){padding:var(--logo-padding);width:100%;height:100%}.card:where(.astro-3bc4bp75){border-radius:.5rem;grid-template-columns:auto 1fr;align-items:center;gap:.5rem;margin:-.75rem;padding:.75rem;display:grid;position:relative}.card--sm:where(.astro-3bc4bp75){text-align:center;grid-template-columns:1fr;justify-items:center}.card--lg:where(.astro-3bc4bp75){align-items:flex-start;gap:1rem;line-height:1.5}.card--lg:where(.astro-3bc4bp75) .stack:where(.astro-3bc4bp75){gap:.25rem}.card:where(.astro-3bc4bp75):hover,.card:where(.astro-3bc4bp75):focus-within{background-color:var(--sl-color-gray-6);outline:1px solid var(--sl-color-text-accent)}@media (forced-colors:active){.card:where(.astro-3bc4bp75):hover,.card:where(.astro-3bc4bp75):focus-within{outline:1px solid linktext}}.stack:where(.astro-3bc4bp75){flex-direction:column;gap:.5rem}h3:where(.astro-3bc4bp75){line-height:var(--sl-line-height-headings);font-size:var(--sl-text-lg);font-weight:600}.card--sm:where(.astro-3bc4bp75) h3:where(.astro-3bc4bp75){font-size:var(--sl-text-body)}a:where(.astro-3bc4bp75){color:var(--sl-color-white);text-decoration:none}a:where(.astro-3bc4bp75):focus{outline:none}a:where(.astro-3bc4bp75):before{content:"";position:absolute;inset:0}.fluid-grid:where(.astro-sd4ni5yw){--column-min-width:13rem;text-align:start;grid-template-columns:repeat(auto-fill, minmax(var(--column-min-width), 1fr));grid-template-columns:repeat(auto-fill, minmax(min(var(--column-min-width), 100%), 1fr));align-items:start;gap:1.5rem 2rem;margin-block:.5rem;padding-inline-start:0;list-style:none;display:grid}@media (width>=37.75em){.fluid-grid:where(.astro-sd4ni5yw){gap:2rem}}.fluid-grid--sm:where(.astro-sd4ni5yw){--column-min-width:8rem;gap:1.5rem .75rem}.fluid-grid--lg:where(.astro-sd4ni5yw){--column-min-width:18rem}.description:where(.astro-jdza4nim){color:var(--sl-color-gray-2);font-size:var(--sl-text-body-sm);text-wrap:pretty}.tags:where(.astro-jdza4nim){flex-wrap:wrap;gap:.5rem}
+@layer starlight.components{.sl-steps{--bullet-size:calc(var(--sl-line-height) * 1rem);--bullet-margin:.375rem;counter-reset:steps-counter var(--sl-steps-start,0);padding-inline-start:0;list-style:none}.sl-steps>li{counter-increment:steps-counter;padding-inline-start:calc(var(--bullet-size) + 1rem);min-height:calc(var(--bullet-size) + var(--bullet-margin));padding-bottom:1px;position:relative}.sl-steps>li+li{margin-top:0}.sl-steps>li:before{content:counter(steps-counter);top:0;width:var(--bullet-size);height:var(--bullet-size);line-height:var(--bullet-size);font-size:var(--sl-text-xs);text-align:center;color:var(--sl-color-white);background-color:var(--sl-color-gray-6);box-shadow:inset 0 0 0 1px var(--sl-color-gray-5);border-radius:99rem;font-weight:600;position:absolute;inset-inline-start:0}.sl-steps>li:after{--guide-width:1px;content:"";top:calc(var(--bullet-size) + var(--bullet-margin));bottom:var(--bullet-margin);width:var(--guide-width);background-color:var(--sl-color-hairline-light);position:absolute;inset-inline-start:calc((var(--bullet-size) - var(--guide-width)) / 2)}}@layer starlight.content{.sl-steps>li>:first-child{--lh:calc(1em * var(--sl-line-height));--shift-y:calc(.5 * (var(--bullet-size) - var(--lh)));transform:translateY(var(--shift-y));margin-bottom:var(--shift-y)}.sl-steps>li>:first-child:where(h1,h2,h3,h4,h5,h6){--lh:calc(1em * var(--sl-line-height-headings))}@supports (--prop:1lh){.sl-steps>li>:first-child{--lh:1lh}}}
+@layer starlight.components{starlight-file-tree:where(.astro-35phx4yg){--x-space:1.5rem;--y-space:.125rem;--y-pad:0;border:1px solid var(--sl-color-gray-5);background-color:var(--sl-color-gray-6);font-size:var(--sl-text-xs);font-family:var(--__sl-font-mono);padding:1rem;display:block;overflow-x:auto}starlight-file-tree:where(.astro-35phx4yg) .directory>details{padding:0;background:0 0;border:0;padding-inline-start:var(--x-space)}starlight-file-tree:where(.astro-35phx4yg) .directory>details>summary{padding:var(--y-pad) .625rem;color:var(--sl-color-white);border:0;max-width:100%;margin-inline-start:calc(-1 * var(--x-space));font-weight:400}starlight-file-tree:where(.astro-35phx4yg) .directory>details>summary::marker{color:var(--sl-color-gray-3)}starlight-file-tree:where(.astro-35phx4yg) .directory>details>summary::-webkit-details-marker{color:var(--sl-color-gray-3)}starlight-file-tree:where(.astro-35phx4yg) .directory>details>summary:hover,starlight-file-tree:where(.astro-35phx4yg) .directory>details>summary:hover .tree-icon{cursor:pointer;color:var(--sl-color-text-accent);fill:currentColor}starlight-file-tree:where(.astro-35phx4yg) .directory>details>summary:hover~ul{border-color:var(--sl-color-gray-4)}starlight-file-tree:where(.astro-35phx4yg) .directory>details>summary:hover .highlight .tree-icon{color:var(--sl-color-text-invert);fill:currentColor}starlight-file-tree:where(.astro-35phx4yg) ul{border-inline-start:1px solid var(--sl-color-gray-5);margin-inline-start:.5rem;padding:0;padding-inline-start:.125rem;list-style:none}starlight-file-tree:where(.astro-35phx4yg)>ul{border:0;margin:0;padding:0}starlight-file-tree:where(.astro-35phx4yg) li{margin:var(--y-space) 0;padding:var(--y-pad) 0}starlight-file-tree:where(.astro-35phx4yg) .file{color:var(--sl-color-white);margin-inline-start:calc(var(--x-space) - .125rem)}starlight-file-tree:where(.astro-35phx4yg) .tree-entry{flex-wrap:wrap;align-items:flex-start;max-width:calc(100% - 1rem);display:inline-flex}@media (width>=30em){starlight-file-tree:where(.astro-35phx4yg) .tree-entry{flex-wrap:nowrap}}starlight-file-tree:where(.astro-35phx4yg) .tree-entry>:first-child{flex-shrink:0}starlight-file-tree:where(.astro-35phx4yg) .empty{color:var(--sl-color-gray-3);padding-inline-start:.375rem}starlight-file-tree:where(.astro-35phx4yg) .comment{color:var(--sl-color-gray-3);min-width:12rem;max-width:24rem;padding-inline-start:1.625rem}starlight-file-tree:where(.astro-35phx4yg) .highlight{color:var(--sl-color-text-invert);background-color:var(--sl-color-text-accent);border-radius:.25rem;padding-inline-end:.5rem;display:inline-block}starlight-file-tree:where(.astro-35phx4yg) svg{fill:var(--sl-color-gray-3);vertical-align:middle;width:.875rem;height:.875rem;margin-inline:.25rem .375rem;display:inline}starlight-file-tree:where(.astro-35phx4yg) .highlight svg.tree-icon{fill:currentColor}}
+.integrations-nav:where(.astro-z37fvjko) .scope{color:var(--sl-color-text);font-weight:400}
+@layer starlight.components{.sl-link-button:where(.astro-gruanbb2){font-size:var(--sl-text-sm);outline-offset:.25rem;border:1px solid #0000;border-radius:999rem;align-items:center;gap:.5em;padding:.4375rem 1.125rem;line-height:1.1875;text-decoration:none;display:inline-flex}.sl-link-button:where(.astro-gruanbb2).primary{background:var(--sl-color-text-accent);border-color:var(--sl-color-text-accent);color:var(--sl-color-black)}.sl-link-button:where(.astro-gruanbb2).primary:hover{color:var(--sl-color-black)}.sl-link-button:where(.astro-gruanbb2).secondary{border-color:inherit;color:var(--sl-color-white)}.sl-link-button:where(.astro-gruanbb2).minimal{color:var(--sl-color-white);padding-inline:0}.sl-link-button:where(.astro-gruanbb2) svg{flex-shrink:0}@media (width>=50rem){.sl-link-button:where(.astro-gruanbb2){font-size:var(--sl-text-base);padding:.9375rem 1.25rem}}.sl-markdown-content .sl-link-button:where(.astro-gruanbb2){margin-inline-end:1rem}.sl-markdown-content .sl-link-button:where(.astro-gruanbb2):not(:where(p *)){margin-block:1rem}}
+</style><script type="module" src="/_astro/page.LAbJoB63.js"></script></head>
+	<body class="astro-t7oisnxn">
+		<a class="sl-skip-link astro-flgha6ho" href="#_top">跳转到内容</a>
+		<div class="page sl-flex astro-3xeg3vgp">
+	<header class="header astro-3xeg3vgp"><div class="header astro-ilzms2as">
+	<div class="title-wrapper sl-flex astro-ilzms2as">
+		<span class="site-title sl-flex astro-ipmp35fu">
+	<a class="astro-logo astro-ipmp35fu" href="https://astro.build/" aria-label="Astro"><svg xmlns="http://www.w3.org/2000/svg" width="106" height="32" viewBox="0 -6 381 100">
+  <path class="flame" fill="currentColor" d="M25.8 85.2c-4.5-4.2-5.9-12.8-4-19.1 3.3 4 7.8 5.2 12.5 6 7.2 1 14.3.6 21-2.7l2.4-1.4c.6 1.8.8 3.7.5 5.6-.5 4.5-2.8 8-6.4 10.7-1.4 1.1-3 2-4.5 3-4.6 3.2-5.8 6.8-4 12.1v.6a12 12 0 0 1-5.3-4.6 13 13 0 0 1-2-7c0-1.2 0-2.5-.2-3.7-.4-3-1.8-4.3-4.5-4.4a5.2 5.2 0 0 0-5.4 4.2l-.1.7Z"/>
+  <path fill="currentColor" d="M0 65s13.4-6.5 26.8-6.5l10.1-31.3c.4-1.5 1.5-2.5 2.7-2.5 1.3 0 2.4 1 2.8 2.5l10 31.3c16 0 26.9 6.5 26.9 6.5L56.5 3c-.6-1.8-1.7-3-3.2-3H26c-1.5 0-2.5 1.2-3.2 3L0 65Zm141-19.9c0 5.5-6.8 8.8-16.2 8.8-6.2 0-8.3-1.5-8.3-4.7 0-3.4 2.6-5 8.8-5 5.5 0 10.3 0 15.7.8v.1Zm.1-6.8a71 71 0 0 0-14.5-1.2c-17.7 0-26 4.2-26 14 0 10.1 5.7 14 18.8 14 11.2 0 18.8-2.8 21.6-9.8h.4l-.1 4.7c0 3.6.6 3.9 3.5 3.9h13.8c-.8-2.2-1.2-8.2-1.2-13.4l.2-15.4c0-11.5-6.9-18.8-28.5-18.8-9.3 0-19.6 1.6-27.5 4 .8 3.1 1.8 9.4 2.3 13.5a61.4 61.4 0 0 1 24-4.5c10.4 0 13.2 2.3 13.2 7.1v2Zm37.9 10c-1.9.3-4.5.3-7 .3a60 60 0 0 1-7.1-.4l-.1 2c0 9.5 6.2 15 28.1 15 20.6 0 27.3-5.5 27.3-15.1 0-9.2-4.4-13.7-24-14.7-15.2-.6-16.6-2.3-16.6-4.2 0-2.2 2-3.4 12.2-3.4 10.6 0 13.4 1.5 13.4 4.5v.7a153 153 0 0 1 14.1 0v-1.7c0-11.2-9.2-14.9-27.2-14.9-20.3 0-27 5-27 14.6 0 8.7 5.4 14.1 24.8 15 14.3.4 16 2 16 4.2 0 2.4-2.4 3.5-12.5 3.5-11.5 0-14.4-1.6-14.4-5v-.4Zm66-40.1a58.2 58.2 0 0 1-20.8 11.6v10.8h5V47c0 10 5.3 17.7 21.8 17.7 7 0 11.6-.8 17.4-2-.6-3.7-1.3-9.4-1.5-13.8a41 41 0 0 1-12.6 1.8c-6.6 0-9.3-1.8-9.3-7.1V30.8c8.6 0 17.1.2 22.1.4 0-4 .1-9.7.3-13.5l-22.1.2.2-9.7h-.5Zm44.7 20.1.3-10.6h-15.1c.2 6.5.2 13.3.2 23 0 10 0 16.7-.2 23.2H292c-.3-4.6-.3-12.3-.3-18.9 0-10.3 4.2-13.3 13.7-13.3 4.4 0 7.6.5 10.3 1.5.1-3.8.9-11.4 1.3-14.7a34 34 0 0 0-9.8-1.4c-8.2 0-14.2 3.3-17 11.3l-.6-.1Zm75.1 12.2c0 8.3-6 12.2-15.4 12.2S334 49 334 40.5c0-8.6 6-11.8 15.4-11.8 9.3 0 15.4 3.5 15.4 11.8Zm15.7-.4c0-16.5-13-24-31.1-24-18.3 0-30.8 7.5-30.8 24s11.6 25.3 30.7 25.3c19.2 0 31.2-8.8 31.2-25.3Z"/>
+  <defs>
+    <linearGradient id="gradient" x1="21" x2="64.6" y1="100" y2="79.4" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#D83333"/>
+      <stop offset="1" stop-color="#F041FF"/>
+    </linearGradient>
+  </defs>
+  <style>
+    [data-theme="dark"] .flame {
+      fill: url(#gradient);
+    }
+  </style>
+</svg>
+</a>
+	<a class="docs-logo astro-ipmp35fu" href="/zh-cn/getting-started/" aria-label="Docs"><svg xmlns="http://www.w3.org/2000/svg" width="69" height="28" viewBox="0 -6 246 100">
+	<path fill="currentColor" d="M29 63.8c16.6 0 28.1-9.5 28.1-23.8 0-14.4-10.8-22.3-27.8-22.3H0v46.1h29ZM13.2 26.6h14.2c9.5 0 16 4.6 16 13.6 0 9.3-6 14.7-15.9 14.7H13.1V26.6Zm80.1 38.8c18.8 0 31-9.7 31-24.6 0-15-12.2-24.6-31-24.6-18.7 0-31 9.6-31 24.6 0 14.8 12.3 24.6 31 24.6Zm0-9.8c-10.3 0-17-6-17-14.8 0-9 6.7-14.9 17-14.9s17.1 6 17.1 14.9-6.8 14.8-17.1 14.8Zm66.3 9.8c15 0 25.5-6 29.3-16.4l-13.5-3c-1.9 6.1-7.2 9.4-15.4 9.4-10.4 0-17-5.8-17-14.7 0-9 6.4-14.7 16.8-14.7 8.4 0 13.7 3.4 15.5 9.7l13.6-2.4c-3-10.7-13.9-17.2-28.9-17.2-18.1 0-30.7 10.2-30.7 24.8 0 14.8 11.7 24.4 30.2 24.4Zm60.3 0c16.6 0 26.1-5.7 26.1-15.9 0-8.5-5.2-12.3-18-13.6l-12.7-1.2c-5.9-.7-7.8-1.8-7.8-4.6 0-3.2 3.9-4.8 11-4.8 8.8 0 15.4 2.8 18.9 7.3l8.2-7c-5.7-6.4-14.8-9.4-26.5-9.4-15.7 0-24.6 5.4-24.6 14.5 0 8.5 5.4 12.7 16.7 14l14.1 1.5c5.5.6 7.5 1.7 7.5 4.6 0 3.6-4 5.3-12.3 5.3-9.4 0-16.5-3.6-20.4-9l-9.3 6.5c4.7 7.3 15.4 11.8 29 11.8Z"/>
+</svg>
+</a>
+</span>
+	</div>
+	<div class="sl-flex print:hidden astro-ilzms2as">
+		<sl-doc-search data-translations="{&quot;button&quot;:&quot;搜索&quot;,&quot;shortcutLabel&quot;:&quot;按下 / 来搜索文档&quot;,&quot;placeholder&quot;:&quot;搜索文档...&quot;,&quot;modal&quot;:{&quot;searchBox&quot;:{&quot;resetButtonTitle&quot;:&quot;删除搜索&quot;,&quot;resetButtonAriaLabel&quot;:&quot;删除搜索&quot;,&quot;cancelButtonText&quot;:&quot;取消&quot;,&quot;cancelButtonAriaLabel&quot;:&quot;取消&quot;},&quot;startScreen&quot;:{&quot;recentSearchesTitle&quot;:&quot;最近搜索&quot;,&quot;noRecentSearchesText&quot;:&quot;无最近搜索内容&quot;,&quot;saveRecentSearchButtonTitle&quot;:&quot;保存此搜索&quot;,&quot;removeRecentSearchButtonTitle&quot;:&quot;移除此搜索&quot;,&quot;favoriteSearchesTitle&quot;:&quot;收藏夹&quot;,&quot;removeFavoriteSearchButtonTitle&quot;:&quot;从收藏夹移除&quot;},&quot;errorScreen&quot;:{&quot;titleText&quot;:&quot;出现未知错误！&quot;,&quot;helpText&quot;:&quot;请检查你的互联网连接是否有误&quot;},&quot;footer&quot;:{&quot;selectText&quot;:&quot;进入条目&quot;,&quot;selectKeyAriaLabel&quot;:&quot;回车键&quot;,&quot;navigateText&quot;:&quot;导航&quot;,&quot;navigateUpKeyAriaLabel&quot;:&quot;上方向键&quot;,&quot;navigateDownKeyAriaLabel&quot;:&quot;下方向键&quot;,&quot;closeText&quot;:&quot;关闭搜索&quot;,&quot;closeKeyAriaLabel&quot;:&quot;Esc 键&quot;,&quot;searchByText&quot;:&quot;搜索来自&quot;},&quot;noResultsScreen&quot;:{&quot;noResultsText&quot;:&quot;没有合适的结果...&quot;,&quot;suggestedQueryText&quot;:&quot;请尝试搜索&quot;,&quot;reportMissingResultsText&quot;:&quot;仍然认为应该有搜索结果？&quot;,&quot;reportMissingResultsLinkText&quot;:&quot;请通知我们。&quot;}}}">
+	<button type="button" class="DocSearch DocSearch-Button" aria-label="搜索">
+		<span class="DocSearch-Button-Container">
+			<svg width="20" height="20" class="DocSearch-Search-Icon" viewBox="0 0 20 20">
+				<path d="M14.386 14.386l4.0877 4.0877-4.0877-4.0877c-2.9418 2.9419-7.7115 2.9419-10.6533 0-2.9419-2.9418-2.9419-7.7115 0-10.6533 2.9418-2.9419 7.7115-2.9419 10.6533 0 2.9419 2.9418 2.9419 7.7115 0 10.6533z" stroke="currentColor" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"></path>
+			</svg>
+			<span class="DocSearch-Button-Placeholder">搜索</span>
+		</span>
+		<span class="DocSearch-Button-Keys"></span>
+	</button>
+</sl-doc-search>
+
+<script type="module" src="/_astro/Search.astro_astro_type_script_index_0_lang.B0Z-CcGd.js"></script>
+	</div>
+	<div class="sl-hidden md:sl-flex print:hidden right-group astro-ilzms2as">
+		<div class="sl-flex social-icons astro-ilzms2as">
+			
+			<a href="https://github.com/withastro/astro" rel="me" class="sl-flex astro-wqs26vai">
+					<span class="sr-only astro-wqs26vai">GitHub</span>
+					<svg aria-hidden="true" class="astro-wqs26vai astro-uuk7wde3" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M12 .3a12 12 0 0 0-3.8 23.38c.6.12.83-.26.83-.57L9 21.07c-3.34.72-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.08-.74.09-.73.09-.73 1.2.09 1.83 1.24 1.83 1.24 1.08 1.83 2.81 1.3 3.5 1 .1-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.14-.3-.54-1.52.1-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.28-1.55 3.29-1.23 3.29-1.23.64 1.66.24 2.88.12 3.18a4.65 4.65 0 0 1 1.23 3.22c0 4.61-2.8 5.63-5.48 5.92.42.36.81 1.1.81 2.22l-.01 3.29c0 .31.2.69.82.57A12 12 0 0 0 12 .3Z"/></svg>
+				</a><a href="https://astro.build/chat" rel="me" class="sl-flex astro-wqs26vai">
+					<span class="sr-only astro-wqs26vai">Discord</span>
+					<svg aria-hidden="true" class="astro-wqs26vai astro-uuk7wde3" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M20.32 4.37a19.8 19.8 0 0 0-4.93-1.51 13.78 13.78 0 0 0-.64 1.28 18.27 18.27 0 0 0-5.5 0 12.64 12.64 0 0 0-.64-1.28h-.05A19.74 19.74 0 0 0 3.64 4.4 20.26 20.26 0 0 0 .11 18.09l.02.02a19.9 19.9 0 0 0 6.04 3.03l.04-.02a14.24 14.24 0 0 0 1.23-2.03.08.08 0 0 0-.05-.07 13.1 13.1 0 0 1-1.9-.92.08.08 0 0 1 .02-.1 10.2 10.2 0 0 0 .41-.31h.04a14.2 14.2 0 0 0 12.1 0l.04.01a9.63 9.63 0 0 0 .4.32.08.08 0 0 1-.03.1 12.29 12.29 0 0 1-1.9.91.08.08 0 0 0-.02.1 15.97 15.97 0 0 0 1.27 2.01h.04a19.84 19.84 0 0 0 6.03-3.05v-.03a20.12 20.12 0 0 0-3.57-13.69ZM8.02 15.33c-1.18 0-2.16-1.08-2.16-2.42 0-1.33.96-2.42 2.16-2.42 1.21 0 2.18 1.1 2.16 2.42 0 1.34-.96 2.42-2.16 2.42Zm7.97 0c-1.18 0-2.15-1.08-2.15-2.42 0-1.33.95-2.42 2.15-2.42 1.22 0 2.18 1.1 2.16 2.42 0 1.34-.94 2.42-2.16 2.42Z"/></svg>
+				</a>
+		
+		</div>
+		<starlight-theme-select>
+	
+	<label style="--sl-select-width: 6.25em" class="astro-7ekb6yc4">
+	<span class="sr-only astro-7ekb6yc4">选择主题</span>
+	<svg aria-hidden="true" class="icon label-icon astro-7ekb6yc4 astro-uuk7wde3" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21 14h-1V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v7H3a1 1 0 0 0-1 1v2a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-2a1 1 0 0 0-1-1ZM6 7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7H6V7Zm14 10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-1h16v1Z"/></svg>
+	<select autocomplete="off" class="astro-7ekb6yc4">
+		<option value="dark" class="astro-7ekb6yc4">深色</option><option value="light" class="astro-7ekb6yc4">浅色</option><option value="auto" selected class="astro-7ekb6yc4">自动</option>
+	</select>
+	<svg aria-hidden="true" class="icon caret astro-7ekb6yc4 astro-uuk7wde3" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M17 9.17a1 1 0 0 0-1.41 0L12 12.71 8.46 9.17a1 1 0 1 0-1.41 1.42l4.24 4.24a1.002 1.002 0 0 0 1.42 0L17 10.59a1.002 1.002 0 0 0 0-1.42Z"/></svg>
+</label>
+</starlight-theme-select>
+
+
+<script>
+	StarlightThemeProvider.updatePickers();
+</script>
+
+<script type="module">var e=`starlight-theme`,t=e=>e===`auto`||e===`dark`||e===`light`?e:`auto`,n=()=>t(typeof localStorage<`u`&&localStorage.getItem(e));function r(t){typeof localStorage<`u`&&localStorage.setItem(e,t===`light`||t===`dark`?t:``)}var i=()=>matchMedia(`(prefers-color-scheme: light)`).matches?`light`:`dark`;function a(e){StarlightThemeProvider.updatePickers(e),document.documentElement.dataset.theme=e===`auto`?i():e,r(e)}matchMedia(`(prefers-color-scheme: light)`).addEventListener(`change`,()=>{n()===`auto`&&a(`auto`)});var o=class extends HTMLElement{constructor(){super(),a(n()),this.querySelector(`select`)?.addEventListener(`change`,e=>{e.currentTarget instanceof HTMLSelectElement&&a(t(e.currentTarget.value))})}};customElements.define(`starlight-theme-select`,o);</script>
+		<starlight-lang-select>
+			<label style="--sl-select-width: 7em" class="astro-7ekb6yc4">
+	<span class="sr-only astro-7ekb6yc4">选择语言</span>
+	<svg aria-hidden="true" class="icon label-icon astro-7ekb6yc4 astro-uuk7wde3" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path fill-rule="evenodd" d="M8.516 3a.94.94 0 0 0-.941.94v1.15H2.94a.94.94 0 1 0 0 1.882h7.362a7.422 7.422 0 0 1-1.787 3.958 7.42 7.42 0 0 1-1.422-2.425.94.94 0 1 0-1.774.627 9.303 9.303 0 0 0 1.785 3.043 7.422 7.422 0 0 1-4.164 1.278.94.94 0 1 0 0 1.881 9.303 9.303 0 0 0 5.575-1.855 9.303 9.303 0 0 0 4.11 1.74l-.763 1.525a.968.968 0 0 0-.016.034l-1.385 2.77a.94.94 0 1 0 1.683.841l1.133-2.267h5.806l1.134 2.267a.94.94 0 0 0 1.683-.841l-1.385-2.769a.95.95 0 0 0-.018-.036l-3.476-6.951a.94.94 0 0 0-1.682 0l-1.82 3.639a7.423 7.423 0 0 1-3.593-1.256 9.303 9.303 0 0 0 2.27-5.203h1.894a.94.94 0 0 0 0-1.881H9.456V3.94A.94.94 0 0 0 8.516 3Zm6.426 11.794a1.068 1.068 0 0 1-.02.039l-.703 1.407h3.924l-1.962-3.924-1.24 2.478Z" clip-rule="evenodd"/></svg>
+	<select autocomplete="off" class="astro-7ekb6yc4">
+		<option value="/en/getting-started/" class="astro-7ekb6yc4">English</option><option value="/de/getting-started/" class="astro-7ekb6yc4">Deutsch</option><option value="/pt-br/getting-started/" class="astro-7ekb6yc4">Português do Brasil</option><option value="/es/getting-started/" class="astro-7ekb6yc4">Español</option><option value="/zh-cn/getting-started/" selected class="astro-7ekb6yc4">简体中文</option><option value="/zh-tw/getting-started/" class="astro-7ekb6yc4">正體中文</option><option value="/fr/getting-started/" class="astro-7ekb6yc4">Français</option><option value="/hi/getting-started/" class="astro-7ekb6yc4">हिन्दी</option><option value="/ar/getting-started/" class="astro-7ekb6yc4">العربية</option><option value="/ja/getting-started/" class="astro-7ekb6yc4">日本語</option><option value="/ko/getting-started/" class="astro-7ekb6yc4">한국어</option><option value="/pl/getting-started/" class="astro-7ekb6yc4">Polski</option><option value="/ru/getting-started/" class="astro-7ekb6yc4">Русский</option><option value="/it/getting-started/" class="astro-7ekb6yc4">Italiano</option>
+	</select>
+	<svg aria-hidden="true" class="icon caret astro-7ekb6yc4 astro-uuk7wde3" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M17 9.17a1 1 0 0 0-1.41 0L12 12.71 8.46 9.17a1 1 0 1 0-1.41 1.42l4.24 4.24a1.002 1.002 0 0 0 1.42 0L17 10.59a1.002 1.002 0 0 0 0-1.42Z"/></svg>
+</label>
+		</starlight-lang-select>
+
+<script type="module">var e=class extends HTMLElement{constructor(){super();let e=this.querySelector(`select`);e&&(e.addEventListener(`change`,e=>{e.currentTarget instanceof HTMLSelectElement&&(window.location.pathname=e.currentTarget.value)}),window.addEventListener(`pageshow`,t=>{if(!t.persisted)return;let n=e.querySelector(`option[selected]`)?.index;n!==e.selectedIndex&&(e.selectedIndex=n??0)}))}};customElements.define(`starlight-lang-select`,e);</script>
+	</div>
+</div></header>
+	<nav class="sidebar print:hidden astro-3xeg3vgp" aria-label="主要">
+				<button popovertarget="starlight__sidebar" class="sl-menu-button sl-flex md:sl-hidden print:hidden astro-sqcwjwwe">
+	<svg aria-hidden="true" class="open-menu astro-sqcwjwwe astro-uuk7wde3" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M3 8h18a1 1 0 1 0 0-2H3a1 1 0 0 0 0 2Zm18 8H3a1 1 0 0 0 0 2h18a1 1 0 0 0 0-2Zm0-5H3a1 1 0 0 0 0 2h18a1 1 0 0 0 0-2Z"/></svg>
+	<svg aria-hidden="true" class="close-menu astro-sqcwjwwe astro-uuk7wde3" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="m13.41 12 6.3-6.29a1.004 1.004 0 1 0-1.42-1.42L12 10.59l-6.29-6.3a1.004 1.004 0 0 0-1.42 1.42l6.3 6.29-6.3 6.29a1 1 0 0 0 0 1.42.998.998 0 0 0 1.42 0l6.29-6.3 6.29 6.3a.999.999 0 0 0 1.42 0 1 1 0 0 0 0-1.42L13.41 12Z"/></svg>
+	<span class="sr-only astro-sqcwjwwe">菜单</span>
+</button>
+				<script type="module">var e=class extends HTMLElement{constructor(){super(),matchMedia(`(min-width: 50em)`).addEventListener(`change`,()=>this.hidePopover()),this.addEventListener(`toggle`,({newState:e})=>this.trapFocus(e===`open`))}trapFocus(e){document.querySelectorAll(`.main-frame, .sl-skip-link`).forEach(t=>{t.toggleAttribute(`inert`,e)})}};customElements.define(`sl-sidebar-pane`,e);</script><script type="module">var e=class extends HTMLElement{id=Math.floor(Math.random()*1e11).toString(32);count=0;TabStore=[];PanelStore=[];constructor(){super();let e=this.querySelectorAll(`.panels > [id]`),t=this.querySelector(`.tab-list`),n=t.querySelectorAll(`a`);t.setAttribute(`role`,`tablist`);let r=0;Array.prototype.forEach.call(n,(e,i)=>{e.setAttribute(`role`,`tab`),e.setAttribute(`id`,this.id+`tab`+ this.count++),e.setAttribute(`tabindex`,`-1`),e.parentElement?.setAttribute(`role`,`presentation`),this.TabStore[i]||this.TabStore.push(new Set),this.TabStore[i].add(e),`initial`in e.dataset&&e.dataset.initial!==`false`&&(r=i);let a=e=>{e.preventDefault();let n=t.querySelector(`[aria-selected]`);e.currentTarget!==n&&this.switchTab(e.currentTarget,i)};e.addEventListener(`click`,a),e.addEventListener(`auxclick`,a),e.addEventListener(`keydown`,e=>{let t=Array.prototype.indexOf.call(n,e.currentTarget),r=e.key===`ArrowLeft`?t-1:e.key===`ArrowRight`?t+1:e.key===`Home`?0:e.key===`End`?n.length-1:null;r!==null&&(e.preventDefault(),n[r]&&this.switchTab(n[r],r))})}),Array.prototype.forEach.call(e,(e,t)=>{e.setAttribute(`role`,`tabpanel`),e.setAttribute(`tabindex`,`-1`),e.setAttribute(`aria-labelledby`,n[t].id),e.hidden=!0,this.PanelStore[t]||this.PanelStore.push(new Set),this.PanelStore[t].add(e)}),n[r].removeAttribute(`tabindex`),n[r].setAttribute(`aria-selected`,`true`),e[r].hidden=!1}switchTab(e,t){this.TabStore.forEach(e=>e.forEach(e=>{e.removeAttribute(`aria-selected`),e.setAttribute(`tabindex`,`-1`)})),this.TabStore[t].forEach(e=>{e.removeAttribute(`tabindex`),e.setAttribute(`aria-selected`,`true`)}),this.PanelStore.forEach(e=>e.forEach(e=>{e.hidden=!0})),this.PanelStore[t].forEach(e=>{e.hidden=!1}),e.focus()}};customElements.define(`tabbed-content`,e);</script><sl-sidebar-pane popover id="starlight__sidebar" class="sidebar-pane astro-3xeg3vgp">
+					<div class="sidebar-content sl-flex astro-3xeg3vgp">
+						<sl-sidebar-state-persist data-hash="04kutqk" class="astro-zixqmjhc">
+	<script aria-hidden="true">
+		(() => {
+			try {
+				if (!matchMedia('(min-width: 50em)').matches) return;
+				/** @type {HTMLElement | null} */
+				const target = document.querySelector('sl-sidebar-state-persist');
+				const state = JSON.parse(sessionStorage.getItem('sl-sidebar-state') || '0');
+				if (!target || !state || target.dataset.hash !== state.hash) return;
+				window._starlightScrollRestore = state.scroll;
+				customElements.define(
+					'sl-sidebar-restore',
+					class SidebarRestore extends HTMLElement {
+						connectedCallback() {
+							try {
+								const idx = parseInt(this.dataset.index || '');
+								const details = this.closest('details');
+								if (details && typeof state.open[idx] === 'boolean') details.open = state.open[idx];
+							} catch {}
+						}
+					}
+				);
+			} catch {}
+		})();
+	</script>
+	<tabbed-content class="astro-ngvtsbkj">
+	<ul class="tab-list tabbed-sidebar astro-ssgxcmrq astro-ngvtsbkj">
+		<li class="tab-item astro-ssgxcmrq">
+	<a href="#__tab-tutorial" class="tab-link">
+		
+						<svg aria-hidden="true" class="icon astro-ssgxcmrq astro-uuk7wde3" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path fill-rule="evenodd" d="M1.44 8.855v-.001l3.527-3.516c.34-.344.802-.541 1.285-.548h6.649l.947-.947c3.07-3.07 6.207-3.072 7.62-2.868a1.821 1.821 0 0 1 1.557 1.557c.204 1.413.203 4.55-2.868 7.62l-.946.946v6.649a1.845 1.845 0 0 1-.549 1.286l-3.516 3.528a1.844 1.844 0 0 1-3.11-.944l-.858-4.275-4.52-4.52-2.31-.463-1.964-.394A1.847 1.847 0 0 1 .98 10.693a1.843 1.843 0 0 1 .46-1.838Zm5.379 2.017-3.873-.776L6.32 6.733h4.638l-4.14 4.14Zm8.403-5.655c2.459-2.46 4.856-2.463 5.89-2.33.134 1.035.13 3.432-2.329 5.891l-6.71 6.71-3.561-3.56 6.71-6.711Zm-1.318 15.837-.776-3.873 4.14-4.14v4.639l-3.364 3.374Z" clip-rule="evenodd"/><path d="M9.318 18.345a.972.972 0 0 0-1.86-.561c-.482 1.435-1.687 2.204-2.934 2.619a8.22 8.22 0 0 1-1.23.302c.062-.365.157-.79.303-1.229.415-1.247 1.184-2.452 2.62-2.935a.971.971 0 1 0-.62-1.842c-.12.04-.236.084-.35.13-2.02.828-3.012 2.588-3.493 4.033a10.383 10.383 0 0 0-.51 2.845l-.001.016v.063c0 .536.434.972.97.972H2.24a7.21 7.21 0 0 0 .878-.065c.527-.063 1.248-.19 2.02-.447 1.445-.48 3.205-1.472 4.033-3.494a5.828 5.828 0 0 0 .147-.407Z"/></svg> Tutorial
+	</a>
+</li><li class="tab-item astro-ssgxcmrq">
+	<a href="#__tab-指南" class="tab-link" data-initial="true" aria-selected="true">
+		
+						<svg aria-hidden="true" class="icon astro-ssgxcmrq astro-uuk7wde3" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21.17 2.06A13.1 13.1 0 0 0 19 1.87a12.94 12.94 0 0 0-7 2.05 12.94 12.94 0 0 0-7-2 13.1 13.1 0 0 0-2.17.19 1 1 0 0 0-.83 1v12a1 1 0 0 0 1.17 1 10.9 10.9 0 0 1 8.25 1.91l.12.07h.11a.91.91 0 0 0 .7 0h.11l.12-.07A10.899 10.899 0 0 1 20.83 16 1 1 0 0 0 22 15V3a1 1 0 0 0-.83-.94ZM11 15.35a12.87 12.87 0 0 0-6-1.48H4v-10c.333-.02.667-.02 1 0a10.86 10.86 0 0 1 6 1.8v9.68Zm9-1.44h-1a12.87 12.87 0 0 0-6 1.48V5.67a10.86 10.86 0 0 1 6-1.8c.333-.02.667-.02 1 0v10.04Zm1.17 4.15a13.098 13.098 0 0 0-2.17-.19 12.94 12.94 0 0 0-7 2.05 12.94 12.94 0 0 0-7-2.05c-.727.003-1.453.066-2.17.19A1 1 0 0 0 2 19.21a1 1 0 0 0 1.17.79 10.9 10.9 0 0 1 8.25 1.91 1 1 0 0 0 1.16 0A10.9 10.9 0 0 1 20.83 20a1 1 0 0 0 1.17-.79 1 1 0 0 0-.83-1.15Z"/></svg> 指南
+	</a>
+</li><li class="tab-item astro-ssgxcmrq">
+	<a href="#__tab-参考" class="tab-link">
+		
+						<svg aria-hidden="true" class="icon astro-ssgxcmrq astro-uuk7wde3" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M12 11a1 1 0 0 0-1 1v4a1 1 0 0 0 2 0v-4a1 1 0 0 0-1-1Zm.38-3.92a1 1 0 0 0-.76 0 1 1 0 0 0-.33.21 1.15 1.15 0 0 0-.21.33 1 1 0 0 0 .21 1.09c.097.088.209.16.33.21A1 1 0 0 0 13 8a1.05 1.05 0 0 0-.29-.71 1 1 0 0 0-.33-.21ZM12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm0 18a8 8 0 1 1 0-16.001A8 8 0 0 1 12 20Z"/></svg> 参考
+	</a>
+</li><li class="tab-item astro-ssgxcmrq">
+	<a href="#__tab-ecosystem" class="tab-link">
+		
+						<svg aria-hidden="true" class="icon astro-ssgxcmrq astro-uuk7wde3" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M17 22H5a3 3 0 0 1-3-3V9a3 3 0 0 1 3-3h1a4 4 0 0 1 7.3-2.18c.448.64.692 1.4.7 2.18h3a1 1 0 0 1 1 1v3a4 4 0 0 1 2.18 7.3A3.86 3.86 0 0 1 18 18v3a1 1 0 0 1-1 1ZM5 8a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11v-3.18a1 1 0 0 1 1.33-.95 1.77 1.77 0 0 0 1.74-.23 2 2 0 0 0 .93-1.37 2 2 0 0 0-.48-1.59 1.89 1.89 0 0 0-2.17-.55 1 1 0 0 1-1.33-.95V8h-3.2a1 1 0 0 1-1-1.33 1.77 1.77 0 0 0-.23-1.74 1.939 1.939 0 0 0-3-.43A2 2 0 0 0 8 6c.002.23.046.456.13.67A1 1 0 0 1 7.18 8H5Z"/></svg> Ecosystem
+	</a>
+</li>
+	</ul>
+
+	<div class="panels tabbed-sidebar astro-ssgxcmrq astro-ngvtsbkj">
+		
+		
+		<div id="__tab-tutorial" class="astro-imqsbqrp">
+	
+					<ul class="top-level astro-ml3loke3">
+	<li class="astro-ml3loke3">
+				<a href="/zh-cn/tutorial/0-introduction/" class="large astro-ml3loke3">
+						<span class="astro-ml3loke3">教程：搭建一个博客</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/tutorial/1-setup/" class="large astro-ml3loke3">
+						<span class="astro-ml3loke3">第一单元：前期准备</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/tutorial/2-pages/" class="large astro-ml3loke3">
+						<span class="astro-ml3loke3">第二单元：页面</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/tutorial/3-components/" class="large astro-ml3loke3">
+						<span class="astro-ml3loke3">第三单元：组件</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/tutorial/4-layouts/" class="large astro-ml3loke3">
+						<span class="astro-ml3loke3">第四单元：布局</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/tutorial/5-astro-api/" class="large astro-ml3loke3">
+						<span class="astro-ml3loke3">第五单元 - Astro API</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/tutorial/6-islands/" class="large astro-ml3loke3">
+						<span class="astro-ml3loke3">第六单元 - Astro 群岛</span>
+						
+					</a>
+			</li>
+</ul>
+				
+</div><div id="__tab-指南" data-initial="true" class="astro-imqsbqrp">
+	
+					<ul class="top-level astro-ml3loke3">
+	<li class="astro-ml3loke3">
+				<details open class="astro-ml3loke3">
+						<summary class="astro-ml3loke3">
+							<span class="group-label astro-ml3loke3">
+								<span class="large astro-ml3loke3">欢迎，世界！</span>
+								
+							</span>
+							<svg aria-hidden="true" class="caret astro-ml3loke3 astro-uuk7wde3" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg>
+						</summary>
+						<sl-sidebar-restore data-index="0"></sl-sidebar-restore>
+						<ul class="astro-ml3loke3">
+	<li class="astro-ml3loke3">
+				<a href="/zh-cn/concepts/why-astro/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">为什么是 Astro?</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/concepts/islands/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">群岛架构</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/astro-courses/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">课程</span>
+						
+					</a>
+			</li>
+</ul>
+					</details>
+			</li><li class="astro-ml3loke3">
+				<details open class="astro-ml3loke3">
+						<summary class="astro-ml3loke3">
+							<span class="group-label astro-ml3loke3">
+								<span class="large astro-ml3loke3">开始新项目</span>
+								
+							</span>
+							<svg aria-hidden="true" class="caret astro-ml3loke3 astro-uuk7wde3" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg>
+						</summary>
+						<sl-sidebar-restore data-index="1"></sl-sidebar-restore>
+						<ul class="astro-ml3loke3">
+	<li class="astro-ml3loke3">
+				<a href="/zh-cn/install-and-setup/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">安装</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/basics/project-structure/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">项目结构</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/develop-and-build/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">开发与构建</span>
+						
+					</a>
+			</li>
+</ul>
+					</details>
+			</li><li class="astro-ml3loke3">
+				<details open class="astro-ml3loke3">
+						<summary class="astro-ml3loke3">
+							<span class="group-label astro-ml3loke3">
+								<span class="large astro-ml3loke3">配置</span>
+								
+							</span>
+							<svg aria-hidden="true" class="caret astro-ml3loke3 astro-uuk7wde3" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg>
+						</summary>
+						<sl-sidebar-restore data-index="2"></sl-sidebar-restore>
+						<ul class="astro-ml3loke3">
+	<li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/configuring-astro/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">配置概览</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/editor-setup/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">编辑器配置</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/typescript/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">TypeScript</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/environment-variables/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">环境变量</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/integrations/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">使用集成</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/build-with-ai/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">使用 AI 构建</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/dev-toolbar/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">开发者工具栏</span>
+						
+					</a>
+			</li>
+</ul>
+					</details>
+			</li><li class="astro-ml3loke3">
+				<details open class="astro-ml3loke3">
+						<summary class="astro-ml3loke3">
+							<span class="group-label astro-ml3loke3">
+								<span class="large astro-ml3loke3">路由导航</span>
+								
+							</span>
+							<svg aria-hidden="true" class="caret astro-ml3loke3 astro-uuk7wde3" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg>
+						</summary>
+						<sl-sidebar-restore data-index="3"></sl-sidebar-restore>
+						<ul class="astro-ml3loke3">
+	<li class="astro-ml3loke3">
+				<a href="/zh-cn/basics/astro-pages/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">页面</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/routing/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">路由</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/endpoints/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">API 端点</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/middleware/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">中间件</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/internationalization/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">国际化（i18n）</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/prefetch/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">预获取</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/view-transitions/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">视图过渡动画</span>
+						
+					</a>
+			</li>
+</ul>
+					</details>
+			</li><li class="astro-ml3loke3">
+				<details open class="astro-ml3loke3">
+						<summary class="astro-ml3loke3">
+							<span class="group-label astro-ml3loke3">
+								<span class="large astro-ml3loke3">构建你的 UI</span>
+								
+							</span>
+							<svg aria-hidden="true" class="caret astro-ml3loke3 astro-uuk7wde3" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg>
+						</summary>
+						<sl-sidebar-restore data-index="4"></sl-sidebar-restore>
+						<ul class="astro-ml3loke3">
+	<li class="astro-ml3loke3">
+				<a href="/zh-cn/basics/astro-components/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">组件</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/basics/layouts/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">布局</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/styling/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">样式和 CSS</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/fonts/" class="fallback astro-ml3loke3" class="fallback">
+						<span class="astro-ml3loke3">Fonts</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/syntax-highlighting/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">语法高亮</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/client-side-scripts/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">处理脚本和事件</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/framework-components/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">前端框架</span>
+						
+					</a>
+			</li>
+</ul>
+					</details>
+			</li><li class="astro-ml3loke3">
+				<details open class="astro-ml3loke3">
+						<summary class="astro-ml3loke3">
+							<span class="group-label astro-ml3loke3">
+								<span class="large astro-ml3loke3">向你的网站添加内容</span>
+								
+							</span>
+							<svg aria-hidden="true" class="caret astro-ml3loke3 astro-uuk7wde3" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg>
+						</summary>
+						<sl-sidebar-restore data-index="5"></sl-sidebar-restore>
+						<ul class="astro-ml3loke3">
+	<li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/markdown-content/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Markdown</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/content-collections/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">内容集合</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/images/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">图像</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/data-fetching/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">数据获取</span>
+						
+					</a>
+			</li>
+</ul>
+					</details>
+			</li><li class="astro-ml3loke3">
+				<details open class="astro-ml3loke3">
+						<summary class="astro-ml3loke3">
+							<span class="group-label astro-ml3loke3">
+								<span class="large astro-ml3loke3">服务端渲染</span>
+								
+							</span>
+							<svg aria-hidden="true" class="caret astro-ml3loke3 astro-uuk7wde3" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg>
+						</summary>
+						<sl-sidebar-restore data-index="6"></sl-sidebar-restore>
+						<ul class="astro-ml3loke3">
+	<li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/on-demand-rendering/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">按需渲染</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/server-islands/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">服务器群岛</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/actions/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Actions</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/sessions/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Sessions</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/caching/" class="fallback astro-ml3loke3" class="fallback">
+						<span class="astro-ml3loke3">Route caching</span>
+						
+					</a>
+			</li>
+</ul>
+					</details>
+			</li><li class="astro-ml3loke3">
+				<details open class="astro-ml3loke3">
+						<summary class="astro-ml3loke3">
+							<span class="group-label astro-ml3loke3">
+								<span class="large astro-ml3loke3">升级</span>
+								
+							</span>
+							<svg aria-hidden="true" class="caret astro-ml3loke3 astro-uuk7wde3" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg>
+						</summary>
+						<sl-sidebar-restore data-index="7"></sl-sidebar-restore>
+						<ul class="astro-ml3loke3">
+	<li class="astro-ml3loke3">
+				<a href="/zh-cn/upgrade-astro/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">升级 Astro</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<details class="astro-ml3loke3">
+						<summary class="astro-ml3loke3">
+							<span class="group-label astro-ml3loke3">
+								<span class="large astro-ml3loke3">主版本升级指南</span>
+								
+							</span>
+							<svg aria-hidden="true" class="caret astro-ml3loke3 astro-uuk7wde3" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg>
+						</summary>
+						<sl-sidebar-restore data-index="8"></sl-sidebar-restore>
+						<ul class="astro-ml3loke3">
+	<li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/upgrade-to/v7/" class="fallback astro-ml3loke3" class="fallback">
+						<span class="astro-ml3loke3">v7.0</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/upgrade-to/v6/" class="fallback astro-ml3loke3" class="fallback">
+						<span class="astro-ml3loke3">v6.0</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/upgrade-to/v5/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">v5.0</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/upgrade-to/v4/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">v4.0</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/upgrade-to/v3/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">v3.0</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/upgrade-to/v2/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">v2.0</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/upgrade-to/v1/" class="fallback astro-ml3loke3" class="fallback">
+						<span class="astro-ml3loke3">v1.0</span>
+						
+					</a>
+			</li>
+</ul>
+					</details>
+			</li>
+</ul>
+					</details>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/troubleshooting/" class="large astro-ml3loke3">
+						<span class="astro-ml3loke3">故障排除</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<details class="astro-ml3loke3">
+						<summary class="astro-ml3loke3">
+							<span class="group-label astro-ml3loke3">
+								<span class="large astro-ml3loke3">操作方案</span>
+								
+							</span>
+							<svg aria-hidden="true" class="caret astro-ml3loke3 astro-uuk7wde3" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg>
+						</summary>
+						<sl-sidebar-restore data-index="9"></sl-sidebar-restore>
+						<ul class="astro-ml3loke3">
+	<li class="astro-ml3loke3">
+				<a href="/zh-cn/recipes/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">方案概览</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/recipes/add-yaml-support/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">安装一个 Vite 或 Rollup 插件</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/recipes/analyze-bundle-size/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">分析打包产物的大小</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/recipes/build-custom-img-component/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">构建自定义图像组件</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/recipes/build-forms/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">在 Astro 页面中构建 HTML 表单</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/recipes/build-forms-api/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">使用 API 路由构建表单</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/recipes/bun/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">在 Astro 中使用 Bun</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/recipes/call-endpoints/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">调用服务器端点</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/recipes/captcha/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">校验验证码</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/recipes/customizing-output-filenames/" class="fallback astro-ml3loke3" class="fallback">
+						<span class="astro-ml3loke3">Customize file names in the build output</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/recipes/docker/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">用 Docker 来构建你的 Astro 网站</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/recipes/dynamically-importing-images/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">动态导入图片</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/recipes/external-links/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">为链接添加图标</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/recipes/i18n/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">添加 i18n 功能</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/recipes/making-toolbar-apps/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">创建开发者工具栏应用</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/recipes/modified-time/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">添加最后修改时间</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/recipes/reading-time/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">添加阅读时间</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/recipes/rss/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">添加 RSS 摘要</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/recipes/sharing-state/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">在 Astro 组件中共享状态</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/recipes/sharing-state-islands/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">群岛间的状态共享</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/recipes/streaming-improve-page-performance/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">使用流式处理来提升页面性能</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/recipes/tailwind-rendered-markdown/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">使用 Tailwind Typography 美化渲染后的 Markdown</span>
+						
+					</a>
+			</li>
+</ul>
+					</details>
+			</li><li class="astro-ml3loke3">
+				<details class="astro-ml3loke3">
+						<summary class="astro-ml3loke3">
+							<span class="group-label astro-ml3loke3">
+								<span class="large astro-ml3loke3">迁移到 Astro</span>
+								
+							</span>
+							<svg aria-hidden="true" class="caret astro-ml3loke3 astro-uuk7wde3" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg>
+						</summary>
+						<sl-sidebar-restore data-index="10"></sl-sidebar-restore>
+						<ul class="astro-ml3loke3">
+	<li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/migrate-to-astro/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">网站迁移概览</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/migrate-to-astro/from-create-react-app/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Create React App</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/migrate-to-astro/from-docusaurus/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Docusaurus</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/migrate-to-astro/from-eleventy/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Eleventy</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/migrate-to-astro/from-gatsby/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Gatsby</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/migrate-to-astro/from-gitbook/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">GitBook</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/migrate-to-astro/from-gridsome/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Gridsome</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/migrate-to-astro/from-hugo/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Hugo</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/migrate-to-astro/from-jekyll/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Jekyll</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/migrate-to-astro/from-nextjs/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Next.js</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/migrate-to-astro/from-nuxtjs/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">NuxtJS</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/migrate-to-astro/from-pelican/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Pelican</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/migrate-to-astro/from-sveltekit/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">SvelteKit</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/migrate-to-astro/from-vuepress/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">VuePress</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/migrate-to-astro/from-wordpress/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">WordPress</span>
+						
+					</a>
+			</li>
+</ul>
+					</details>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/contribute/" class="large astro-ml3loke3">
+						<span class="astro-ml3loke3">为 Astro 做出贡献</span>
+						
+					</a>
+			</li>
+</ul>
+				
+</div><div id="__tab-参考" class="astro-imqsbqrp">
+	
+					<ul class="top-level astro-ml3loke3">
+	<li class="astro-ml3loke3">
+				<details open class="astro-ml3loke3">
+						<summary class="astro-ml3loke3">
+							<span class="group-label astro-ml3loke3">
+								<span class="large astro-ml3loke3">Astro 模板语法</span>
+								
+							</span>
+							<svg aria-hidden="true" class="caret astro-ml3loke3 astro-uuk7wde3" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg>
+						</summary>
+						<sl-sidebar-restore data-index="11"></sl-sidebar-restore>
+						<ul class="astro-ml3loke3">
+	<li class="astro-ml3loke3">
+				<a href="/zh-cn/reference/astro-syntax/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">模板表达式参考</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/reference/directives-reference/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">模板指令参考</span>
+						
+					</a>
+			</li>
+</ul>
+					</details>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/reference/configuration-reference/" class="large astro-ml3loke3">
+						<span class="astro-ml3loke3">配置参考</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/reference/cli-reference/" class="large astro-ml3loke3">
+						<span class="astro-ml3loke3">CLI 命令</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/imports/" class="large astro-ml3loke3">
+						<span class="astro-ml3loke3">导入参考</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/reference/routing-reference/" class="large astro-ml3loke3">
+						<span class="astro-ml3loke3">路由参考</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<details open class="astro-ml3loke3">
+						<summary class="astro-ml3loke3">
+							<span class="group-label astro-ml3loke3">
+								<span class="large astro-ml3loke3">运行时 API</span>
+								
+							</span>
+							<svg aria-hidden="true" class="caret astro-ml3loke3 astro-uuk7wde3" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg>
+						</summary>
+						<sl-sidebar-restore data-index="12"></sl-sidebar-restore>
+						<ul class="astro-ml3loke3">
+	<li class="astro-ml3loke3">
+				<a href="/zh-cn/reference/api-reference/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">渲染上下文</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/reference/modules/astro-actions/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">astro:actions</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/reference/modules/astro-app/" class="fallback astro-ml3loke3" class="fallback">
+						<span class="astro-ml3loke3">astro/app</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/reference/modules/astro-assets/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">astro:assets</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/reference/modules/astro-config/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">astro:config</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/reference/modules/astro-content/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">astro:content</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/reference/modules/astro-env/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">astro:env</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/reference/modules/astro-fetch/" class="fallback astro-ml3loke3" class="fallback">
+						<span class="astro-ml3loke3">astro/fetch</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/reference/modules/astro-hono/" class="fallback astro-ml3loke3" class="fallback">
+						<span class="astro-ml3loke3">astro/hono</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/reference/modules/astro-i18n/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">astro:i18n</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/reference/modules/astro-middleware/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">astro:middleware</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/reference/modules/astro-static-paths/" class="fallback astro-ml3loke3" class="fallback">
+						<span class="astro-ml3loke3">astro:static-paths</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/reference/modules/astro-transitions/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">astro:transitions</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/reference/modules/astro-zod/" class="fallback astro-ml3loke3" class="fallback">
+						<span class="astro-ml3loke3">astro/zod</span>
+						
+					</a>
+			</li>
+</ul>
+					</details>
+			</li><li class="astro-ml3loke3">
+				<details open class="astro-ml3loke3">
+						<summary class="astro-ml3loke3">
+							<span class="group-label astro-ml3loke3">
+								<span class="large astro-ml3loke3">Markdown processors</span>
+								
+							</span>
+							<svg aria-hidden="true" class="caret astro-ml3loke3 astro-uuk7wde3" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg>
+						</summary>
+						<sl-sidebar-restore data-index="13"></sl-sidebar-restore>
+						<ul class="astro-ml3loke3">
+	<li class="astro-ml3loke3">
+				<a href="/zh-cn/reference/markdown-processors/satteri/" class="fallback astro-ml3loke3" class="fallback">
+						<span class="astro-ml3loke3">Sätteri</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/reference/markdown-processors/unified/" class="fallback astro-ml3loke3" class="fallback">
+						<span class="astro-ml3loke3">Unified</span>
+						
+					</a>
+			</li>
+</ul>
+					</details>
+			</li><li class="astro-ml3loke3">
+				<details open class="astro-ml3loke3">
+						<summary class="astro-ml3loke3">
+							<span class="group-label astro-ml3loke3">
+								<span class="large astro-ml3loke3">其他开发 API</span>
+								
+							</span>
+							<svg aria-hidden="true" class="caret astro-ml3loke3 astro-uuk7wde3" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg>
+						</summary>
+						<sl-sidebar-restore data-index="14"></sl-sidebar-restore>
+						<ul class="astro-ml3loke3">
+	<li class="astro-ml3loke3">
+				<a href="/zh-cn/reference/integrations-reference/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">集成 API</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/reference/adapter-reference/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">适配器 API</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/reference/renderer-reference/" class="fallback astro-ml3loke3" class="fallback">
+						<span class="astro-ml3loke3">Renderer API</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/reference/content-loader-reference/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">内容加载器 API</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/reference/image-service-reference/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">图像服务 API</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/reference/dev-toolbar-app-reference/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">开发者工具栏应用 API</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/reference/session-driver-reference/" class="fallback astro-ml3loke3" class="fallback">
+						<span class="astro-ml3loke3">Session Driver API</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/reference/font-provider-reference/" class="fallback astro-ml3loke3" class="fallback">
+						<span class="astro-ml3loke3">Font Provider API</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/reference/cache-provider-reference/" class="fallback astro-ml3loke3" class="fallback">
+						<span class="astro-ml3loke3">Cache Provider API</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/reference/logger-reference/" class="fallback astro-ml3loke3" class="fallback">
+						<span class="astro-ml3loke3">Logger API</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/reference/container-reference/" class="fallback astro-ml3loke3" class="fallback">
+						<span class="astro-ml3loke3">Container API (experimental)</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/reference/programmatic-reference/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">编程式 Astro API（实验性）</span>
+						
+					</a>
+			</li>
+</ul>
+					</details>
+			</li><li class="astro-ml3loke3">
+				<details open class="astro-ml3loke3">
+						<summary class="astro-ml3loke3">
+							<span class="group-label astro-ml3loke3">
+								<span class="large astro-ml3loke3">实验性功能</span>
+								
+							</span>
+							<svg aria-hidden="true" class="caret astro-ml3loke3 astro-uuk7wde3" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg>
+						</summary>
+						<sl-sidebar-restore data-index="15"></sl-sidebar-restore>
+						<ul class="astro-ml3loke3">
+	<li class="astro-ml3loke3">
+				<a href="/zh-cn/reference/experimental-flags/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">配置实验性标志</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/reference/experimental-flags/client-prerender/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">客户端预渲染</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/reference/experimental-flags/content-intellisense/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">用于集合的 Intellisense</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/reference/experimental-flags/chrome-devtools-workspace/" class="fallback astro-ml3loke3" class="fallback">
+						<span class="astro-ml3loke3">Chrome DevTools workspace</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/reference/experimental-flags/svg-optimization/" class="fallback astro-ml3loke3" class="fallback">
+						<span class="astro-ml3loke3">SVG optimization</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/reference/experimental-flags/collection-storage/" class="fallback astro-ml3loke3" class="fallback">
+						<span class="astro-ml3loke3">Collection storage</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/reference/experimental-flags/incremental-build/" class="fallback astro-ml3loke3" class="fallback">
+						<span class="astro-ml3loke3">Incremental builds</span>
+						
+					</a>
+			</li>
+</ul>
+					</details>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/reference/legacy-flags/" class="large astro-ml3loke3">
+						<span class="astro-ml3loke3">旧版标志</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/reference/error-reference/" class="large astro-ml3loke3">
+						<span class="astro-ml3loke3">错误参考</span>
+						
+					</a>
+			</li>
+</ul>
+				
+</div><div id="__tab-ecosystem" class="astro-imqsbqrp">
+	
+					<ul class="top-level astro-ml3loke3">
+	<li class="astro-ml3loke3">
+				<details class="astro-ml3loke3">
+						<summary class="astro-ml3loke3">
+							<span class="group-label astro-ml3loke3">
+								<span class="large astro-ml3loke3">UI 框架</span>
+								
+							</span>
+							<svg aria-hidden="true" class="caret astro-ml3loke3 astro-uuk7wde3" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg>
+						</summary>
+						<sl-sidebar-restore data-index="16"></sl-sidebar-restore>
+						<ul class="astro-ml3loke3">
+	<li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/integrations-guide/alpinejs/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Alpine.js</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/integrations-guide/preact/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Preact</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/integrations-guide/react/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">React</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/integrations-guide/solid-js/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">SolidJS</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/integrations-guide/svelte/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Svelte</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/integrations-guide/vue/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Vue</span>
+						
+					</a>
+			</li>
+</ul>
+					</details>
+			</li><li class="astro-ml3loke3">
+				<details class="astro-ml3loke3">
+						<summary class="astro-ml3loke3">
+							<span class="group-label astro-ml3loke3">
+								<span class="large astro-ml3loke3">适配器</span>
+								
+							</span>
+							<svg aria-hidden="true" class="caret astro-ml3loke3 astro-uuk7wde3" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg>
+						</summary>
+						<sl-sidebar-restore data-index="17"></sl-sidebar-restore>
+						<ul class="astro-ml3loke3">
+	<li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/integrations-guide/cloudflare/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Cloudflare</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/integrations-guide/netlify/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Netlify</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/integrations-guide/node/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Node</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/integrations-guide/vercel/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Vercel</span>
+						
+					</a>
+			</li>
+</ul>
+					</details>
+			</li><li class="astro-ml3loke3">
+				<details class="astro-ml3loke3">
+						<summary class="astro-ml3loke3">
+							<span class="group-label astro-ml3loke3">
+								<span class="large astro-ml3loke3">其他官方集成</span>
+								
+							</span>
+							<svg aria-hidden="true" class="caret astro-ml3loke3 astro-uuk7wde3" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg>
+						</summary>
+						<sl-sidebar-restore data-index="18"></sl-sidebar-restore>
+						<ul class="astro-ml3loke3">
+	<li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/integrations-guide/markdoc/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Markdoc</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/integrations-guide/mdx/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">MDX</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/integrations-guide/partytown/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Partytown</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/integrations-guide/sitemap/" class="fallback astro-ml3loke3" class="fallback">
+						<span class="astro-ml3loke3">Sitemap</span>
+						
+					</a>
+			</li>
+</ul>
+					</details>
+			</li><li class="astro-ml3loke3">
+				<details class="astro-ml3loke3">
+						<summary class="astro-ml3loke3">
+							<span class="group-label astro-ml3loke3">
+								<span class="large astro-ml3loke3">部署指南</span>
+								
+							</span>
+							<svg aria-hidden="true" class="caret astro-ml3loke3 astro-uuk7wde3" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg>
+						</summary>
+						<sl-sidebar-restore data-index="19"></sl-sidebar-restore>
+						<ul class="astro-ml3loke3">
+	<li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/deploy/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">部署概览</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/deploy/aws/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">AWS</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/deploy/aws-via-flightcontrol/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">AWS via Flightcontrol</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/deploy/aws-via-sst/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">AWS via SST</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/deploy/azion/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Azion</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/deploy/buddy/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Buddy</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/deploy/cleavr/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Cleavr</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/deploy/clever-cloud/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Clever Cloud</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/deploy/cloudflare/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Cloudflare</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/deploy/cloudray/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">CloudRay</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/deploy/deno/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Deno Deploy</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/deploy/deployhq/" class="fallback astro-ml3loke3" class="fallback">
+						<span class="astro-ml3loke3">DeployHQ</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/deploy/edgeone-pages/" class="fallback astro-ml3loke3" class="fallback">
+						<span class="astro-ml3loke3">EdgeOne Pages</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/deploy/firebase/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Firebase</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/deploy/fleek/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Fleek</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/deploy/flyio/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Fly.io</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/deploy/github/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">GitHub Pages</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/deploy/gitlab/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">GitLab Pages</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/deploy/google-cloud/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Google Cloud</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/deploy/heroku/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Heroku</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/deploy/hostinger/" class="fallback astro-ml3loke3" class="fallback">
+						<span class="astro-ml3loke3">Hostinger</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/deploy/ishosting/" class="fallback astro-ml3loke3" class="fallback">
+						<span class="astro-ml3loke3">is*hosting</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/deploy/microsoft-azure/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Microsoft Azure</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/deploy/netlify/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Netlify</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/deploy/railway/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Railway</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/deploy/render/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Render</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/deploy/seenode/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Seenode</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/deploy/sevalla/" class="fallback astro-ml3loke3" class="fallback">
+						<span class="astro-ml3loke3">Sevalla</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/deploy/stormkit/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Stormkit</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/deploy/surge/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Surge</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/deploy/vercel/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Vercel</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/deploy/zeabur/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Zeabur</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/deploy/zephyr/" class="fallback astro-ml3loke3" class="fallback">
+						<span class="astro-ml3loke3">Zephyr Cloud</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/deploy/zerops/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Zerops</span>
+						
+					</a>
+			</li>
+</ul>
+					</details>
+			</li><li class="astro-ml3loke3">
+				<details class="astro-ml3loke3">
+						<summary class="astro-ml3loke3">
+							<span class="group-label astro-ml3loke3">
+								<span class="large astro-ml3loke3">内容管理系统</span>
+								
+							</span>
+							<svg aria-hidden="true" class="caret astro-ml3loke3 astro-uuk7wde3" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg>
+						</summary>
+						<sl-sidebar-restore data-index="20"></sl-sidebar-restore>
+						<ul class="astro-ml3loke3">
+	<li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/cms/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">CMS 概览</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/cms/apostrophecms/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">ApostropheCMS</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/cms/builderio/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Builder.io</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/cms/buttercms/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">ButterCMS</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/cms/caisy/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Caisy</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/cms/cloudcannon/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">CloudCannon</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/cms/contentful/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Contentful</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/cms/cosmic/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Cosmic</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/cms/craft-cms/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Craft CMS</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/cms/craft-cross-cms/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Craft Cross CMS</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/cms/crystallize/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Crystallize</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/cms/datocms/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">DatoCMS</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/cms/decap-cms/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Decap CMS</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/cms/directus/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Directus</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/cms/drupal/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Drupal</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/cms/emdash/" class="fallback astro-ml3loke3" class="fallback">
+						<span class="astro-ml3loke3">EmDash</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/cms/flotiq/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Flotiq 与 Astro</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/cms/frontmatter-cms/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Front Matter CMS</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/cms/ghost/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Ghost</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/cms/gitcms/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">GitCMS</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/cms/hackmd/" class="fallback astro-ml3loke3" class="fallback">
+						<span class="astro-ml3loke3">HackMD</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/cms/hashnode/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Hashnode</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/cms/hygraph/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Hygraph</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/cms/jekyllpad/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">JekyllPad</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/cms/keystatic/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Keystatic</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/cms/keystonejs/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">KeystoneJS</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/cms/kontent-ai/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Kontent.ai</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/cms/microcms/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">microCMS</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/cms/optimizely/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Optimizely CMS</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/cms/pages-cms/" class="fallback astro-ml3loke3" class="fallback">
+						<span class="astro-ml3loke3">Pages CMS</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/cms/payload/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Payload CMS</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/cms/preprcms/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Prepr CMS</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/cms/prismic/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Prismic</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/cms/sanity/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Sanity</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/cms/sitecore/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Sitecore XM</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/cms/sitepins/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Sitepins</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/cms/spinal/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Spinal</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/cms/statamic/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Statamic</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/cms/storyblok/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Storyblok</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/cms/strapi/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Strapi</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/cms/studiocms/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">StudioCMS</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/cms/tina-cms/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Tina CMS</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/cms/umbraco/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Umbraco</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/cms/vault-cms/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Vault CMS</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/cms/wordpress/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">WordPress</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/cms/zero/" class="fallback astro-ml3loke3" class="fallback">
+						<span class="astro-ml3loke3">Zero</span>
+						
+					</a>
+			</li>
+</ul>
+					</details>
+			</li><li class="astro-ml3loke3">
+				<details class="astro-ml3loke3">
+						<summary class="astro-ml3loke3">
+							<span class="group-label astro-ml3loke3">
+								<span class="large astro-ml3loke3">后端服务</span>
+								
+							</span>
+							<svg aria-hidden="true" class="caret astro-ml3loke3 astro-uuk7wde3" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg>
+						</summary>
+						<sl-sidebar-restore data-index="21"></sl-sidebar-restore>
+						<ul class="astro-ml3loke3">
+	<li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/backend/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">后端服务概览</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/backend/appwrite/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Appwrite</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/backend/firebase/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Firebase</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/backend/neon/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Neon</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/backend/prisma-postgres/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Prisma Postgres</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/backend/scalekit/" class="fallback astro-ml3loke3" class="fallback">
+						<span class="astro-ml3loke3">Scalekit</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/backend/sentry/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Sentry</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/backend/supabase/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Supabase</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/backend/turso/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Turso</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/backend/xata/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Xata</span>
+						
+					</a>
+			</li>
+</ul>
+					</details>
+			</li><li class="astro-ml3loke3">
+				<details class="astro-ml3loke3">
+						<summary class="astro-ml3loke3">
+							<span class="group-label astro-ml3loke3">
+								<span class="large astro-ml3loke3">图像和视频托管</span>
+								
+							</span>
+							<svg aria-hidden="true" class="caret astro-ml3loke3 astro-uuk7wde3" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg>
+						</summary>
+						<sl-sidebar-restore data-index="22"></sl-sidebar-restore>
+						<ul class="astro-ml3loke3">
+	<li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/media/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">数字资源管理器概览</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/media/cloudinary/" class="astro-ml3loke3">
+						<span class="astro-ml3loke3">Cloudinary</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/media/imagekit/" class="fallback astro-ml3loke3" class="fallback">
+						<span class="astro-ml3loke3">ImageKit</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/media/mux/" class="fallback astro-ml3loke3" class="fallback">
+						<span class="astro-ml3loke3">Mux</span>
+						
+					</a>
+			</li>
+</ul>
+					</details>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/ecommerce/" class="large astro-ml3loke3">
+						<span class="astro-ml3loke3">电子商务</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/authentication/" class="large astro-ml3loke3">
+						<span class="astro-ml3loke3">身份认证</span>
+						
+					</a>
+			</li><li class="astro-ml3loke3">
+				<a href="/zh-cn/guides/testing/" class="large astro-ml3loke3">
+						<span class="astro-ml3loke3">测试</span>
+						
+					</a>
+			</li>
+</ul>
+				
+</div>
+	</div>
+</tabbed-content>
+
+
+
+
+	<script aria-hidden="true">
+		(() => {
+			const scroller = document.getElementById('starlight__sidebar');
+			if (!window._starlightScrollRestore || !scroller) return;
+			scroller.scrollTop = window._starlightScrollRestore;
+			delete window._starlightScrollRestore;
+		})();
+	</script></sl-sidebar-state-persist>
+
+<div class="md:sl-hidden astro-ssgxcmrq">
+	<div class="sl-flex astro-ilwx3stt">
+	<div dir="ltr" lang="en" class="sponsors astro-ul23vwyi">
+	<h2 class="sponsors-title astro-ul23vwyi">赞助商</h2>
+	<a href="https://www.netlify.com/?utm_campaign=Astro-2024&utm_source=astro-referral" aria-label="Netlify" class="astro-ul23vwyi">
+		<svg viewBox="0 0 256 105" width="127" aria-hidden="true" fill="currentColor" class="astro-ul23vwyi">
+	<path fill="#32E6E2" d="M58.5 103.8V77.4l.5-.5h6.6l.6.5v26.4l-.6.5H59l-.5-.5Zm0-76.9V.5L59 0h6.6l.6.5V27l-.6.5H59l-.5-.5ZM35.8 85.2h-1l-4.4-4.5v-.9l8.5-8.5h4.7l.7.6v4.8l-8.5 8.5Zm-5.4-60.5v-.9l4.5-4.5h.9l8.5 8.5v4.8l-.7.6H39l-8.5-8.5ZM.5 48.3H38l.5.6v6.6l-.5.5H.5l-.5-.5v-6.6l.5-.6Zm255 0 .5.6v6.6l-.6.5h-37.8l-.6-.5 2.8-6.6.5-.6h35.1Z"></path>
+	<path d="M74.7 65.9H68l-.6-.6V50c0-2.7-1-4.9-4.4-5-1.7 0-3.6 0-5.7.2l-.3.3v20l-.6.5H50l-.6-.6V39l.6-.6h14.8c5.7 0 10.4 4.7 10.4 10.5v16.4l-.5.6Zm31.9-11.6-.6.6H89l-.6.5c0 1.1 1.1 4.4 5.5 4.4 1.7 0 3.3-.5 3.9-1.6l.5-.6h6.6l.6.6c-.6 3.3-3.3 8.2-11.6 8.2-9.3 0-13.7-6.6-13.7-14.3S84.6 38 93.4 38s13.2 6.6 13.2 14.2v2.2ZM98.3 49c0-.6-.5-4.4-5-4.4s-4.9 3.8-4.9 4.4l.6.5h8.8l.5-.5Zm23.7 8.7c0 1.1.5 1.7 1.6 1.7h5l.5.5v5.5l-.6.6h-4.9c-5 0-9.3-2.2-9.3-8.3v-12l-.6-.6H110l-.6-.5V39l.6-.6h3.8l.6-.5v-5l.5-.5h6.6l.5.5v5l.6.5h6l.6.6v5.5l-.6.5h-6l-.6.6v12Zm20.3 8.3h-6.6l-.6-.6V28l.6-.6h6.6l.5.6v37.3l-.5.6ZM157 34h-6.6l-.5-.5V28l.5-.6h6.6l.6.6v5.5l-.6.5Zm0 31.9h-6.6l-.5-.6V39l.5-.6h6.6l.6.6v26.3l-.6.6Zm25.8-38v5.6l-.5.5h-5c-1 0-1.6.6-1.6 1.7v2.2l.5.5h5.5l.6.6v5.5l-.6.5h-5.5l-.5.6v19.7l-.6.6h-6.5l-.6-.6V45.5l-.5-.5h-3.9l-.5-.5V39l.5-.6h3.9l.5-.5v-2.2c0-6 4.4-8.3 9.4-8.3h4.9l.5.6Zm20.3 38.5c-2.2 5.5-4.3 8.8-12 8.8h-2.8l-.5-.5v-5.5l.5-.6h2.8c2.7 0 3.3-.5 3.8-2.2V66l-8.8-21.4V39l.6-.6h5l.5.6 6.5 18.7h.6L206 39l.5-.6h5l.5.6v5.5l-8.8 22Z"></path>
+</svg>
+	</a>
+
+	<a href="https://www.cloudflare.com/?utm_source=astro&utm_medium=astro&utm_campaign=astro" aria-label="Cloudflare" class="astro-ul23vwyi">
+		<svg viewBox="0 0 101.4 33.5" style="margin: -5% 0 5%" width="158" aria-hidden="true" class="astro-ul23vwyi">
+	<path fill="#f48120" d="M84.2 20.4a2.9 2.9 0 0 0-.3-2.6 3 3 0 0 0-2.1-1.1l-17.4-.2c-.1 0-.2-.1-.3-.1a.2.2 0 0 1 0-.3c.1-.2.2-.3.4-.3l17.5-.2a6.3 6.3 0 0 0 5.1-3.8l1-2.6c0-.1.1-.2 0-.3a11.4 11.4 0 0 0-21.9-1.2 5.5 5.5 0 0 0-3.6-1 5.2 5.2 0 0 0-4.6 4.6 6 6 0 0 0 .1 1.8 7.3 7.3 0 0 0-7.1 7.3 4 4 0 0 0 .1 1.1.3.3 0 0 0 .3.3h32.1c.2 0 .4-.1.4-.3Z" />
+	<path fill="#faad3f" d="M89.7 9.2h-.5c-.1 0-.2.1-.3.2l-.7 2.4a2.9 2.9 0 0 0 .3 2.6 3 3 0 0 0 2.1 1.1l3.7.2c.1 0 .2.1.3.1a.2.2 0 0 1 0 .3c-.1.2-.2.3-.4.3l-3.8.2a6.3 6.3 0 0 0-5.1 3.8l-.2.9c-.1.1 0 .3.2.3h13.2a.27.27 0 0 0 .3-.3 11 11 0 0 0 .4-2.6 9.56 9.56 0 0 0-9.5-9.5" />
+	<path fill="currentColor" d="M100.5 27.2a.9.9 0 1 1 .9-.9.9.9 0 0 1-.9.9m0-1.6a.7.7 0 1 0 .7.7.7.7 0 0 0-.7-.7m.4 1.2h-.2l-.2-.3h-.2v.3h-.2v-.9h.5a.27.27 0 0 1 .3.3c0 .1-.1.2-.2.3zm-.3-.5c.1 0 .1 0 .1-.1a.1.1 0 0 0-.1-.1h-.3v.3h.3Zm-89.7-.9h2.2v6h3.8v1.9h-6Zm8.3 3.9a4.1 4.1 0 0 1 4.3-4.1 4 4 0 0 1 4.2 4.1 4.1 4.1 0 0 1-4.3 4.1 4.1 4.1 0 0 1-4.2-4.1m6.3 0a2.06 2.06 0 0 0-2-2.2 2.1 2.1 0 0 0 0 4.2c1.2.2 2-.8 2-2m4.9.5v-4.4h2.2v4.4c0 1.1.6 1.7 1.5 1.7a1.4 1.4 0 0 0 1.5-1.6v-4.5h2.2v4.4c0 2.6-1.5 3.7-3.7 3.7-2.3-.1-3.7-1.2-3.7-3.7m10.7-4.4h3.1c2.8 0 4.5 1.6 4.5 3.9s-1.7 4-4.5 4h-3v-7.9Zm3.1 5.9a2.01 2.01 0 1 0 0-4h-.9v4Zm7.6-5.9h6.3v1.9H54v1.3h3.7v1.8H54v2.9h-2.2Zm9.4 0h2.2v6h3.8v1.9h-6Zm11.7-.1h2.2l3.4 8h-2.4l-.6-1.4h-3.1l-.6 1.4h-2.3Zm2 4.9L74 28l-.9 2.2Zm6.4-4.8H85a3.4 3.4 0 0 1 2.6.9 2.62 2.62 0 0 1-.9 4.2l1.9 2.8h-2.5l-1.6-2.4h-1v2.4h-2.2Zm3.6 3.8c.7 0 1.2-.4 1.2-.9 0-.6-.5-.9-1.2-.9h-1.4v1.9h1.4Zm6.5-3.8h6.4v1.8h-4.2v1.2h3.8v1.8h-3.8v1.2h4.3v1.9h-6.5ZM6.1 30.3a2 2 0 0 1-1.8 1.2 2.1 2.1 0 0 1 0-4.2 2.1 2.1 0 0 1 1.9 1.3h2.3a4.14 4.14 0 0 0-4.2-3.3A4.17 4.17 0 0 0 0 29.4a4.1 4.1 0 0 0 4.2 4.1 4.3 4.3 0 0 0 4.2-3.2Z" />
+</svg>
+	</a>
+
+	
+	<div style="flex-basis: 100%" class="astro-ul23vwyi"></div>
+
+	<a href="https://www.mux.com/?utm_campaign=21819274-Astro&utm_source=astro" aria-label="Mux" class="astro-ul23vwyi">
+		<svg viewBox="0 0 77 24" height="15" fill="currentColor" aria-hidden="true" class="astro-ul23vwyi">
+	<path d="M47.73 0a2.98 2.98 0 0 0-2.97 3v9c0 3.31-2.67 6-5.94 6a5.97 5.97 0 0 1-5.94-6V3c0-1.66-1.33-3-2.97-3a2.98 2.98 0 0 0-2.97 3v9c0 6.62 5.33 12 11.88 12 6.55 0 11.88-5.38 11.88-12V3c.01-1.66-1.32-3-2.97-3zm13.19 12-6.81 6.88a3.02 3.02 0 0 0 0 4.24 2.95 2.95 0 0 0 4.2 0l6.81-6.88 6.81 6.88a2.95 2.95 0 0 0 4.2 0 3.02 3.02 0 0 0 0-4.24L69.32 12l6.81-6.88a3.02 3.02 0 0 0 0-4.24 2.95 2.95 0 0 0-4.2 0l-6.81 6.88L58.3.88a2.95 2.95 0 0 0-4.2 0 3.02 3.02 0 0 0 0 4.24L60.92 12zM21.93.23a2.96 2.96 0 0 0-3.24.65l-6.81 6.88L5.07.88A2.94 2.94 0 0 0 1.83.23 3 3 0 0 0 0 3v18c0 1.66 1.33 3 2.97 3s2.97-1.34 2.97-3V10.24l3.84 3.88a2.95 2.95 0 0 0 4.2 0l3.84-3.88V21c0 1.66 1.33 3 2.97 3s2.97-1.34 2.97-3V3A2.98 2.98 0 0 0 21.93.23z"></path>
+</svg>
+	</a>
+
+	<a href="https://imagekit.io/?utm_source=astro&utm_medium=astro&utm_campaign=astro" aria-label="Image Kit" class="astro-ul23vwyi">
+		<svg viewBox="0 0 158 33" height="23" fill="currentColor" aria-hidden="true" class="astro-ul23vwyi">
+	<path d="M3.53 5a2.7 2.7 0 0 1-.72-2 2.8 2.8 0 0 1 .8-1.9A2.7 2.7 0 0 1 5.55.34a2.4 2.4 0 0 1 1.86.8A2.5 2.5 0 0 1 8.25 3a2.6 2.6 0 0 1-.84 2 2.7 2.7 0 0 1-1.94.75A2.7 2.7 0 0 1 3.53 5m7.73 13.6c-2.7 7.34-12.93 9.32-11-.2l2.2-10.8h4.68c-1.07 5.75-1.87 9.25-2.66 13.25s4.28 1.07 5.43-2.26z" />
+	<path d="M36.89 18.79c-2.7 7.3-12.14 8.33-10.71.75.47-2.62 1-5.31 1.54-8.29.84-3.89-2.85-1-4.08 2.14a1 1 0 0 0-.12.28c-.2 1.07-1.79 10-1.94 10.91h-4.41c.95-5.31 1.67-9.52 2.34-13.21s-2.77-1.47-4.16 1.39c0 0 0 .08-.08.12l-2.34 11.66H8.25l3.41-17h4.68l-.44 2.3c2.7-3.25 7.62-3.65 7.9 1 3.57-4.84 9.68-5.2 8.05 2.77l-.56 3-.83 4.39c-.54 2.81 4 1 5.08-2.22z" />
+	<path d="M46.49 10.7c-2.07-3.77-6.07-.12-7.26 5.39-1.31 6.15 1 9.32 5.63 3l1.63-8.41zm9.2 8.05C53.35 25 45.22 27.2 44.74 21.37 41.13 26.72 33.4 25.73 34 18.71c.48-5.47 3.17-11 9.24-11.15h8.61l-.25 1.31c-1.07 5.2-1.78 8.21-2.53 12.14s4.2.95 5.31-2.22h1.31z" />
+	<path d="M65.57 10.42c-2.07-3.85-6.19-.12-7.42 5.47-1.35 6.31 1 9.52 5.71 3.14-.04-.03 1.71-8.61 1.71-8.61M71 7.4l-2.66 12.82c-1.42 7.89-3.73 15-13.8 12.14l3.13-3.26c1.71 1.31 2.94 1.47 3.89.92l.12-.56 1.55-7.54c-3.77 4.72-11 3.53-10.48-3.37.68-7.81 5.2-10.91 8.61-11.07.64 0 1.27-.08 2-.08zm4.64 8.93c5.36.16 6-6.27 5.12-6.94-.67-.52-2.18.12-3.41 2.06A13 13 0 0 0 75.6 16a1 1 0 0 1 0 .36zm10.2 2.38c-2.66 4.88-5.44 6.15-9.32 6-6.43-.2-6.51-8.33-3.38-13.33 2.58-4 7-4.84 8.93-3.21 1.74 1.39 1.78 4 .75 6A7.5 7.5 0 0 1 75.48 18c0 1.62.64 3.53 2.11 4.24 2.61 1.23 5.35-.83 7-3.45-.02-.08 1.21-.08 1.21-.08z" />
+	<path d="M95 9.74c-1.59.84-3.69 4-4.88 5.48l-.36 1.63q.53-.2 1-.4c5.47-2.26 6.94-8.17 4.24-6.71m3 14.84h-4.79l-3.76-5.83-1.07 5.83h-4.76L88.34.82h4.6c-.8 4.24-1.51 7.5-2.3 11.74A17 17 0 0 1 95.08 8c4.84-2.94 6.27 5.55-1.87 9l4.84 7.54zM102.93 5a2.7 2.7 0 0 1-.71-2 3 3 0 0 1 .79-1.9A2.7 2.7 0 0 1 105 .34a2.4 2.4 0 0 1 1.86.8 2.5 2.5 0 0 1 .83 1.9 2.6 2.6 0 0 1-.87 1.96 2.7 2.7 0 0 1-1.94.75 2.6 2.6 0 0 1-1.95-.75m7.7 13.6c-2.7 7.34-12.93 9.32-11-.2l2.19-10.8h4.68c-1.07 5.75-1.86 9.25-2.65 13.25s4.28 1.07 5.43-2.26z" />
+	<path d="M120 18.63c-2.7 7.26-12.73 9.2-10.83-.12L111 9.67h-2l.84-2.07h1.62l.91-4.4 4.84-1-1.11 5.4h2.74l-1 2.07h-2.14l-2.26 11.26c-.8 4 4 1 5.19-2.3zm1.27 1.47a2.7 2.7 0 0 1 1.94-.8 2.7 2.7 0 0 1 2.79 2.78 2.8 2.8 0 0 1-.79 2 3 3 0 0 1-2 .79 2.78 2.78 0 0 1-1.94-4.72M133.16 5a2.6 2.6 0 0 1-.71-2 2.8 2.8 0 0 1 .79-1.9 2.7 2.7 0 0 1 1.94-.8 2.5 2.5 0 0 1 1.87.8 2.6 2.6 0 0 1 .83 1.9 2.6 2.6 0 0 1-.83 2 2.8 2.8 0 0 1-2 .75 2.6 2.6 0 0 1-1.89-.75m7.7 13.6c-2.7 7.34-12.94 9.32-11-.2l2.19-10.8h4.68c-1.07 5.75-1.86 9.25-2.66 13.25s4.29 1.07 5.44-2.26z" />
+	<path d="M149.74 15.85a7.5 7.5 0 0 1-3.25-1.54l1.78-2.42a5 5 0 0 0 1.47.91c-.55-2.5-2.7-4.76-4.6-2.06-1.71 2.46-3.21 9.87-.2 11.58 1.63.95 4-.71 4.84-6.31v-.16zm8.09-3.45a16 16 0 0 1-4 2.78c-1 7.73-7.3 10.75-11.31 9.2-3.17-1.15-4.32-4.08-4-7.18A11.5 11.5 0 0 1 144 8.67c3.17-1.82 7.89-2 9.52 1.95A6 6 0 0 1 154 13a12 12 0 0 0 3.76-1.75z" />
+</svg>
+	</a>
+
+	<a href="https://www.mintlify.com/?utm_source=astro&utm_medium=astro&utm_campaign=astro" aria-label="Mintlify" class="astro-ul23vwyi">
+		<svg viewBox="0 0 104 24" height="23" fill="currentColor" aria-hidden="true" class="astro-ul23vwyi">
+	<path fill="#18e299" d="M18.47 9.6V3.92c0-.6-.5-1.1-1.1-1.1H11.7a7 7 0 0 0-4.8 2l-.05.04A7 7 0 0 0 5.1 7.9q.82-.2 1.66-.22a6.7 6.7 0 0 1 6.46 4.51c.46 1.28.5 2.68.16 4 1.15-.3 2.2-.9 3.04-1.72l.04-.05a7 7 0 0 0 2-4.8" />
+	<path fill="#0c8c5e" d="M4.94 9.5a6.7 6.7 0 0 1 1.93-4.66L2.14 9.57l-.05.05a6.74 6.74 0 0 0-.83 8.57c.08.12.3.15.42.04l2.9-2.9c.91-.9 1.2-2.25.76-3.46a7 7 0 0 1-.4-2.36m11.5 4.9a6.8 6.8 0 0 1-7 1.55h-.02a3.3 3.3 0 0 0-3.46.75l-2.9 2.9c-.13.12-.1.32.04.42a6.8 6.8 0 0 0 8.57-.83l.04-.04 4.73-4.74" />
+	<path fill="currentColor" d="M96.24 23.5h-3.56l2.5-5.65-5-11.25h3.58l2.91 7.05c.1.25.45.25.56 0l2.89-7.05h3.6z" />
+	<path fill="currentColor" d="M85.45 18.52V9.46h-2.4V6.6h2.4V5.05q0-2.12 1.29-3.33A4.6 4.6 0 0 1 90 .5q1.21 0 2.07.26v2.89a4 4 0 0 0-1.33-.22q-1.08 0-1.55.48-.48.45-.48 1.55V6.6h3.36v2.86h-3.36v9.06zM80.12 4.65q-.84 0-1.45-.6-.63-.61-.62-1.48 0-.85.62-1.45.62-.62 1.45-.62.88 0 1.48.62.62.6.62 1.45 0 .87-.62 1.48a2 2 0 0 1-1.48.6M78.5 18.52V6.6h3.27v11.92zm-5.69 0V.64h3.27v17.88zm-3.68.14a5 5 0 0 1-3.3-1.1q-1.26-1.11-1.26-3.21V9.46h-2.4V6.6h2.4V3.3h3.27v3.3h3.36v2.86h-3.36v4.24q0 1.1.48 1.58.47.45 1.54.45.77 0 1.34-.21v2.88q-.86.26-2.07.26m-19.19-.14V6.6h3.27v.87c0 .15.2.22.3.1q1.09-1.23 3.1-1.23 2.16 0 3.37 1.43 1.23 1.41 1.24 3.77v6.98h-3.27v-6.44q0-1.31-.55-2.02-.54-.74-1.55-.74-1.18 0-1.93.86-.7.86-.71 2.52v5.82zM45.88 4.65q-.84 0-1.46-.6-.61-.61-.62-1.48 0-.85.62-1.45.63-.62 1.46-.62.88 0 1.48.62.61.6.62 1.45 0 .87-.62 1.48a2 2 0 0 1-1.48.6m-1.62 13.87V6.6h3.26v11.92zm-5.55 0v-6.36q0-2.85-1.85-2.84-1.08 0-1.72.8a4 4 0 0 0-.67 2.42v5.98h-3.26v-6.36q0-2.85-1.86-2.84-1.1 0-1.74.86a4 4 0 0 0-.65 2.52v5.82H23.7V6.6h3.26v.88c0 .15.2.21.3.1a3.6 3.6 0 0 1 2.87-1.24 3.9 3.9 0 0 1 3.56 1.95c.06.1.21.1.28 0q.51-.86 1.43-1.35 1.05-.6 2.12-.6 2.12 0 3.3 1.4a6 6 0 0 1 1.16 3.87v6.9z" />
+</svg>
+	</a>
+</div>
+	<div class="mobile-preferences sl-flex astro-f6cuuofw">
+	<div class="social-icons astro-f6cuuofw">
+		
+			<a href="https://github.com/withastro/astro" rel="me" class="sl-flex astro-wqs26vai">
+					<span class="sr-only astro-wqs26vai">GitHub</span>
+					<svg aria-hidden="true" class="astro-wqs26vai astro-uuk7wde3" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M12 .3a12 12 0 0 0-3.8 23.38c.6.12.83-.26.83-.57L9 21.07c-3.34.72-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.08-.74.09-.73.09-.73 1.2.09 1.83 1.24 1.83 1.24 1.08 1.83 2.81 1.3 3.5 1 .1-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.14-.3-.54-1.52.1-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.28-1.55 3.29-1.23 3.29-1.23.64 1.66.24 2.88.12 3.18a4.65 4.65 0 0 1 1.23 3.22c0 4.61-2.8 5.63-5.48 5.92.42.36.81 1.1.81 2.22l-.01 3.29c0 .31.2.69.82.57A12 12 0 0 0 12 .3Z"/></svg>
+				</a><a href="https://astro.build/chat" rel="me" class="sl-flex astro-wqs26vai">
+					<span class="sr-only astro-wqs26vai">Discord</span>
+					<svg aria-hidden="true" class="astro-wqs26vai astro-uuk7wde3" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M20.32 4.37a19.8 19.8 0 0 0-4.93-1.51 13.78 13.78 0 0 0-.64 1.28 18.27 18.27 0 0 0-5.5 0 12.64 12.64 0 0 0-.64-1.28h-.05A19.74 19.74 0 0 0 3.64 4.4 20.26 20.26 0 0 0 .11 18.09l.02.02a19.9 19.9 0 0 0 6.04 3.03l.04-.02a14.24 14.24 0 0 0 1.23-2.03.08.08 0 0 0-.05-.07 13.1 13.1 0 0 1-1.9-.92.08.08 0 0 1 .02-.1 10.2 10.2 0 0 0 .41-.31h.04a14.2 14.2 0 0 0 12.1 0l.04.01a9.63 9.63 0 0 0 .4.32.08.08 0 0 1-.03.1 12.29 12.29 0 0 1-1.9.91.08.08 0 0 0-.02.1 15.97 15.97 0 0 0 1.27 2.01h.04a19.84 19.84 0 0 0 6.03-3.05v-.03a20.12 20.12 0 0 0-3.57-13.69ZM8.02 15.33c-1.18 0-2.16-1.08-2.16-2.42 0-1.33.96-2.42 2.16-2.42 1.21 0 2.18 1.1 2.16 2.42 0 1.34-.96 2.42-2.16 2.42Zm7.97 0c-1.18 0-2.15-1.08-2.15-2.42 0-1.33.95-2.42 2.15-2.42 1.22 0 2.18 1.1 2.16 2.42 0 1.34-.94 2.42-2.16 2.42Z"/></svg>
+				</a>
+		
+	</div>
+	<starlight-theme-select>
+	
+	<label style="--sl-select-width: 6.25em" class="astro-7ekb6yc4">
+	<span class="sr-only astro-7ekb6yc4">选择主题</span>
+	<svg aria-hidden="true" class="icon label-icon astro-7ekb6yc4 astro-uuk7wde3" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21 14h-1V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v7H3a1 1 0 0 0-1 1v2a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-2a1 1 0 0 0-1-1ZM6 7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7H6V7Zm14 10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-1h16v1Z"/></svg>
+	<select autocomplete="off" class="astro-7ekb6yc4">
+		<option value="dark" class="astro-7ekb6yc4">深色</option><option value="light" class="astro-7ekb6yc4">浅色</option><option value="auto" selected class="astro-7ekb6yc4">自动</option>
+	</select>
+	<svg aria-hidden="true" class="icon caret astro-7ekb6yc4 astro-uuk7wde3" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M17 9.17a1 1 0 0 0-1.41 0L12 12.71 8.46 9.17a1 1 0 1 0-1.41 1.42l4.24 4.24a1.002 1.002 0 0 0 1.42 0L17 10.59a1.002 1.002 0 0 0 0-1.42Z"/></svg>
+</label>
+</starlight-theme-select>
+
+
+<script>
+	StarlightThemeProvider.updatePickers();
+</script>
+
+
+	<starlight-lang-select>
+			<label style="--sl-select-width: 7em" class="astro-7ekb6yc4">
+	<span class="sr-only astro-7ekb6yc4">选择语言</span>
+	<svg aria-hidden="true" class="icon label-icon astro-7ekb6yc4 astro-uuk7wde3" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path fill-rule="evenodd" d="M8.516 3a.94.94 0 0 0-.941.94v1.15H2.94a.94.94 0 1 0 0 1.882h7.362a7.422 7.422 0 0 1-1.787 3.958 7.42 7.42 0 0 1-1.422-2.425.94.94 0 1 0-1.774.627 9.303 9.303 0 0 0 1.785 3.043 7.422 7.422 0 0 1-4.164 1.278.94.94 0 1 0 0 1.881 9.303 9.303 0 0 0 5.575-1.855 9.303 9.303 0 0 0 4.11 1.74l-.763 1.525a.968.968 0 0 0-.016.034l-1.385 2.77a.94.94 0 1 0 1.683.841l1.133-2.267h5.806l1.134 2.267a.94.94 0 0 0 1.683-.841l-1.385-2.769a.95.95 0 0 0-.018-.036l-3.476-6.951a.94.94 0 0 0-1.682 0l-1.82 3.639a7.423 7.423 0 0 1-3.593-1.256 9.303 9.303 0 0 0 2.27-5.203h1.894a.94.94 0 0 0 0-1.881H9.456V3.94A.94.94 0 0 0 8.516 3Zm6.426 11.794a1.068 1.068 0 0 1-.02.039l-.703 1.407h3.924l-1.962-3.924-1.24 2.478Z" clip-rule="evenodd"/></svg>
+	<select autocomplete="off" class="astro-7ekb6yc4">
+		<option value="/en/getting-started/" class="astro-7ekb6yc4">English</option><option value="/de/getting-started/" class="astro-7ekb6yc4">Deutsch</option><option value="/pt-br/getting-started/" class="astro-7ekb6yc4">Português do Brasil</option><option value="/es/getting-started/" class="astro-7ekb6yc4">Español</option><option value="/zh-cn/getting-started/" selected class="astro-7ekb6yc4">简体中文</option><option value="/zh-tw/getting-started/" class="astro-7ekb6yc4">正體中文</option><option value="/fr/getting-started/" class="astro-7ekb6yc4">Français</option><option value="/hi/getting-started/" class="astro-7ekb6yc4">हिन्दी</option><option value="/ar/getting-started/" class="astro-7ekb6yc4">العربية</option><option value="/ja/getting-started/" class="astro-7ekb6yc4">日本語</option><option value="/ko/getting-started/" class="astro-7ekb6yc4">한국어</option><option value="/pl/getting-started/" class="astro-7ekb6yc4">Polski</option><option value="/ru/getting-started/" class="astro-7ekb6yc4">Русский</option><option value="/it/getting-started/" class="astro-7ekb6yc4">Italiano</option>
+	</select>
+	<svg aria-hidden="true" class="icon caret astro-7ekb6yc4 astro-uuk7wde3" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M17 9.17a1 1 0 0 0-1.41 0L12 12.71 8.46 9.17a1 1 0 1 0-1.41 1.42l4.24 4.24a1.002 1.002 0 0 0 1.42 0L17 10.59a1.002 1.002 0 0 0 0-1.42Z"/></svg>
+</label>
+		</starlight-lang-select>
+
+
+</div>
+</div>
+</div>
+
+<div class="desktop-footer sl-hidden md:sl-block astro-ssgxcmrq">
+	<div dir="ltr" lang="en" class="sponsors astro-ul23vwyi">
+	<h2 class="sponsors-title astro-ul23vwyi">赞助商</h2>
+	<a href="https://www.netlify.com/?utm_campaign=Astro-2024&utm_source=astro-referral" aria-label="Netlify" class="astro-ul23vwyi">
+		<svg viewBox="0 0 256 105" width="127" aria-hidden="true" fill="currentColor" class="astro-ul23vwyi">
+	<path fill="#32E6E2" d="M58.5 103.8V77.4l.5-.5h6.6l.6.5v26.4l-.6.5H59l-.5-.5Zm0-76.9V.5L59 0h6.6l.6.5V27l-.6.5H59l-.5-.5ZM35.8 85.2h-1l-4.4-4.5v-.9l8.5-8.5h4.7l.7.6v4.8l-8.5 8.5Zm-5.4-60.5v-.9l4.5-4.5h.9l8.5 8.5v4.8l-.7.6H39l-8.5-8.5ZM.5 48.3H38l.5.6v6.6l-.5.5H.5l-.5-.5v-6.6l.5-.6Zm255 0 .5.6v6.6l-.6.5h-37.8l-.6-.5 2.8-6.6.5-.6h35.1Z"></path>
+	<path d="M74.7 65.9H68l-.6-.6V50c0-2.7-1-4.9-4.4-5-1.7 0-3.6 0-5.7.2l-.3.3v20l-.6.5H50l-.6-.6V39l.6-.6h14.8c5.7 0 10.4 4.7 10.4 10.5v16.4l-.5.6Zm31.9-11.6-.6.6H89l-.6.5c0 1.1 1.1 4.4 5.5 4.4 1.7 0 3.3-.5 3.9-1.6l.5-.6h6.6l.6.6c-.6 3.3-3.3 8.2-11.6 8.2-9.3 0-13.7-6.6-13.7-14.3S84.6 38 93.4 38s13.2 6.6 13.2 14.2v2.2ZM98.3 49c0-.6-.5-4.4-5-4.4s-4.9 3.8-4.9 4.4l.6.5h8.8l.5-.5Zm23.7 8.7c0 1.1.5 1.7 1.6 1.7h5l.5.5v5.5l-.6.6h-4.9c-5 0-9.3-2.2-9.3-8.3v-12l-.6-.6H110l-.6-.5V39l.6-.6h3.8l.6-.5v-5l.5-.5h6.6l.5.5v5l.6.5h6l.6.6v5.5l-.6.5h-6l-.6.6v12Zm20.3 8.3h-6.6l-.6-.6V28l.6-.6h6.6l.5.6v37.3l-.5.6ZM157 34h-6.6l-.5-.5V28l.5-.6h6.6l.6.6v5.5l-.6.5Zm0 31.9h-6.6l-.5-.6V39l.5-.6h6.6l.6.6v26.3l-.6.6Zm25.8-38v5.6l-.5.5h-5c-1 0-1.6.6-1.6 1.7v2.2l.5.5h5.5l.6.6v5.5l-.6.5h-5.5l-.5.6v19.7l-.6.6h-6.5l-.6-.6V45.5l-.5-.5h-3.9l-.5-.5V39l.5-.6h3.9l.5-.5v-2.2c0-6 4.4-8.3 9.4-8.3h4.9l.5.6Zm20.3 38.5c-2.2 5.5-4.3 8.8-12 8.8h-2.8l-.5-.5v-5.5l.5-.6h2.8c2.7 0 3.3-.5 3.8-2.2V66l-8.8-21.4V39l.6-.6h5l.5.6 6.5 18.7h.6L206 39l.5-.6h5l.5.6v5.5l-8.8 22Z"></path>
+</svg>
+	</a>
+
+	<a href="https://www.cloudflare.com/?utm_source=astro&utm_medium=astro&utm_campaign=astro" aria-label="Cloudflare" class="astro-ul23vwyi">
+		<svg viewBox="0 0 101.4 33.5" style="margin: -5% 0 5%" width="158" aria-hidden="true" class="astro-ul23vwyi">
+	<path fill="#f48120" d="M84.2 20.4a2.9 2.9 0 0 0-.3-2.6 3 3 0 0 0-2.1-1.1l-17.4-.2c-.1 0-.2-.1-.3-.1a.2.2 0 0 1 0-.3c.1-.2.2-.3.4-.3l17.5-.2a6.3 6.3 0 0 0 5.1-3.8l1-2.6c0-.1.1-.2 0-.3a11.4 11.4 0 0 0-21.9-1.2 5.5 5.5 0 0 0-3.6-1 5.2 5.2 0 0 0-4.6 4.6 6 6 0 0 0 .1 1.8 7.3 7.3 0 0 0-7.1 7.3 4 4 0 0 0 .1 1.1.3.3 0 0 0 .3.3h32.1c.2 0 .4-.1.4-.3Z" />
+	<path fill="#faad3f" d="M89.7 9.2h-.5c-.1 0-.2.1-.3.2l-.7 2.4a2.9 2.9 0 0 0 .3 2.6 3 3 0 0 0 2.1 1.1l3.7.2c.1 0 .2.1.3.1a.2.2 0 0 1 0 .3c-.1.2-.2.3-.4.3l-3.8.2a6.3 6.3 0 0 0-5.1 3.8l-.2.9c-.1.1 0 .3.2.3h13.2a.27.27 0 0 0 .3-.3 11 11 0 0 0 .4-2.6 9.56 9.56 0 0 0-9.5-9.5" />
+	<path fill="currentColor" d="M100.5 27.2a.9.9 0 1 1 .9-.9.9.9 0 0 1-.9.9m0-1.6a.7.7 0 1 0 .7.7.7.7 0 0 0-.7-.7m.4 1.2h-.2l-.2-.3h-.2v.3h-.2v-.9h.5a.27.27 0 0 1 .3.3c0 .1-.1.2-.2.3zm-.3-.5c.1 0 .1 0 .1-.1a.1.1 0 0 0-.1-.1h-.3v.3h.3Zm-89.7-.9h2.2v6h3.8v1.9h-6Zm8.3 3.9a4.1 4.1 0 0 1 4.3-4.1 4 4 0 0 1 4.2 4.1 4.1 4.1 0 0 1-4.3 4.1 4.1 4.1 0 0 1-4.2-4.1m6.3 0a2.06 2.06 0 0 0-2-2.2 2.1 2.1 0 0 0 0 4.2c1.2.2 2-.8 2-2m4.9.5v-4.4h2.2v4.4c0 1.1.6 1.7 1.5 1.7a1.4 1.4 0 0 0 1.5-1.6v-4.5h2.2v4.4c0 2.6-1.5 3.7-3.7 3.7-2.3-.1-3.7-1.2-3.7-3.7m10.7-4.4h3.1c2.8 0 4.5 1.6 4.5 3.9s-1.7 4-4.5 4h-3v-7.9Zm3.1 5.9a2.01 2.01 0 1 0 0-4h-.9v4Zm7.6-5.9h6.3v1.9H54v1.3h3.7v1.8H54v2.9h-2.2Zm9.4 0h2.2v6h3.8v1.9h-6Zm11.7-.1h2.2l3.4 8h-2.4l-.6-1.4h-3.1l-.6 1.4h-2.3Zm2 4.9L74 28l-.9 2.2Zm6.4-4.8H85a3.4 3.4 0 0 1 2.6.9 2.62 2.62 0 0 1-.9 4.2l1.9 2.8h-2.5l-1.6-2.4h-1v2.4h-2.2Zm3.6 3.8c.7 0 1.2-.4 1.2-.9 0-.6-.5-.9-1.2-.9h-1.4v1.9h1.4Zm6.5-3.8h6.4v1.8h-4.2v1.2h3.8v1.8h-3.8v1.2h4.3v1.9h-6.5ZM6.1 30.3a2 2 0 0 1-1.8 1.2 2.1 2.1 0 0 1 0-4.2 2.1 2.1 0 0 1 1.9 1.3h2.3a4.14 4.14 0 0 0-4.2-3.3A4.17 4.17 0 0 0 0 29.4a4.1 4.1 0 0 0 4.2 4.1 4.3 4.3 0 0 0 4.2-3.2Z" />
+</svg>
+	</a>
+
+	
+	<div style="flex-basis: 100%" class="astro-ul23vwyi"></div>
+
+	<a href="https://www.mux.com/?utm_campaign=21819274-Astro&utm_source=astro" aria-label="Mux" class="astro-ul23vwyi">
+		<svg viewBox="0 0 77 24" height="15" fill="currentColor" aria-hidden="true" class="astro-ul23vwyi">
+	<path d="M47.73 0a2.98 2.98 0 0 0-2.97 3v9c0 3.31-2.67 6-5.94 6a5.97 5.97 0 0 1-5.94-6V3c0-1.66-1.33-3-2.97-3a2.98 2.98 0 0 0-2.97 3v9c0 6.62 5.33 12 11.88 12 6.55 0 11.88-5.38 11.88-12V3c.01-1.66-1.32-3-2.97-3zm13.19 12-6.81 6.88a3.02 3.02 0 0 0 0 4.24 2.95 2.95 0 0 0 4.2 0l6.81-6.88 6.81 6.88a2.95 2.95 0 0 0 4.2 0 3.02 3.02 0 0 0 0-4.24L69.32 12l6.81-6.88a3.02 3.02 0 0 0 0-4.24 2.95 2.95 0 0 0-4.2 0l-6.81 6.88L58.3.88a2.95 2.95 0 0 0-4.2 0 3.02 3.02 0 0 0 0 4.24L60.92 12zM21.93.23a2.96 2.96 0 0 0-3.24.65l-6.81 6.88L5.07.88A2.94 2.94 0 0 0 1.83.23 3 3 0 0 0 0 3v18c0 1.66 1.33 3 2.97 3s2.97-1.34 2.97-3V10.24l3.84 3.88a2.95 2.95 0 0 0 4.2 0l3.84-3.88V21c0 1.66 1.33 3 2.97 3s2.97-1.34 2.97-3V3A2.98 2.98 0 0 0 21.93.23z"></path>
+</svg>
+	</a>
+
+	<a href="https://imagekit.io/?utm_source=astro&utm_medium=astro&utm_campaign=astro" aria-label="Image Kit" class="astro-ul23vwyi">
+		<svg viewBox="0 0 158 33" height="23" fill="currentColor" aria-hidden="true" class="astro-ul23vwyi">
+	<path d="M3.53 5a2.7 2.7 0 0 1-.72-2 2.8 2.8 0 0 1 .8-1.9A2.7 2.7 0 0 1 5.55.34a2.4 2.4 0 0 1 1.86.8A2.5 2.5 0 0 1 8.25 3a2.6 2.6 0 0 1-.84 2 2.7 2.7 0 0 1-1.94.75A2.7 2.7 0 0 1 3.53 5m7.73 13.6c-2.7 7.34-12.93 9.32-11-.2l2.2-10.8h4.68c-1.07 5.75-1.87 9.25-2.66 13.25s4.28 1.07 5.43-2.26z" />
+	<path d="M36.89 18.79c-2.7 7.3-12.14 8.33-10.71.75.47-2.62 1-5.31 1.54-8.29.84-3.89-2.85-1-4.08 2.14a1 1 0 0 0-.12.28c-.2 1.07-1.79 10-1.94 10.91h-4.41c.95-5.31 1.67-9.52 2.34-13.21s-2.77-1.47-4.16 1.39c0 0 0 .08-.08.12l-2.34 11.66H8.25l3.41-17h4.68l-.44 2.3c2.7-3.25 7.62-3.65 7.9 1 3.57-4.84 9.68-5.2 8.05 2.77l-.56 3-.83 4.39c-.54 2.81 4 1 5.08-2.22z" />
+	<path d="M46.49 10.7c-2.07-3.77-6.07-.12-7.26 5.39-1.31 6.15 1 9.32 5.63 3l1.63-8.41zm9.2 8.05C53.35 25 45.22 27.2 44.74 21.37 41.13 26.72 33.4 25.73 34 18.71c.48-5.47 3.17-11 9.24-11.15h8.61l-.25 1.31c-1.07 5.2-1.78 8.21-2.53 12.14s4.2.95 5.31-2.22h1.31z" />
+	<path d="M65.57 10.42c-2.07-3.85-6.19-.12-7.42 5.47-1.35 6.31 1 9.52 5.71 3.14-.04-.03 1.71-8.61 1.71-8.61M71 7.4l-2.66 12.82c-1.42 7.89-3.73 15-13.8 12.14l3.13-3.26c1.71 1.31 2.94 1.47 3.89.92l.12-.56 1.55-7.54c-3.77 4.72-11 3.53-10.48-3.37.68-7.81 5.2-10.91 8.61-11.07.64 0 1.27-.08 2-.08zm4.64 8.93c5.36.16 6-6.27 5.12-6.94-.67-.52-2.18.12-3.41 2.06A13 13 0 0 0 75.6 16a1 1 0 0 1 0 .36zm10.2 2.38c-2.66 4.88-5.44 6.15-9.32 6-6.43-.2-6.51-8.33-3.38-13.33 2.58-4 7-4.84 8.93-3.21 1.74 1.39 1.78 4 .75 6A7.5 7.5 0 0 1 75.48 18c0 1.62.64 3.53 2.11 4.24 2.61 1.23 5.35-.83 7-3.45-.02-.08 1.21-.08 1.21-.08z" />
+	<path d="M95 9.74c-1.59.84-3.69 4-4.88 5.48l-.36 1.63q.53-.2 1-.4c5.47-2.26 6.94-8.17 4.24-6.71m3 14.84h-4.79l-3.76-5.83-1.07 5.83h-4.76L88.34.82h4.6c-.8 4.24-1.51 7.5-2.3 11.74A17 17 0 0 1 95.08 8c4.84-2.94 6.27 5.55-1.87 9l4.84 7.54zM102.93 5a2.7 2.7 0 0 1-.71-2 3 3 0 0 1 .79-1.9A2.7 2.7 0 0 1 105 .34a2.4 2.4 0 0 1 1.86.8 2.5 2.5 0 0 1 .83 1.9 2.6 2.6 0 0 1-.87 1.96 2.7 2.7 0 0 1-1.94.75 2.6 2.6 0 0 1-1.95-.75m7.7 13.6c-2.7 7.34-12.93 9.32-11-.2l2.19-10.8h4.68c-1.07 5.75-1.86 9.25-2.65 13.25s4.28 1.07 5.43-2.26z" />
+	<path d="M120 18.63c-2.7 7.26-12.73 9.2-10.83-.12L111 9.67h-2l.84-2.07h1.62l.91-4.4 4.84-1-1.11 5.4h2.74l-1 2.07h-2.14l-2.26 11.26c-.8 4 4 1 5.19-2.3zm1.27 1.47a2.7 2.7 0 0 1 1.94-.8 2.7 2.7 0 0 1 2.79 2.78 2.8 2.8 0 0 1-.79 2 3 3 0 0 1-2 .79 2.78 2.78 0 0 1-1.94-4.72M133.16 5a2.6 2.6 0 0 1-.71-2 2.8 2.8 0 0 1 .79-1.9 2.7 2.7 0 0 1 1.94-.8 2.5 2.5 0 0 1 1.87.8 2.6 2.6 0 0 1 .83 1.9 2.6 2.6 0 0 1-.83 2 2.8 2.8 0 0 1-2 .75 2.6 2.6 0 0 1-1.89-.75m7.7 13.6c-2.7 7.34-12.94 9.32-11-.2l2.19-10.8h4.68c-1.07 5.75-1.86 9.25-2.66 13.25s4.29 1.07 5.44-2.26z" />
+	<path d="M149.74 15.85a7.5 7.5 0 0 1-3.25-1.54l1.78-2.42a5 5 0 0 0 1.47.91c-.55-2.5-2.7-4.76-4.6-2.06-1.71 2.46-3.21 9.87-.2 11.58 1.63.95 4-.71 4.84-6.31v-.16zm8.09-3.45a16 16 0 0 1-4 2.78c-1 7.73-7.3 10.75-11.31 9.2-3.17-1.15-4.32-4.08-4-7.18A11.5 11.5 0 0 1 144 8.67c3.17-1.82 7.89-2 9.52 1.95A6 6 0 0 1 154 13a12 12 0 0 0 3.76-1.75z" />
+</svg>
+	</a>
+
+	<a href="https://www.mintlify.com/?utm_source=astro&utm_medium=astro&utm_campaign=astro" aria-label="Mintlify" class="astro-ul23vwyi">
+		<svg viewBox="0 0 104 24" height="23" fill="currentColor" aria-hidden="true" class="astro-ul23vwyi">
+	<path fill="#18e299" d="M18.47 9.6V3.92c0-.6-.5-1.1-1.1-1.1H11.7a7 7 0 0 0-4.8 2l-.05.04A7 7 0 0 0 5.1 7.9q.82-.2 1.66-.22a6.7 6.7 0 0 1 6.46 4.51c.46 1.28.5 2.68.16 4 1.15-.3 2.2-.9 3.04-1.72l.04-.05a7 7 0 0 0 2-4.8" />
+	<path fill="#0c8c5e" d="M4.94 9.5a6.7 6.7 0 0 1 1.93-4.66L2.14 9.57l-.05.05a6.74 6.74 0 0 0-.83 8.57c.08.12.3.15.42.04l2.9-2.9c.91-.9 1.2-2.25.76-3.46a7 7 0 0 1-.4-2.36m11.5 4.9a6.8 6.8 0 0 1-7 1.55h-.02a3.3 3.3 0 0 0-3.46.75l-2.9 2.9c-.13.12-.1.32.04.42a6.8 6.8 0 0 0 8.57-.83l.04-.04 4.73-4.74" />
+	<path fill="currentColor" d="M96.24 23.5h-3.56l2.5-5.65-5-11.25h3.58l2.91 7.05c.1.25.45.25.56 0l2.89-7.05h3.6z" />
+	<path fill="currentColor" d="M85.45 18.52V9.46h-2.4V6.6h2.4V5.05q0-2.12 1.29-3.33A4.6 4.6 0 0 1 90 .5q1.21 0 2.07.26v2.89a4 4 0 0 0-1.33-.22q-1.08 0-1.55.48-.48.45-.48 1.55V6.6h3.36v2.86h-3.36v9.06zM80.12 4.65q-.84 0-1.45-.6-.63-.61-.62-1.48 0-.85.62-1.45.62-.62 1.45-.62.88 0 1.48.62.62.6.62 1.45 0 .87-.62 1.48a2 2 0 0 1-1.48.6M78.5 18.52V6.6h3.27v11.92zm-5.69 0V.64h3.27v17.88zm-3.68.14a5 5 0 0 1-3.3-1.1q-1.26-1.11-1.26-3.21V9.46h-2.4V6.6h2.4V3.3h3.27v3.3h3.36v2.86h-3.36v4.24q0 1.1.48 1.58.47.45 1.54.45.77 0 1.34-.21v2.88q-.86.26-2.07.26m-19.19-.14V6.6h3.27v.87c0 .15.2.22.3.1q1.09-1.23 3.1-1.23 2.16 0 3.37 1.43 1.23 1.41 1.24 3.77v6.98h-3.27v-6.44q0-1.31-.55-2.02-.54-.74-1.55-.74-1.18 0-1.93.86-.7.86-.71 2.52v5.82zM45.88 4.65q-.84 0-1.46-.6-.61-.61-.62-1.48 0-.85.62-1.45.63-.62 1.46-.62.88 0 1.48.62.61.6.62 1.45 0 .87-.62 1.48a2 2 0 0 1-1.48.6m-1.62 13.87V6.6h3.26v11.92zm-5.55 0v-6.36q0-2.85-1.85-2.84-1.08 0-1.72.8a4 4 0 0 0-.67 2.42v5.98h-3.26v-6.36q0-2.85-1.86-2.84-1.1 0-1.74.86a4 4 0 0 0-.65 2.52v5.82H23.7V6.6h3.26v.88c0 .15.2.21.3.1a3.6 3.6 0 0 1 2.87-1.24 3.9 3.9 0 0 1 3.56 1.95c.06.1.21.1.28 0q.51-.86 1.43-1.35 1.05-.6 2.12-.6 2.12 0 3.3 1.4a6 6 0 0 1 1.16 3.87v6.9z" />
+</svg>
+	</a>
+</div>
+</div>
+					</div>
+				</sl-sidebar-pane>
+			</nav>
+	<div class="main-frame astro-3xeg3vgp">
+			
+			<script type="module">var e=document.getElementById(`starlight__sidebar`),t=e?.querySelector(`sl-sidebar-state-persist`),n=`sl-sidebar-state`,r=()=>{let r=[],i=t?.dataset.hash||``;try{let e=sessionStorage.getItem(n),t=JSON.parse(e||`{}`);Array.isArray(t.open)&&t.hash===i&&(r=t.open)}catch{}return{hash:i,open:r,scroll:e?.scrollTop||0}},i=e=>{try{sessionStorage.setItem(n,JSON.stringify(e))}catch{}},a=()=>i(r()),o=(e,t)=>{let n=r();n.open[t]=e,i(n)};t?.addEventListener(`click`,e=>{if(!(e.target instanceof Element))return;let t=e.target.closest(`summary`)?.closest(`details`);if(!t)return;let n=t.querySelector(`sl-sidebar-restore`),r=parseInt(n?.dataset.index||``);isNaN(r)||o(!t.open,r)}),addEventListener(`visibilitychange`,()=>{document.visibilityState===`hidden`&&a()});</script><div class="lg:sl-flex astro-ysznydky">
+	
+	<div class="main-pane astro-ysznydky">
+				
+				<main data-pagefind-body class="astro-t7oisnxn" lang="zh-CN" dir="ltr">
+					
+					<div class="sl-banner astro-wmlgskrb" data-pagefind-ignore>Astro v6 已发布！<a href="/zh-cn/guides/upgrade-to/v6/">了解如何升级你的网站</a>
+</div>
+					<div class="content-panel astro-v6bsatgo">
+	<div class="sl-container astro-v6bsatgo">
+								<div class="hero astro-azvfnxsx">
+	<div class="grid-bg astro-azvfnxsx"></div>
+	<div id="_top" class="hero-content stack astro-azvfnxsx" style="--stack-gap: 2rem;">
+		<div class="stack astro-azvfnxsx" style="--stack-gap: 1rem;">
+			<h1 class="astro-azvfnxsx">Astro 文档</h1>
+			<p class="astro-azvfnxsx">指南、资源和 API 参考，帮助你使用 Astro 进行构建。</p>
+		</div>
+		<div class="sl-flex actions astro-azvfnxsx">
+			<a class="sl-flex action primary astro-ekguhzzh" href="/zh-cn/install-and-setup/">
+	安装 Astro
+	<svg aria-hidden="true" class="astro-ekguhzzh astro-uuk7wde3" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.5em;"><path fill-rule="evenodd" d="M1.44 8.855v-.001l3.527-3.516c.34-.344.802-.541 1.285-.548h6.649l.947-.947c3.07-3.07 6.207-3.072 7.62-2.868a1.821 1.821 0 0 1 1.557 1.557c.204 1.413.203 4.55-2.868 7.62l-.946.946v6.649a1.845 1.845 0 0 1-.549 1.286l-3.516 3.528a1.844 1.844 0 0 1-3.11-.944l-.858-4.275-4.52-4.52-2.31-.463-1.964-.394A1.847 1.847 0 0 1 .98 10.693a1.843 1.843 0 0 1 .46-1.838Zm5.379 2.017-3.873-.776L6.32 6.733h4.638l-4.14 4.14Zm8.403-5.655c2.459-2.46 4.856-2.463 5.89-2.33.134 1.035.13 3.432-2.329 5.891l-6.71 6.71-3.561-3.56 6.71-6.711Zm-1.318 15.837-.776-3.873 4.14-4.14v4.639l-3.364 3.374Z" clip-rule="evenodd"/><path d="M9.318 18.345a.972.972 0 0 0-1.86-.561c-.482 1.435-1.687 2.204-2.934 2.619a8.22 8.22 0 0 1-1.23.302c.062-.365.157-.79.303-1.229.415-1.247 1.184-2.452 2.62-2.935a.971.971 0 1 0-.62-1.842c-.12.04-.236.084-.35.13-2.02.828-3.012 2.588-3.493 4.033a10.383 10.383 0 0 0-.51 2.845l-.001.016v.063c0 .536.434.972.97.972H2.24a7.21 7.21 0 0 0 .878-.065c.527-.063 1.248-.19 2.02-.447 1.445-.48 3.205-1.472 4.033-3.494a5.828 5.828 0 0 0 .147-.407Z"/></svg>
+	
+</a><a class="sl-flex action minimal astro-ekguhzzh" href="/zh-cn/concepts/why-astro/">
+	了解 Astro 的特性
+	<svg aria-hidden="true" class="astro-ekguhzzh astro-uuk7wde3" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.5em;"><path d="M17.92 11.62a1.001 1.001 0 0 0-.21-.33l-5-5a1.003 1.003 0 1 0-1.42 1.42l3.3 3.29H7a1 1 0 0 0 0 2h7.59l-3.3 3.29a1.002 1.002 0 0 0 .325 1.639 1 1 0 0 0 1.095-.219l5-5a1 1 0 0 0 .21-.33 1 1 0 0 0 0-.76Z"/></svg>
+	
+</a>
+		</div>
+	</div>
+	<div class="mobile-only not-content astro-cqr5qff2">
+	<p class="tagline astro-cqr5qff2">本文档由 Astro 和我们的开源贡献者提供支持。 <a href="/zh-cn/contribute/" class="astro-cqr5qff2">加入我们！</a></p>
+</div>
+<div class="facepile not-content astro-cqr5qff2">
+	<div class="row astro-cqr5qff2">
+					
+					
+<img src="/_astro/36526527_ct6ys.webp" loading="eager" alt decoding="async" width="84" height="84" class="astro-cqr5qff2"><span class="circle astro-cqr5qff2"></span>
+<img src="/_astro/28299972_Z1GJM7w.webp" loading="eager" alt decoding="async" width="84" height="84" class="astro-cqr5qff2">
+<img src="/_astro/25897764_1SSDte.webp" loading="eager" alt decoding="async" width="84" height="84" class="astro-cqr5qff2">
+				</div><div class="row astro-cqr5qff2">
+					
+					<span class="circle astro-cqr5qff2"></span>
+<img src="/_astro/45965090_ZW3vHI.webp" loading="eager" alt decoding="async" width="84" height="84" class="astro-cqr5qff2">
+<img src="/_astro/59021693_bKNO6.webp" loading="eager" alt decoding="async" width="84" height="84" class="astro-cqr5qff2">
+<img src="/_astro/213306_2iL3ow.webp" loading="eager" alt decoding="async" width="84" height="84" class="astro-cqr5qff2">
+<img src="/_astro/108291165_128Cgd.webp" loading="eager" alt decoding="async" width="84" height="84" class="astro-cqr5qff2">
+				</div><div class="row astro-cqr5qff2">
+					
+					
+<img src="/_astro/88548999_1T5J5O.webp" loading="eager" alt decoding="async" width="84" height="84" class="astro-cqr5qff2">
+<img src="/_astro/51384119_15Y6Kh.webp" loading="eager" alt decoding="async" width="84" height="84" class="astro-cqr5qff2"><span class="circle astro-cqr5qff2"></span>
+<img src="/_astro/34116392_Hma1s.webp" loading="eager" alt decoding="async" width="84" height="84" class="astro-cqr5qff2">
+				</div><div class="row astro-cqr5qff2">
+					
+					
+<img src="/_astro/357379_oyPp3.webp" loading="eager" alt decoding="async" width="84" height="84" class="astro-cqr5qff2"><span class="astro-cqr5qff2"></span>
+<img src="/_astro/85648028_TPGu.webp" loading="eager" alt decoding="async" width="84" height="84" class="astro-cqr5qff2"><span class="circle astro-cqr5qff2"></span>
+<img src="/_astro/1369770_OqKAM.webp" loading="eager" alt decoding="async" width="84" height="84" class="astro-cqr5qff2">
+				</div><div class="row astro-cqr5qff2">
+					
+					
+<img src="/_astro/15145918_Zo78GA.webp" loading="eager" alt decoding="async" width="84" height="84" class="astro-cqr5qff2">
+<img src="/_astro/602478_Z8BbQm.webp" loading="eager" alt decoding="async" width="84" height="84" class="astro-cqr5qff2">
+<img src="/_astro/69633530_Z1RvqS7.webp" loading="eager" alt decoding="async" width="84" height="84" class="astro-cqr5qff2">
+<img src="/_astro/622227_SqHHc.webp" loading="eager" alt decoding="async" width="84" height="84" class="astro-cqr5qff2">
+<img src="/_astro/11063910_2hQ27k.webp" loading="eager" alt decoding="async" width="84" height="84" class="astro-cqr5qff2">
+<img src="/_astro/15368_1lSPXo.webp" loading="eager" alt decoding="async" width="84" height="84" class="astro-cqr5qff2">
+				</div><div class="row astro-cqr5qff2">
+					
+					
+<img src="/_astro/15368_1lSPXo.webp" loading="eager" alt decoding="async" width="84" height="84" class="astro-cqr5qff2">
+<img src="/_astro/494699_25H3pm.webp" loading="eager" alt decoding="async" width="84" height="84" class="astro-cqr5qff2"><span class="circle astro-cqr5qff2"></span>
+<img src="/_astro/6137925_ZbPN5k.webp" loading="eager" alt decoding="async" width="84" height="84" class="astro-cqr5qff2">
+<img src="/_astro/25839948_1m6mGu.webp" loading="eager" alt decoding="async" width="84" height="84" class="astro-cqr5qff2">
+				</div><div class="row astro-cqr5qff2">
+					
+					
+<img src="/_astro/19603573_Z1fB9Li.webp" loading="eager" alt decoding="async" width="84" height="84" class="astro-cqr5qff2">
+<img src="/_astro/10626596_Z1YtAS8.webp" loading="eager" alt decoding="async" width="84" height="84" class="astro-cqr5qff2">
+<img src="/_astro/188426_Z21yJwG.webp" loading="eager" alt decoding="async" width="84" height="84" class="astro-cqr5qff2">
+<img src="/_astro/39112954_Z1J5sRf.webp" loading="eager" alt decoding="async" width="84" height="84" class="astro-cqr5qff2">
+<img src="/_astro/4033662_WtfoT.webp" loading="eager" alt decoding="async" width="84" height="84" class="astro-cqr5qff2">
+<img src="/_astro/46791833_ZQQBv8.webp" loading="eager" alt decoding="async" width="84" height="84" class="astro-cqr5qff2">
+				</div><div class="row astro-cqr5qff2">
+					<p class="tagline astro-cqr5qff2">
+							本文档由 Astro 和我们的开源贡献者提供支持。 <a href="/zh-cn/contribute/" class="astro-cqr5qff2">加入我们！</a>
+						</p>
+					
+<img src="/_astro/13069_1ewvl9.webp" loading="eager" alt decoding="async" width="84" height="84" class="astro-cqr5qff2">
+<img src="/_astro/69170106_Z2qp4h9.webp" loading="eager" alt decoding="async" width="84" height="84" class="astro-cqr5qff2">
+<img src="/_astro/25167721_1zaX2d.webp" loading="eager" alt decoding="async" width="84" height="84" class="astro-cqr5qff2">
+				</div><div class="row astro-cqr5qff2">
+					
+					
+<img src="/_astro/94928215_21fTt9.webp" loading="eager" alt decoding="async" width="84" height="84" class="astro-cqr5qff2">
+<img src="/_astro/361671_2u5y17.webp" loading="eager" alt decoding="async" width="84" height="84" class="astro-cqr5qff2">
+<img src="/_astro/44530252_ZIKPur.webp" loading="eager" alt decoding="async" width="84" height="84" class="astro-cqr5qff2"><span class="circle astro-cqr5qff2"></span>
+				</div><div class="row astro-cqr5qff2">
+					
+					<span class="astro-cqr5qff2"></span>
+<img src="/_astro/7889778_Z21RHE0.webp" loading="eager" alt decoding="async" width="84" height="84" class="astro-cqr5qff2">
+<img src="/_astro/81974850_Z25PO7G.webp" loading="eager" alt decoding="async" width="84" height="84" class="astro-cqr5qff2">
+<img src="/_astro/7118177_gxsRF.webp" loading="eager" alt decoding="async" width="84" height="84" class="astro-cqr5qff2">
+				</div>
+</div>
+</div>
+								<div class="sl-markdown-content">
+	
+									<div class="card-grid astro-svqvbsev"><div class="landing-card astro-42u226jt">
+	<article class="card sl-flex astro-sjjlvp3g">
+	<p class="title sl-flex astro-sjjlvp3g">
+		<svg aria-hidden="true" class="icon astro-sjjlvp3g astro-uuk7wde3" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.333em;"><path d="M21 14h-1V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v7H3a1 1 0 0 0-1 1v2a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-2a1 1 0 0 0-1-1ZM6 7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7H6V7Zm14 10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-1h16v1Z"/></svg>
+		<span class="astro-sjjlvp3g">你可以用 Astro 构建什么？</span>
+	</p>
+	<div class="body astro-sjjlvp3g"><p>浏览 <a href="https://astro.build/themes/">Astro 主题</a>，包括博客、作品集、文档、落地页、SaaS、营销、电子商务等等！</p></div>
+</article>
+</div><div class="landing-card astro-42u226jt">
+	<article class="card sl-flex astro-sjjlvp3g">
+	<p class="title sl-flex astro-sjjlvp3g">
+		<svg aria-hidden="true" class="icon astro-sjjlvp3g astro-uuk7wde3" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.333em;"><path d="M22 9.67a1 1 0 0 0-.86-.67l-5.69-.83L12.9 3a1 1 0 0 0-1.8 0L8.55 8.16 2.86 9a1 1 0 0 0-.81.68 1 1 0 0 0 .25 1l4.13 4-1 5.68a1 1 0 0 0 1.45 1.07L12 18.76l5.1 2.68c.14.08.3.12.46.12a1 1 0 0 0 .99-1.19l-1-5.68 4.13-4A1 1 0 0 0 22 9.67Zm-6.15 4a1 1 0 0 0-.29.89l.72 4.19-3.76-2a1 1 0 0 0-.94 0l-3.76 2 .72-4.19a1 1 0 0 0-.29-.89l-3-3 4.21-.61a1 1 0 0 0 .76-.55L12 5.7l1.88 3.82a1 1 0 0 0 .76.55l4.21.61-3 2.99Z"/></svg>
+		<span class="astro-sjjlvp3g">观看导览</span>
+	</p>
+	<div class="body astro-sjjlvp3g"><p>完成我们的 <a href="/zh-cn/tutorial/0-introduction/">构建博客教程</a>，学习基础知识并创建你的第一个 Astro 网站。</p></div>
+</article>
+</div><div class="card--fullwidth astro-lpzwagy7">
+	<article class="card sl-flex astro-sjjlvp3g">
+	<p class="title sl-flex astro-sjjlvp3g">
+		<svg aria-hidden="true" class="icon astro-sjjlvp3g astro-uuk7wde3" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.333em;"><path fill-rule="evenodd" d="M1.44 8.855v-.001l3.527-3.516c.34-.344.802-.541 1.285-.548h6.649l.947-.947c3.07-3.07 6.207-3.072 7.62-2.868a1.821 1.821 0 0 1 1.557 1.557c.204 1.413.203 4.55-2.868 7.62l-.946.946v6.649a1.845 1.845 0 0 1-.549 1.286l-3.516 3.528a1.844 1.844 0 0 1-3.11-.944l-.858-4.275-4.52-4.52-2.31-.463-1.964-.394A1.847 1.847 0 0 1 .98 10.693a1.843 1.843 0 0 1 .46-1.838Zm5.379 2.017-3.873-.776L6.32 6.733h4.638l-4.14 4.14Zm8.403-5.655c2.459-2.46 4.856-2.463 5.89-2.33.134 1.035.13 3.432-2.329 5.891l-6.71 6.71-3.561-3.56 6.71-6.711Zm-1.318 15.837-.776-3.873 4.14-4.14v4.639l-3.364 3.374Z" clip-rule="evenodd"/><path d="M9.318 18.345a.972.972 0 0 0-1.86-.561c-.482 1.435-1.687 2.204-2.934 2.619a8.22 8.22 0 0 1-1.23.302c.062-.365.157-.79.303-1.229.415-1.247 1.184-2.452 2.62-2.935a.971.971 0 1 0-.62-1.842c-.12.04-.236.084-.35.13-2.02.828-3.012 2.588-3.493 4.033a10.383 10.383 0 0 0-.51 2.845l-.001.016v.063c0 .536.434.972.97.972H2.24a7.21 7.21 0 0 0 .878-.065c.527-.063 1.248-.19 2.02-.447 1.445-.48 3.205-1.472 4.033-3.494a5.828 5.828 0 0 0 .147-.407Z"/></svg>
+		<span class="astro-sjjlvp3g">开始一个新项目</span>
+	</p>
+	<div class="body astro-sjjlvp3g">
+		<div class="split astro-lpzwagy7">
+			<div class="expressive-code"><link rel="stylesheet" href="/_astro/ec.xxb0k.css"><script type="module" src="/_astro/ec.0vx5m.js"></script><figure class="frame is-terminal not-content"><figcaption class="header"><span class="title"></span><span class="sr-only">终端窗口</span></figcaption><pre data-language="sh"><code><div class="ec-line"><div class="code"><span style="--0:#919F9F;--1:#5F636F"># 使用 npm 创建一个新项目</span></div></div><div class="ec-line"><div class="code"><span style="--0:#82AAFF;--1:#3B61B0">npm</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">create</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#ECC48D;--1:#3B61B0">astro@latest</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="复制到剪贴板" data-copied="复制成功！" data-code="npm create astro@latest"><div></div></button></div></figure></div><p>我们的 <a href="/zh-cn/install-and-setup/">安装指南</a> 提供了使用 CLI 向导安装 Astro、从现有的 Astro GitHub 仓库创建新项目以及手动安装 Astro 的逐步说明。</p>
+		</div>
+	</div>
+</article>
+</div><div class="landing-card astro-42u226jt">
+	<article class="card sl-flex astro-sjjlvp3g">
+	<p class="title sl-flex astro-sjjlvp3g">
+		<svg aria-hidden="true" class="icon astro-sjjlvp3g astro-uuk7wde3" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.333em;"><path d="M21.17 2.06A13.1 13.1 0 0 0 19 1.87a12.94 12.94 0 0 0-7 2.05 12.94 12.94 0 0 0-7-2 13.1 13.1 0 0 0-2.17.19 1 1 0 0 0-.83 1v12a1 1 0 0 0 1.17 1 10.9 10.9 0 0 1 8.25 1.91l.12.07h.11a.91.91 0 0 0 .7 0h.11l.12-.07A10.899 10.899 0 0 1 20.83 16 1 1 0 0 0 22 15V3a1 1 0 0 0-.83-.94ZM11 15.35a12.87 12.87 0 0 0-6-1.48H4v-10c.333-.02.667-.02 1 0a10.86 10.86 0 0 1 6 1.8v9.68Zm9-1.44h-1a12.87 12.87 0 0 0-6 1.48V5.67a10.86 10.86 0 0 1 6-1.8c.333-.02.667-.02 1 0v10.04Zm1.17 4.15a13.098 13.098 0 0 0-2.17-.19 12.94 12.94 0 0 0-7 2.05 12.94 12.94 0 0 0-7-2.05c-.727.003-1.453.066-2.17.19A1 1 0 0 0 2 19.21a1 1 0 0 0 1.17.79 10.9 10.9 0 0 1 8.25 1.91 1 1 0 0 0 1.16 0A10.9 10.9 0 0 1 20.83 20a1 1 0 0 0 1.17-.79 1 1 0 0 0-.83-1.15Z"/></svg>
+		<span class="astro-sjjlvp3g">学习</span>
+	</p>
+	<div class="body astro-sjjlvp3g">
+	<div class="link-list astro-fvhmjko4">
+		<ul>
+<li><a href="/zh-cn/concepts/why-astro/">Astro 的主要特性</a></li>
+<li><a href="/zh-cn/concepts/islands/">群岛架构</a></li>
+<li><a href="/zh-cn/basics/astro-components/">Astro 组件</a></li>
+<li><a href="/zh-cn/reference/astro-syntax/">Astro 模板语法</a></li>
+</ul>
+	</div>
+</div>
+</article>
+</div><div class="landing-card astro-42u226jt">
+	<article class="card sl-flex astro-sjjlvp3g">
+	<p class="title sl-flex astro-sjjlvp3g">
+		<svg aria-hidden="true" class="icon astro-sjjlvp3g astro-uuk7wde3" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.333em;"><path d="M17 22H5a3 3 0 0 1-3-3V9a3 3 0 0 1 3-3h1a4 4 0 0 1 7.3-2.18c.448.64.692 1.4.7 2.18h3a1 1 0 0 1 1 1v3a4 4 0 0 1 2.18 7.3A3.86 3.86 0 0 1 18 18v3a1 1 0 0 1-1 1ZM5 8a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11v-3.18a1 1 0 0 1 1.33-.95 1.77 1.77 0 0 0 1.74-.23 2 2 0 0 0 .93-1.37 2 2 0 0 0-.48-1.59 1.89 1.89 0 0 0-2.17-.55 1 1 0 0 1-1.33-.95V8h-3.2a1 1 0 0 1-1-1.33 1.77 1.77 0 0 0-.23-1.74 1.939 1.939 0 0 0-3-.43A2 2 0 0 0 8 6c.002.23.046.456.13.67A1 1 0 0 1 7.18 8H5Z"/></svg>
+		<span class="astro-sjjlvp3g">扩展</span>
+	</p>
+	<div class="body astro-sjjlvp3g">
+	<div class="link-list astro-fvhmjko4">
+		<ul>
+<li><a href="/zh-cn/guides/integrations/">添加集成比如 React 和 Partytown</a></li>
+<li><a href="/zh-cn/guides/content-collections/">创建类型安全的内容集合</a></li>
+<li><a href="/zh-cn/guides/view-transitions/">通过视图过渡增强导航</a></li>
+<li><a href="/zh-cn/guides/cms/">连接无头 CMS 到你的项目</a></li>
+</ul>
+	</div>
+</div>
+</article>
+</div></div>
+<div class="discord astro-whktuvqw">
+	<h2 class="astro-whktuvqw">有疑问或想参与其中？</h2>
+	<div class="cta astro-whktuvqw">
+		
+<img src="/_astro/houston_love.BttrNCcZ_ZWYTdq.webp" alt loading="lazy" decoding="async" width="292" height="293" class="hide astro-whktuvqw">
+		<a class="sl-flex action secondary astro-ekguhzzh" href="https://astro.build/chat">
+	加入我们的 Discord
+	
+	
+</a>
+	</div>
+</div>
+								
+
+	
+	
+	
+	
+	
+	
+	<span id="docsearch-lvl0" hidden>Learn</span>
+</div>
+								<div class="hide-when-toc-is-visible astro-jf74usjm">
+	<div class="container astro-2qw6dox2" lang="en" dir="ltr" data-algolia-exclude>
+	<aside aria-labelledby="learn-astro-course-1" class="astro-2qw6dox2">
+		<div class="graphics astro-2qw6dox2">
+			
+<img src="/_astro/Scrimba.ByZ1pAIN_Z1aWGoT.webp" alt="Scrimba" loading="lazy" decoding="async" width="72" height="72" class="scrimba-bubble astro-2qw6dox2">
+			
+<img src="/_astro/JamesQuick.BYVczE5K_Z27j1Lz.webp" alt loading="lazy" decoding="async" width="72" height="72" class="astro-2qw6dox2">
+		</div>
+		<h2 id="learn-astro-course-1" class="astro-2qw6dox2">
+			<strong class="astro-2qw6dox2">Learn Astro</strong> with James Q Quick
+		</h2>
+		<p class="astro-2qw6dox2">Build your first site with 35 interactive Scrimba lessons</p>
+		<a class="sl-link-button not-content primary cta astro-2qw6dox2 astro-gruanbb2" href="https://scrimba.com/intro-to-astro-c00ar0fi5u?via=astro" data-scrimba-cta="true">
+	
+	Get 20% off
+	
+</a>
+	</aside>
+</div>
+
+<script type="module">document.querySelectorAll(`a[data-scrimba-cta]`).forEach(e=>e.addEventListener(`click`,()=>{window.fathom?.trackEvent(`Docs: Scrimba campaign click`)}));</script>
+</div>
+<footer class="sl-flex astro-4y73i7vg">
+	<div class="meta sl-flex astro-4y73i7vg">
+		
+		
+	</div>
+	<div class="pagination-links print:hidden astro-okwfxtf2" dir="ltr">
+	
+	
+</div>
+
+	
+</footer>
+<section class="sl-flex astro-3f4rfcpt">
+	<a href="/zh-cn/contribute/" class="sl-flex astro-3f4rfcpt">
+		<svg aria-hidden="true" class="astro-3f4rfcpt astro-uuk7wde3" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.2em;"><path fill-rule="evenodd" d="M1.44 8.855v-.001l3.527-3.516c.34-.344.802-.541 1.285-.548h6.649l.947-.947c3.07-3.07 6.207-3.072 7.62-2.868a1.821 1.821 0 0 1 1.557 1.557c.204 1.413.203 4.55-2.868 7.62l-.946.946v6.649a1.845 1.845 0 0 1-.549 1.286l-3.516 3.528a1.844 1.844 0 0 1-3.11-.944l-.858-4.275-4.52-4.52-2.31-.463-1.964-.394A1.847 1.847 0 0 1 .98 10.693a1.843 1.843 0 0 1 .46-1.838Zm5.379 2.017-3.873-.776L6.32 6.733h4.638l-4.14 4.14Zm8.403-5.655c2.459-2.46 4.856-2.463 5.89-2.33.134 1.035.13 3.432-2.329 5.891l-6.71 6.71-3.561-3.56 6.71-6.711Zm-1.318 15.837-.776-3.873 4.14-4.14v4.639l-3.364 3.374Z" clip-rule="evenodd"/><path d="M9.318 18.345a.972.972 0 0 0-1.86-.561c-.482 1.435-1.687 2.204-2.934 2.619a8.22 8.22 0 0 1-1.23.302c.062-.365.157-.79.303-1.229.415-1.247 1.184-2.452 2.62-2.935a.971.971 0 1 0-.62-1.842c-.12.04-.236.084-.35.13-2.02.828-3.012 2.588-3.493 4.033a10.383 10.383 0 0 0-.51 2.845l-.001.016v.063c0 .536.434.972.97.972H2.24a7.21 7.21 0 0 0 .878-.065c.527-.063 1.248-.19 2.02-.447 1.445-.48 3.205-1.472 4.033-3.494a5.828 5.828 0 0 0 .147-.407Z"/></svg>
+		贡献
+	</a>
+
+	<a href="https://astro.build/chat" class="sl-flex astro-3f4rfcpt">
+		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="width:1.2em;height:1.2em;" class="astro-3f4rfcpt">
+			<path d="M12.3 12.22A4.92 4.92 0 0 0 14 8.5a5 5 0 0 0-10 0a4.92 4.92 0 0 0 1.7 3.72A8 8 0 0 0 1 19.5a1 1 0 0 0 2 0a6 6 0 0 1 12 0a1 1 0 0 0 2 0a8 8 0 0 0-4.7-7.28M9 11.5a3 3 0 1 1 3-3a3 3 0 0 1-3 3m9.74.32A5 5 0 0 0 15 3.5a1 1 0 0 0 0 2a3 3 0 0 1 3 3a3 3 0 0 1-1.5 2.59a1 1 0 0 0-.5.84a1 1 0 0 0 .45.86l.39.26l.13.07a7 7 0 0 1 4 6.38a1 1 0 0 0 2 0a9 9 0 0 0-4.23-7.68" class="astro-3f4rfcpt"></path>
+		</svg>
+		社区
+	</a>
+
+	<a href="https://opencollective.com/astrodotbuild" class="sl-flex astro-3f4rfcpt">
+		<svg aria-hidden="true" class="astro-3f4rfcpt astro-uuk7wde3" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.2em;"><path d="M20.16 5A6.29 6.29 0 0 0 12 4.36a6.27 6.27 0 0 0-8.16 9.48l6.21 6.22a2.78 2.78 0 0 0 3.9 0l6.21-6.22a6.27 6.27 0 0 0 0-8.84m-1.41 7.46-6.21 6.21a.76.76 0 0 1-1.08 0l-6.21-6.24a4.29 4.29 0 0 1 0-6 4.27 4.27 0 0 1 6 0 1 1 0 0 0 1.42 0 4.27 4.27 0 0 1 6 0 4.29 4.29 0 0 1 .08 6Z"/></svg>
+		赞助
+	</a>
+</section>
+							</div>
+</div>
+				</main>
+			</div>
+</div>
+		</div>
+</div>
+	</body>
+</html>

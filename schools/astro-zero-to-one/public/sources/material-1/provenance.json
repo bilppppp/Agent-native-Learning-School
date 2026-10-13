@@ -1,0 +1,2005 @@
+{
+  "source": "https://docs.astro.build/zh-cn/getting-started/",
+  "fetchedURL": "https://docs.astro.build/zh-cn/getting-started/",
+  "retrieved": "2026-10-13",
+  "tool": "siteone-crawler",
+  "version": "2.5.1",
+  "prefix": "/zh-cn",
+  "maxPages": 500,
+  "workers": 4,
+  "decision": "override-on",
+  "detail": "已指定 --crawl",
+  "entryHtml": "entry.html",
+  "pages": [
+    {
+      "file": "pages/zh-cn/astro-courses/index.md",
+      "url": "https://docs.astro.build/zh-cn/astro-courses/",
+      "chars": 1206
+    },
+    {
+      "file": "pages/zh-cn/basics/astro-components/index.md",
+      "url": "https://docs.astro.build/zh-cn/basics/astro-components/",
+      "chars": 10149
+    },
+    {
+      "file": "pages/zh-cn/basics/astro-pages/index.md",
+      "url": "https://docs.astro.build/zh-cn/basics/astro-pages/",
+      "chars": 6242
+    },
+    {
+      "file": "pages/zh-cn/basics/layouts/index.md",
+      "url": "https://docs.astro.build/zh-cn/basics/layouts/",
+      "chars": 7796
+    },
+    {
+      "file": "pages/zh-cn/basics/project-structure/index.md",
+      "url": "https://docs.astro.build/zh-cn/basics/project-structure/",
+      "chars": 4876
+    },
+    {
+      "file": "pages/zh-cn/concepts/islands/index.md",
+      "url": "https://docs.astro.build/zh-cn/concepts/islands/",
+      "chars": 4501
+    },
+    {
+      "file": "pages/zh-cn/concepts/why-astro/index.md",
+      "url": "https://docs.astro.build/zh-cn/concepts/why-astro/",
+      "chars": 5922
+    },
+    {
+      "file": "pages/zh-cn/contribute/index.md",
+      "url": "https://docs.astro.build/zh-cn/contribute/",
+      "chars": 62588
+    },
+    {
+      "file": "pages/zh-cn/develop-and-build/index.md",
+      "url": "https://docs.astro.build/zh-cn/develop-and-build/",
+      "chars": 3592
+    },
+    {
+      "file": "pages/zh-cn/editor-setup/index.md",
+      "url": "https://docs.astro.build/zh-cn/editor-setup/",
+      "chars": 6307
+    },
+    {
+      "file": "pages/zh-cn/getting-started/index.md",
+      "url": "https://docs.astro.build/zh-cn/getting-started/",
+      "chars": 1865
+    },
+    {
+      "file": "pages/zh-cn/guides/actions/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/actions/",
+      "chars": 22357
+    },
+    {
+      "file": "pages/zh-cn/guides/authentication/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/authentication/",
+      "chars": 7188
+    },
+    {
+      "file": "pages/zh-cn/guides/backend/appwrite/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/backend/appwrite/",
+      "chars": 2099
+    },
+    {
+      "file": "pages/zh-cn/guides/backend/firebase/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/backend/firebase/",
+      "chars": 24471
+    },
+    {
+      "file": "pages/zh-cn/guides/backend/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/backend/",
+      "chars": 2309
+    },
+    {
+      "file": "pages/zh-cn/guides/backend/neon/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/backend/neon/",
+      "chars": 4105
+    },
+    {
+      "file": "pages/zh-cn/guides/backend/prisma-postgres/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/backend/prisma-postgres/",
+      "chars": 5742
+    },
+    {
+      "file": "pages/zh-cn/guides/backend/scalekit/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/backend/scalekit/",
+      "chars": 12495
+    },
+    {
+      "file": "pages/zh-cn/guides/backend/sentry/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/backend/sentry/",
+      "chars": 3672
+    },
+    {
+      "file": "pages/zh-cn/guides/backend/supabase/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/backend/supabase/",
+      "chars": 14497
+    },
+    {
+      "file": "pages/zh-cn/guides/backend/turso/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/backend/turso/",
+      "chars": 4374
+    },
+    {
+      "file": "pages/zh-cn/guides/backend/xata/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/backend/xata/",
+      "chars": 4170
+    },
+    {
+      "file": "pages/zh-cn/guides/build-with-ai/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/build-with-ai/",
+      "chars": 11267
+    },
+    {
+      "file": "pages/zh-cn/guides/caching/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/caching/",
+      "chars": 12683
+    },
+    {
+      "file": "pages/zh-cn/guides/client-side-scripts/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/client-side-scripts/",
+      "chars": 7136
+    },
+    {
+      "file": "pages/zh-cn/guides/cms/apostrophecms/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/cms/apostrophecms/",
+      "chars": 21196
+    },
+    {
+      "file": "pages/zh-cn/guides/cms/builderio/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/cms/builderio/",
+      "chars": 17234
+    },
+    {
+      "file": "pages/zh-cn/guides/cms/buttercms/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/cms/buttercms/",
+      "chars": 10380
+    },
+    {
+      "file": "pages/zh-cn/guides/cms/caisy/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/cms/caisy/",
+      "chars": 9641
+    },
+    {
+      "file": "pages/zh-cn/guides/cms/cloudcannon/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/cms/cloudcannon/",
+      "chars": 16082
+    },
+    {
+      "file": "pages/zh-cn/guides/cms/contentful/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/cms/contentful/",
+      "chars": 21481
+    },
+    {
+      "file": "pages/zh-cn/guides/cms/cosmic/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/cms/cosmic/",
+      "chars": 13695
+    },
+    {
+      "file": "pages/zh-cn/guides/cms/craft-cms/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/cms/craft-cms/",
+      "chars": 8288
+    },
+    {
+      "file": "pages/zh-cn/guides/cms/craft-cross-cms/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/cms/craft-cross-cms/",
+      "chars": 8097
+    },
+    {
+      "file": "pages/zh-cn/guides/cms/crystallize/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/cms/crystallize/",
+      "chars": 8606
+    },
+    {
+      "file": "pages/zh-cn/guides/cms/datocms/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/cms/datocms/",
+      "chars": 12515
+    },
+    {
+      "file": "pages/zh-cn/guides/cms/decap-cms/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/cms/decap-cms/",
+      "chars": 11258
+    },
+    {
+      "file": "pages/zh-cn/guides/cms/directus/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/cms/directus/",
+      "chars": 8262
+    },
+    {
+      "file": "pages/zh-cn/guides/cms/drupal/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/cms/drupal/",
+      "chars": 21360
+    },
+    {
+      "file": "pages/zh-cn/guides/cms/emdash/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/cms/emdash/",
+      "chars": 15074
+    },
+    {
+      "file": "pages/zh-cn/guides/cms/flotiq/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/cms/flotiq/",
+      "chars": 13919
+    },
+    {
+      "file": "pages/zh-cn/guides/cms/frontmatter-cms/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/cms/frontmatter-cms/",
+      "chars": 11988
+    },
+    {
+      "file": "pages/zh-cn/guides/cms/ghost/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/cms/ghost/",
+      "chars": 13659
+    },
+    {
+      "file": "pages/zh-cn/guides/cms/gitcms/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/cms/gitcms/",
+      "chars": 7886
+    },
+    {
+      "file": "pages/zh-cn/guides/cms/hackmd/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/cms/hackmd/",
+      "chars": 15154
+    },
+    {
+      "file": "pages/zh-cn/guides/cms/hashnode/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/cms/hashnode/",
+      "chars": 13854
+    },
+    {
+      "file": "pages/zh-cn/guides/cms/hygraph/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/cms/hygraph/",
+      "chars": 10349
+    },
+    {
+      "file": "pages/zh-cn/guides/cms/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/cms/",
+      "chars": 8724
+    },
+    {
+      "file": "pages/zh-cn/guides/cms/jekyllpad/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/cms/jekyllpad/",
+      "chars": 8179
+    },
+    {
+      "file": "pages/zh-cn/guides/cms/keystatic/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/cms/keystatic/",
+      "chars": 12028
+    },
+    {
+      "file": "pages/zh-cn/guides/cms/keystonejs/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/cms/keystonejs/",
+      "chars": 7950
+    },
+    {
+      "file": "pages/zh-cn/guides/cms/kontent-ai/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/cms/kontent-ai/",
+      "chars": 21067
+    },
+    {
+      "file": "pages/zh-cn/guides/cms/microcms/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/cms/microcms/",
+      "chars": 7832
+    },
+    {
+      "file": "pages/zh-cn/guides/cms/optimizely/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/cms/optimizely/",
+      "chars": 8367
+    },
+    {
+      "file": "pages/zh-cn/guides/cms/pages-cms/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/cms/pages-cms/",
+      "chars": 7957
+    },
+    {
+      "file": "pages/zh-cn/guides/cms/payload/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/cms/payload/",
+      "chars": 12953
+    },
+    {
+      "file": "pages/zh-cn/guides/cms/preprcms/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/cms/preprcms/",
+      "chars": 12453
+    },
+    {
+      "file": "pages/zh-cn/guides/cms/prismic/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/cms/prismic/",
+      "chars": 8067
+    },
+    {
+      "file": "pages/zh-cn/guides/cms/sanity/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/cms/sanity/",
+      "chars": 8189
+    },
+    {
+      "file": "pages/zh-cn/guides/cms/sitecore/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/cms/sitecore/",
+      "chars": 8508
+    },
+    {
+      "file": "pages/zh-cn/guides/cms/sitepins/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/cms/sitepins/",
+      "chars": 8283
+    },
+    {
+      "file": "pages/zh-cn/guides/cms/spinal/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/cms/spinal/",
+      "chars": 8226
+    },
+    {
+      "file": "pages/zh-cn/guides/cms/statamic/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/cms/statamic/",
+      "chars": 10705
+    },
+    {
+      "file": "pages/zh-cn/guides/cms/storyblok/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/cms/storyblok/",
+      "chars": 20774
+    },
+    {
+      "file": "pages/zh-cn/guides/cms/strapi/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/cms/strapi/",
+      "chars": 16292
+    },
+    {
+      "file": "pages/zh-cn/guides/cms/studiocms/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/cms/studiocms/",
+      "chars": 8015
+    },
+    {
+      "file": "pages/zh-cn/guides/cms/tina-cms/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/cms/tina-cms/",
+      "chars": 10439
+    },
+    {
+      "file": "pages/zh-cn/guides/cms/umbraco/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/cms/umbraco/",
+      "chars": 14209
+    },
+    {
+      "file": "pages/zh-cn/guides/cms/vault-cms/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/cms/vault-cms/",
+      "chars": 7836
+    },
+    {
+      "file": "pages/zh-cn/guides/cms/wordpress/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/cms/wordpress/",
+      "chars": 15258
+    },
+    {
+      "file": "pages/zh-cn/guides/cms/zero/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/cms/zero/",
+      "chars": 7748
+    },
+    {
+      "file": "pages/zh-cn/guides/configuring-astro/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/configuring-astro/",
+      "chars": 4655
+    },
+    {
+      "file": "pages/zh-cn/guides/content-collections/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/content-collections/",
+      "chars": 30068
+    },
+    {
+      "file": "pages/zh-cn/guides/data-fetching/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/data-fetching/",
+      "chars": 3656
+    },
+    {
+      "file": "pages/zh-cn/guides/deploy/aws-via-flightcontrol/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/deploy/aws-via-flightcontrol/",
+      "chars": 6811
+    },
+    {
+      "file": "pages/zh-cn/guides/deploy/aws-via-sst/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/deploy/aws-via-sst/",
+      "chars": 6577
+    },
+    {
+      "file": "pages/zh-cn/guides/deploy/aws/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/deploy/aws/",
+      "chars": 13023
+    },
+    {
+      "file": "pages/zh-cn/guides/deploy/azion/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/deploy/azion/",
+      "chars": 8367
+    },
+    {
+      "file": "pages/zh-cn/guides/deploy/buddy/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/deploy/buddy/",
+      "chars": 6581
+    },
+    {
+      "file": "pages/zh-cn/guides/deploy/cleavr/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/deploy/cleavr/",
+      "chars": 6638
+    },
+    {
+      "file": "pages/zh-cn/guides/deploy/clever-cloud/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/deploy/clever-cloud/",
+      "chars": 8408
+    },
+    {
+      "file": "pages/zh-cn/guides/deploy/cloudflare/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/deploy/cloudflare/",
+      "chars": 10169
+    },
+    {
+      "file": "pages/zh-cn/guides/deploy/cloudray/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/deploy/cloudray/",
+      "chars": 6620
+    },
+    {
+      "file": "pages/zh-cn/guides/deploy/deno/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/deploy/deno/",
+      "chars": 11335
+    },
+    {
+      "file": "pages/zh-cn/guides/deploy/deployhq/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/deploy/deployhq/",
+      "chars": 7514
+    },
+    {
+      "file": "pages/zh-cn/guides/deploy/edgeone-pages/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/deploy/edgeone-pages/",
+      "chars": 6431
+    },
+    {
+      "file": "pages/zh-cn/guides/deploy/firebase/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/deploy/firebase/",
+      "chars": 8099
+    },
+    {
+      "file": "pages/zh-cn/guides/deploy/fleek/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/deploy/fleek/",
+      "chars": 6671
+    },
+    {
+      "file": "pages/zh-cn/guides/deploy/flyio/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/deploy/flyio/",
+      "chars": 6931
+    },
+    {
+      "file": "pages/zh-cn/guides/deploy/github/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/deploy/github/",
+      "chars": 11102
+    },
+    {
+      "file": "pages/zh-cn/guides/deploy/gitlab/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/deploy/gitlab/",
+      "chars": 8418
+    },
+    {
+      "file": "pages/zh-cn/guides/deploy/google-cloud/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/deploy/google-cloud/",
+      "chars": 8432
+    },
+    {
+      "file": "pages/zh-cn/guides/deploy/heroku/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/deploy/heroku/",
+      "chars": 6927
+    },
+    {
+      "file": "pages/zh-cn/guides/deploy/hostinger/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/deploy/hostinger/",
+      "chars": 10648
+    },
+    {
+      "file": "pages/zh-cn/guides/deploy/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/deploy/",
+      "chars": 5261
+    },
+    {
+      "file": "pages/zh-cn/guides/deploy/ishosting/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/deploy/ishosting/",
+      "chars": 6352
+    },
+    {
+      "file": "pages/zh-cn/guides/deploy/microsoft-azure/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/deploy/microsoft-azure/",
+      "chars": 7876
+    },
+    {
+      "file": "pages/zh-cn/guides/deploy/netlify/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/deploy/netlify/",
+      "chars": 8937
+    },
+    {
+      "file": "pages/zh-cn/guides/deploy/railway/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/deploy/railway/",
+      "chars": 7591
+    },
+    {
+      "file": "pages/zh-cn/guides/deploy/render/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/deploy/render/",
+      "chars": 6194
+    },
+    {
+      "file": "pages/zh-cn/guides/deploy/seenode/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/deploy/seenode/",
+      "chars": 7943
+    },
+    {
+      "file": "pages/zh-cn/guides/deploy/sevalla/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/deploy/sevalla/",
+      "chars": 8972
+    },
+    {
+      "file": "pages/zh-cn/guides/deploy/stormkit/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/deploy/stormkit/",
+      "chars": 6451
+    },
+    {
+      "file": "pages/zh-cn/guides/deploy/surge/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/deploy/surge/",
+      "chars": 6109
+    },
+    {
+      "file": "pages/zh-cn/guides/deploy/vercel/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/deploy/vercel/",
+      "chars": 8174
+    },
+    {
+      "file": "pages/zh-cn/guides/deploy/zeabur/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/deploy/zeabur/",
+      "chars": 6921
+    },
+    {
+      "file": "pages/zh-cn/guides/deploy/zephyr/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/deploy/zephyr/",
+      "chars": 9393
+    },
+    {
+      "file": "pages/zh-cn/guides/deploy/zerops/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/deploy/zerops/",
+      "chars": 10643
+    },
+    {
+      "file": "pages/zh-cn/guides/dev-toolbar/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/dev-toolbar/",
+      "chars": 3279
+    },
+    {
+      "file": "pages/zh-cn/guides/ecommerce/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/ecommerce/",
+      "chars": 7042
+    },
+    {
+      "file": "pages/zh-cn/guides/endpoints/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/endpoints/",
+      "chars": 7534
+    },
+    {
+      "file": "pages/zh-cn/guides/environment-variables/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/environment-variables/",
+      "chars": 9768
+    },
+    {
+      "file": "pages/zh-cn/guides/fonts/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/fonts/",
+      "chars": 17224
+    },
+    {
+      "file": "pages/zh-cn/guides/framework-components/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/framework-components/",
+      "chars": 8095
+    },
+    {
+      "file": "pages/zh-cn/guides/images/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/images/",
+      "chars": 22183
+    },
+    {
+      "file": "pages/zh-cn/guides/imports/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/imports/",
+      "chars": 11877
+    },
+    {
+      "file": "pages/zh-cn/guides/integrations-guide/alpinejs/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/integrations-guide/alpinejs/",
+      "chars": 6481
+    },
+    {
+      "file": "pages/zh-cn/guides/integrations-guide/cloudflare/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/integrations-guide/cloudflare/",
+      "chars": 24195
+    },
+    {
+      "file": "pages/zh-cn/guides/integrations-guide/markdoc/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/integrations-guide/markdoc/",
+      "chars": 17982
+    },
+    {
+      "file": "pages/zh-cn/guides/integrations-guide/mdx/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/integrations-guide/mdx/",
+      "chars": 13722
+    },
+    {
+      "file": "pages/zh-cn/guides/integrations-guide/netlify/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/integrations-guide/netlify/",
+      "chars": 15271
+    },
+    {
+      "file": "pages/zh-cn/guides/integrations-guide/node/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/integrations-guide/node/",
+      "chars": 9723
+    },
+    {
+      "file": "pages/zh-cn/guides/integrations-guide/partytown/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/integrations-guide/partytown/",
+      "chars": 4895
+    },
+    {
+      "file": "pages/zh-cn/guides/integrations-guide/preact/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/integrations-guide/preact/",
+      "chars": 8233
+    },
+    {
+      "file": "pages/zh-cn/guides/integrations-guide/react/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/integrations-guide/react/",
+      "chars": 9112
+    },
+    {
+      "file": "pages/zh-cn/guides/integrations-guide/sitemap/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/integrations-guide/sitemap/",
+      "chars": 25185
+    },
+    {
+      "file": "pages/zh-cn/guides/integrations-guide/solid-js/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/integrations-guide/solid-js/",
+      "chars": 7611
+    },
+    {
+      "file": "pages/zh-cn/guides/integrations-guide/svelte/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/integrations-guide/svelte/",
+      "chars": 5923
+    },
+    {
+      "file": "pages/zh-cn/guides/integrations-guide/vercel/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/integrations-guide/vercel/",
+      "chars": 14303
+    },
+    {
+      "file": "pages/zh-cn/guides/integrations-guide/vue/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/integrations-guide/vue/",
+      "chars": 7639
+    },
+    {
+      "file": "pages/zh-cn/guides/integrations/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/integrations/",
+      "chars": 14654
+    },
+    {
+      "file": "pages/zh-cn/guides/internationalization/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/internationalization/",
+      "chars": 12531
+    },
+    {
+      "file": "pages/zh-cn/guides/markdown-content/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/markdown-content/",
+      "chars": 14362
+    },
+    {
+      "file": "pages/zh-cn/guides/media/cloudinary/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/media/cloudinary/",
+      "chars": 7018
+    },
+    {
+      "file": "pages/zh-cn/guides/media/imagekit/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/media/imagekit/",
+      "chars": 16962
+    },
+    {
+      "file": "pages/zh-cn/guides/media/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/media/",
+      "chars": 1955
+    },
+    {
+      "file": "pages/zh-cn/guides/media/mux/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/media/mux/",
+      "chars": 16359
+    },
+    {
+      "file": "pages/zh-cn/guides/middleware/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/middleware/",
+      "chars": 7467
+    },
+    {
+      "file": "pages/zh-cn/guides/migrate-to-astro/from-create-react-app/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/migrate-to-astro/from-create-react-app/",
+      "chars": 13162
+    },
+    {
+      "file": "pages/zh-cn/guides/migrate-to-astro/from-docusaurus/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/migrate-to-astro/from-docusaurus/",
+      "chars": 6001
+    },
+    {
+      "file": "pages/zh-cn/guides/migrate-to-astro/from-eleventy/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/migrate-to-astro/from-eleventy/",
+      "chars": 5641
+    },
+    {
+      "file": "pages/zh-cn/guides/migrate-to-astro/from-gatsby/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/migrate-to-astro/from-gatsby/",
+      "chars": 21325
+    },
+    {
+      "file": "pages/zh-cn/guides/migrate-to-astro/from-gitbook/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/migrate-to-astro/from-gitbook/",
+      "chars": 5842
+    },
+    {
+      "file": "pages/zh-cn/guides/migrate-to-astro/from-gridsome/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/migrate-to-astro/from-gridsome/",
+      "chars": 6127
+    },
+    {
+      "file": "pages/zh-cn/guides/migrate-to-astro/from-hugo/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/migrate-to-astro/from-hugo/",
+      "chars": 5882
+    },
+    {
+      "file": "pages/zh-cn/guides/migrate-to-astro/from-jekyll/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/migrate-to-astro/from-jekyll/",
+      "chars": 5977
+    },
+    {
+      "file": "pages/zh-cn/guides/migrate-to-astro/from-nextjs/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/migrate-to-astro/from-nextjs/",
+      "chars": 20187
+    },
+    {
+      "file": "pages/zh-cn/guides/migrate-to-astro/from-nuxtjs/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/migrate-to-astro/from-nuxtjs/",
+      "chars": 19499
+    },
+    {
+      "file": "pages/zh-cn/guides/migrate-to-astro/from-pelican/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/migrate-to-astro/from-pelican/",
+      "chars": 5613
+    },
+    {
+      "file": "pages/zh-cn/guides/migrate-to-astro/from-sveltekit/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/migrate-to-astro/from-sveltekit/",
+      "chars": 5978
+    },
+    {
+      "file": "pages/zh-cn/guides/migrate-to-astro/from-vuepress/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/migrate-to-astro/from-vuepress/",
+      "chars": 6094
+    },
+    {
+      "file": "pages/zh-cn/guides/migrate-to-astro/from-wordpress/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/migrate-to-astro/from-wordpress/",
+      "chars": 7330
+    },
+    {
+      "file": "pages/zh-cn/guides/migrate-to-astro/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/migrate-to-astro/",
+      "chars": 4231
+    },
+    {
+      "file": "pages/zh-cn/guides/on-demand-rendering/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/on-demand-rendering/",
+      "chars": 8408
+    },
+    {
+      "file": "pages/zh-cn/guides/prefetch/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/prefetch/",
+      "chars": 8607
+    },
+    {
+      "file": "pages/zh-cn/guides/routing/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/routing/",
+      "chars": 15483
+    },
+    {
+      "file": "pages/zh-cn/guides/server-islands/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/server-islands/",
+      "chars": 4884
+    },
+    {
+      "file": "pages/zh-cn/guides/sessions/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/sessions/",
+      "chars": 5230
+    },
+    {
+      "file": "pages/zh-cn/guides/styling/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/styling/",
+      "chars": 18470
+    },
+    {
+      "file": "pages/zh-cn/guides/syntax-highlighting/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/syntax-highlighting/",
+      "chars": 6884
+    },
+    {
+      "file": "pages/zh-cn/guides/testing/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/testing/",
+      "chars": 9590
+    },
+    {
+      "file": "pages/zh-cn/guides/troubleshooting/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/troubleshooting/",
+      "chars": 9370
+    },
+    {
+      "file": "pages/zh-cn/guides/typescript/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/typescript/",
+      "chars": 11240
+    },
+    {
+      "file": "pages/zh-cn/guides/upgrade-to/v1/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/upgrade-to/v1/",
+      "chars": 20455
+    },
+    {
+      "file": "pages/zh-cn/guides/upgrade-to/v2/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/upgrade-to/v2/",
+      "chars": 11124
+    },
+    {
+      "file": "pages/zh-cn/guides/upgrade-to/v3/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/upgrade-to/v3/",
+      "chars": 27675
+    },
+    {
+      "file": "pages/zh-cn/guides/upgrade-to/v4/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/upgrade-to/v4/",
+      "chars": 11406
+    },
+    {
+      "file": "pages/zh-cn/guides/upgrade-to/v5/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/upgrade-to/v5/",
+      "chars": 40631
+    },
+    {
+      "file": "pages/zh-cn/guides/upgrade-to/v6/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/upgrade-to/v6/",
+      "chars": 80680
+    },
+    {
+      "file": "pages/zh-cn/guides/upgrade-to/v7/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/upgrade-to/v7/",
+      "chars": 18504
+    },
+    {
+      "file": "pages/zh-cn/guides/view-transitions/index.md",
+      "url": "https://docs.astro.build/zh-cn/guides/view-transitions/",
+      "chars": 21366
+    },
+    {
+      "file": "pages/zh-cn/index.md",
+      "url": "https://docs.astro.build/zh-cn/",
+      "chars": 0
+    },
+    {
+      "file": "pages/zh-cn/install-and-setup/index.md",
+      "url": "https://docs.astro.build/zh-cn/install-and-setup/",
+      "chars": 7815
+    },
+    {
+      "file": "pages/zh-cn/recipes/add-yaml-support/index.md",
+      "url": "https://docs.astro.build/zh-cn/recipes/add-yaml-support/",
+      "chars": 1629
+    },
+    {
+      "file": "pages/zh-cn/recipes/analyze-bundle-size/index.md",
+      "url": "https://docs.astro.build/zh-cn/recipes/analyze-bundle-size/",
+      "chars": 2107
+    },
+    {
+      "file": "pages/zh-cn/recipes/build-custom-img-component/index.md",
+      "url": "https://docs.astro.build/zh-cn/recipes/build-custom-img-component/",
+      "chars": 3554
+    },
+    {
+      "file": "pages/zh-cn/recipes/build-forms-api/index.md",
+      "url": "https://docs.astro.build/zh-cn/recipes/build-forms-api/",
+      "chars": 9189
+    },
+    {
+      "file": "pages/zh-cn/recipes/build-forms/index.md",
+      "url": "https://docs.astro.build/zh-cn/recipes/build-forms/",
+      "chars": 5599
+    },
+    {
+      "file": "pages/zh-cn/recipes/bun/index.md",
+      "url": "https://docs.astro.build/zh-cn/recipes/bun/",
+      "chars": 2609
+    },
+    {
+      "file": "pages/zh-cn/recipes/call-endpoints/index.md",
+      "url": "https://docs.astro.build/zh-cn/recipes/call-endpoints/",
+      "chars": 1528
+    },
+    {
+      "file": "pages/zh-cn/recipes/captcha/index.md",
+      "url": "https://docs.astro.build/zh-cn/recipes/captcha/",
+      "chars": 2431
+    },
+    {
+      "file": "pages/zh-cn/recipes/customizing-output-filenames/index.md",
+      "url": "https://docs.astro.build/zh-cn/recipes/customizing-output-filenames/",
+      "chars": 4957
+    },
+    {
+      "file": "pages/zh-cn/recipes/docker/index.md",
+      "url": "https://docs.astro.build/zh-cn/recipes/docker/",
+      "chars": 4880
+    },
+    {
+      "file": "pages/zh-cn/recipes/dynamically-importing-images/index.md",
+      "url": "https://docs.astro.build/zh-cn/recipes/dynamically-importing-images/",
+      "chars": 4013
+    },
+    {
+      "file": "pages/zh-cn/recipes/external-links/index.md",
+      "url": "https://docs.astro.build/zh-cn/recipes/external-links/",
+      "chars": 1901
+    },
+    {
+      "file": "pages/zh-cn/recipes/i18n/index.md",
+      "url": "https://docs.astro.build/zh-cn/recipes/i18n/",
+      "chars": 10904
+    },
+    {
+      "file": "pages/zh-cn/recipes/index.md",
+      "url": "https://docs.astro.build/zh-cn/recipes/",
+      "chars": 3339
+    },
+    {
+      "file": "pages/zh-cn/recipes/making-toolbar-apps/index.md",
+      "url": "https://docs.astro.build/zh-cn/recipes/making-toolbar-apps/",
+      "chars": 7890
+    },
+    {
+      "file": "pages/zh-cn/recipes/modified-time/index.md",
+      "url": "https://docs.astro.build/zh-cn/recipes/modified-time/",
+      "chars": 3398
+    },
+    {
+      "file": "pages/zh-cn/recipes/reading-time/index.md",
+      "url": "https://docs.astro.build/zh-cn/recipes/reading-time/",
+      "chars": 3130
+    },
+    {
+      "file": "pages/zh-cn/recipes/rss/index.md",
+      "url": "https://docs.astro.build/zh-cn/recipes/rss/",
+      "chars": 8543
+    },
+    {
+      "file": "pages/zh-cn/recipes/sharing-state-islands/index.md",
+      "url": "https://docs.astro.build/zh-cn/recipes/sharing-state-islands/",
+      "chars": 15624
+    },
+    {
+      "file": "pages/zh-cn/recipes/sharing-state/index.md",
+      "url": "https://docs.astro.build/zh-cn/recipes/sharing-state/",
+      "chars": 2278
+    },
+    {
+      "file": "pages/zh-cn/recipes/streaming-improve-page-performance/index.md",
+      "url": "https://docs.astro.build/zh-cn/recipes/streaming-improve-page-performance/",
+      "chars": 3213
+    },
+    {
+      "file": "pages/zh-cn/recipes/tailwind-rendered-markdown/index.md",
+      "url": "https://docs.astro.build/zh-cn/recipes/tailwind-rendered-markdown/",
+      "chars": 2677
+    },
+    {
+      "file": "pages/zh-cn/reference/adapter-reference/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/adapter-reference/",
+      "chars": 28708
+    },
+    {
+      "file": "pages/zh-cn/reference/api-reference/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/api-reference/",
+      "chars": 25092
+    },
+    {
+      "file": "pages/zh-cn/reference/astro-syntax/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/astro-syntax/",
+      "chars": 6506
+    },
+    {
+      "file": "pages/zh-cn/reference/cache-provider-reference/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/cache-provider-reference/",
+      "chars": 16293
+    },
+    {
+      "file": "pages/zh-cn/reference/cli-reference/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/cli-reference/",
+      "chars": 11779
+    },
+    {
+      "file": "pages/zh-cn/reference/configuration-reference/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/configuration-reference/",
+      "chars": 33456
+    },
+    {
+      "file": "pages/zh-cn/reference/container-reference/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/container-reference/",
+      "chars": 16901
+    },
+    {
+      "file": "pages/zh-cn/reference/content-loader-reference/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/content-loader-reference/",
+      "chars": 37177
+    },
+    {
+      "file": "pages/zh-cn/reference/dev-toolbar-app-reference/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/dev-toolbar-app-reference/",
+      "chars": 15971
+    },
+    {
+      "file": "pages/zh-cn/reference/directives-reference/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/directives-reference/",
+      "chars": 4541
+    },
+    {
+      "file": "pages/zh-cn/reference/error-reference/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/error-reference/",
+      "chars": 18948
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/action-called-from-server-error/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/action-called-from-server-error/",
+      "chars": 1159
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/action-not-found-error/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/action-not-found-error/",
+      "chars": 1036
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/actions-cant-be-loaded/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/actions-cant-be-loaded/",
+      "chars": 977
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/actions-returned-invalid-data-error/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/actions-returned-invalid-data-error/",
+      "chars": 1177
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/actions-without-server-output-error/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/actions-without-server-output-error/",
+      "chars": 1110
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/adapter-support-output-mismatch/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/adapter-support-output-mismatch/",
+      "chars": 986
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/astro-glob-no-match/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/astro-glob-no-match/",
+      "chars": 936
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/astro-glob-used-outside/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/astro-glob-used-outside/",
+      "chars": 1189
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/astro-response-headers-reassigned/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/astro-response-headers-reassigned/",
+      "chars": 967
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/cache-not-enabled/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/cache-not-enabled/",
+      "chars": 851
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/cache-provider-not-found/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/cache-provider-not-found/",
+      "chars": 1035
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/cache-query-config-conflict/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/cache-query-config-conflict/",
+      "chars": 1024
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/cannot-determine-weight-and-style-from-font-file/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/cannot-determine-weight-and-style-from-font-file/",
+      "chars": 725
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/cannot-extract-font-type/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/cannot-extract-font-type/",
+      "chars": 673
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/cannot-fetch-font-file/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/cannot-fetch-font-file/",
+      "chars": 671
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/cannot-optimize-svg/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/cannot-optimize-svg/",
+      "chars": 797
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/cant-render-page/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/cant-render-page/",
+      "chars": 1024
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/client-address-not-available/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/client-address-not-available/",
+      "chars": 1217
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/config-legacy-key/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/config-legacy-key/",
+      "chars": 1055
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/config-not-found/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/config-not-found/",
+      "chars": 1087
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/content-collection-invalid-type/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/content-collection-invalid-type/",
+      "chars": 1215
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/content-collection-missing-loader/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/content-collection-missing-loader/",
+      "chars": 1220
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/content-collection-type-mismatch-error/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/content-collection-type-mismatch-error/",
+      "chars": 1168
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/content-entry-data-error/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/content-entry-data-error/",
+      "chars": 1169
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/content-loader-invalid-data-error/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/content-loader-invalid-data-error/",
+      "chars": 1012
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/content-loader-returns-invalid-id/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/content-loader-returns-invalid-id/",
+      "chars": 1136
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/content-schema-contains-slug-error/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/content-schema-contains-slug-error/",
+      "chars": 1090
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/could-not-transform-image/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/could-not-transform-image/",
+      "chars": 1100
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/csssyntax-error/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/csssyntax-error/",
+      "chars": 890
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/data-collection-entry-parse-error/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/data-collection-entry-parse-error/",
+      "chars": 1028
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/duplicate-content-entry-slug-error/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/duplicate-content-entry-slug-error/",
+      "chars": 732
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/endpoint-did-not-return-aresponse/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/endpoint-did-not-return-aresponse/",
+      "chars": 1317
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/env-invalid-variables/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/env-invalid-variables/",
+      "chars": 929
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/env-prefix-conflicts-with-secret/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/env-prefix-conflicts-with-secret/",
+      "chars": 1692
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/expected-image-options/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/expected-image-options/",
+      "chars": 1152
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/expected-image/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/expected-image/",
+      "chars": 1448
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/expected-not-esmimage/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/expected-not-esmimage/",
+      "chars": 1072
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/failed-to-fetch-remote-image-dimensions/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/failed-to-fetch-remote-image-dimensions/",
+      "chars": 977
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/failed-to-find-page-map-ssr/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/failed-to-find-page-map-ssr/",
+      "chars": 1052
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/failed-to-load-module-ssr/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/failed-to-load-module-ssr/",
+      "chars": 1072
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/file-glob-not-supported/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/file-glob-not-supported/",
+      "chars": 1042
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/file-parser-not-found/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/file-parser-not-found/",
+      "chars": 1031
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/font-family-not-found/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/font-family-not-found/",
+      "chars": 944
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/forbidden-rewrite/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/forbidden-rewrite/",
+      "chars": 1029
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/generate-content-types-error/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/generate-content-types-error/",
+      "chars": 1076
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/get-entry-deprecation-error/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/get-entry-deprecation-error/",
+      "chars": 816
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/get-image-not-used-on-server/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/get-image-not-used-on-server/",
+      "chars": 1586
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/get-static-paths-expected-params/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/get-static-paths-expected-params/",
+      "chars": 1117
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/get-static-paths-invalid-route-param/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/get-static-paths-invalid-route-param/",
+      "chars": 1715
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/get-static-paths-required/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/get-static-paths-required/",
+      "chars": 1122
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/i18n-no-locale-found-in-path/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/i18n-no-locale-found-in-path/",
+      "chars": 814
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/i18n-not-enabled/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/i18n-not-enabled/",
+      "chars": 1423
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/image-missing-alt/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/image-missing-alt/",
+      "chars": 1076
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/image-not-found/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/image-not-found/",
+      "chars": 1097
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/incompatible-descriptor-options/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/incompatible-descriptor-options/",
+      "chars": 1158
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/incorrect-strategy-for-i18n/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/incorrect-strategy-for-i18n/",
+      "chars": 1176
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/invalid-component-args/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/invalid-component-args/",
+      "chars": 987
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/invalid-content-entry-data-error/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/invalid-content-entry-data-error/",
+      "chars": 1166
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/invalid-content-entry-frontmatter-error/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/invalid-content-entry-frontmatter-error/",
+      "chars": 1208
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/invalid-content-entry-slug-error/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/invalid-content-entry-slug-error/",
+      "chars": 969
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/invalid-dynamic-route/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/invalid-dynamic-route/",
+      "chars": 1006
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/invalid-frontmatter-injection-error/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/invalid-frontmatter-injection-error/",
+      "chars": 1254
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/invalid-get-static-path-param/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/invalid-get-static-path-param/",
+      "chars": 1147
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/invalid-get-static-paths-entry/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/invalid-get-static-paths-entry/",
+      "chars": 1468
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/invalid-get-static-paths-return/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/invalid-get-static-paths-return/",
+      "chars": 1118
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/invalid-glob/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/invalid-glob/",
+      "chars": 869
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/invalid-i18n-middleware-configuration/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/invalid-i18n-middleware-configuration/",
+      "chars": 1066
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/invalid-image-service/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/invalid-image-service/",
+      "chars": 1169
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/invalid-prerender-export/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/invalid-prerender-export/",
+      "chars": 979
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/invalid-redirect-destination/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/invalid-redirect-destination/",
+      "chars": 1297
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/legacy-content-config-error/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/legacy-content-config-error/",
+      "chars": 1130
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/live-content-config-error/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/live-content-config-error/",
+      "chars": 893
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/local-image-used-wrongly/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/local-image-used-wrongly/",
+      "chars": 1654
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/locals-not-an-object/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/locals-not-an-object/",
+      "chars": 910
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/locals-reassigned/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/locals-reassigned/",
+      "chars": 855
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/markdown-frontmatter-parse-error/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/markdown-frontmatter-parse-error/",
+      "chars": 1048
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/mdx-integration-missing-error/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/mdx-integration-missing-error/",
+      "chars": 1101
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/middleware-cant-be-loaded/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/middleware-cant-be-loaded/",
+      "chars": 1172
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/middleware-no-data-or-next-called/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/middleware-no-data-or-next-called/",
+      "chars": 1225
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/middleware-not-aresponse/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/middleware-not-aresponse/",
+      "chars": 912
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/missing-image-dimension/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/missing-image-dimension/",
+      "chars": 1389
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/missing-index-for-internationalization/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/missing-index-for-internationalization/",
+      "chars": 1242
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/missing-locale/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/missing-locale/",
+      "chars": 990
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/missing-media-query-directive/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/missing-media-query-directive/",
+      "chars": 1174
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/missing-middleware-for-internationalization/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/missing-middleware-for-internationalization/",
+      "chars": 909
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/missing-sharp/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/missing-sharp/",
+      "chars": 1185
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/mixed-content-data-collection-error/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/mixed-content-data-collection-error/",
+      "chars": 1012
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/no-adapter-installed-server-islands/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/no-adapter-installed-server-islands/",
+      "chars": 835
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/no-adapter-installed/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/no-adapter-installed/",
+      "chars": 1141
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/no-client-entrypoint/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/no-client-entrypoint/",
+      "chars": 1242
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/no-client-only-hint/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/no-client-only-hint/",
+      "chars": 1212
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/no-image-metadata/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/no-image-metadata/",
+      "chars": 1052
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/no-matching-import/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/no-matching-import/",
+      "chars": 1024
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/no-matching-renderer/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/no-matching-renderer/",
+      "chars": 1625
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/no-matching-static-path-found/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/no-matching-static-path-found/",
+      "chars": 1207
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/no-prerendered-routes-with-domains/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/no-prerendered-routes-with-domains/",
+      "chars": 1078
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/only-response-can-be-returned/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/only-response-can-be-returned/",
+      "chars": 1053
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/page-number-param-not-found/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/page-number-param-not-found/",
+      "chars": 1048
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/prerender-client-address-not-available/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/prerender-client-address-not-available/",
+      "chars": 1206
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/prerender-dynamic-endpoint-path-collide/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/prerender-dynamic-endpoint-path-collide/",
+      "chars": 1296
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/prerender-route-conflict/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/prerender-route-conflict/",
+      "chars": 1110
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/redirect-with-no-location/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/redirect-with-no-location/",
+      "chars": 1041
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/remote-image-not-allowed/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/remote-image-not-allowed/",
+      "chars": 832
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/render-undefined-entry-error/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/render-undefined-entry-error/",
+      "chars": 918
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/reserved-slot-name/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/reserved-slot-name/",
+      "chars": 799
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/response-sent-error/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/response-sent-error/",
+      "chars": 1100
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/rewrite-with-body-used/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/rewrite-with-body-used/",
+      "chars": 1328
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/route-not-found/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/route-not-found/",
+      "chars": 838
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/server-only-module/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/server-only-module/",
+      "chars": 952
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/session-storage-init-error/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/session-storage-init-error/",
+      "chars": 813
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/session-storage-save-error/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/session-storage-save-error/",
+      "chars": 1039
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/static-client-address-not-available/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/static-client-address-not-available/",
+      "chars": 1327
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/unavailable-astro-global/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/unavailable-astro-global/",
+      "chars": 1005
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/unhandled-rejection/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/unhandled-rejection/",
+      "chars": 908
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/unknown-clierror/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/unknown-clierror/",
+      "chars": 991
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/unknown-compiler-error/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/unknown-compiler-error/",
+      "chars": 832
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/unknown-config-error/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/unknown-config-error/",
+      "chars": 1086
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/unknown-content-collection-error/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/unknown-content-collection-error/",
+      "chars": 920
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/unknown-csserror/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/unknown-csserror/",
+      "chars": 729
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/unknown-filesystem-error/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/unknown-filesystem-error/",
+      "chars": 715
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/unknown-markdown-error/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/unknown-markdown-error/",
+      "chars": 942
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/unknown-vite-error/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/unknown-vite-error/",
+      "chars": 942
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/unsupported-config-transform-error/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/unsupported-config-transform-error/",
+      "chars": 1185
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/unsupported-external-redirect/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/unsupported-external-redirect/",
+      "chars": 827
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/unsupported-image-conversion/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/unsupported-image-conversion/",
+      "chars": 1074
+    },
+    {
+      "file": "pages/zh-cn/reference/errors/unsupported-image-format/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/errors/unsupported-image-format/",
+      "chars": 1222
+    },
+    {
+      "file": "pages/zh-cn/reference/experimental-flags/chrome-devtools-workspace/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/experimental-flags/chrome-devtools-workspace/",
+      "chars": 2799
+    },
+    {
+      "file": "pages/zh-cn/reference/experimental-flags/client-prerender/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/experimental-flags/client-prerender/",
+      "chars": 1650
+    },
+    {
+      "file": "pages/zh-cn/reference/experimental-flags/collection-storage/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/experimental-flags/collection-storage/",
+      "chars": 2004
+    },
+    {
+      "file": "pages/zh-cn/reference/experimental-flags/content-intellisense/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/experimental-flags/content-intellisense/",
+      "chars": 1068
+    },
+    {
+      "file": "pages/zh-cn/reference/experimental-flags/incremental-build/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/experimental-flags/incremental-build/",
+      "chars": 5847
+    },
+    {
+      "file": "pages/zh-cn/reference/experimental-flags/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/experimental-flags/",
+      "chars": 1308
+    },
+    {
+      "file": "pages/zh-cn/reference/experimental-flags/svg-optimization/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/experimental-flags/svg-optimization/",
+      "chars": 8012
+    },
+    {
+      "file": "pages/zh-cn/reference/font-provider-reference/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/font-provider-reference/",
+      "chars": 18450
+    },
+    {
+      "file": "pages/zh-cn/reference/image-service-reference/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/image-service-reference/",
+      "chars": 9931
+    },
+    {
+      "file": "pages/zh-cn/reference/integrations-reference/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/integrations-reference/",
+      "chars": 58959
+    },
+    {
+      "file": "pages/zh-cn/reference/legacy-flags/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/legacy-flags/",
+      "chars": 1554
+    },
+    {
+      "file": "pages/zh-cn/reference/logger-reference/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/logger-reference/",
+      "chars": 10585
+    },
+    {
+      "file": "pages/zh-cn/reference/markdown-processors/satteri/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/markdown-processors/satteri/",
+      "chars": 10094
+    },
+    {
+      "file": "pages/zh-cn/reference/markdown-processors/unified/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/markdown-processors/unified/",
+      "chars": 19849
+    },
+    {
+      "file": "pages/zh-cn/reference/modules/astro-actions/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/modules/astro-actions/",
+      "chars": 15177
+    },
+    {
+      "file": "pages/zh-cn/reference/modules/astro-app/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/modules/astro-app/",
+      "chars": 16442
+    },
+    {
+      "file": "pages/zh-cn/reference/modules/astro-assets/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/modules/astro-assets/",
+      "chars": 31952
+    },
+    {
+      "file": "pages/zh-cn/reference/modules/astro-config/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/modules/astro-config/",
+      "chars": 4165
+    },
+    {
+      "file": "pages/zh-cn/reference/modules/astro-content/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/modules/astro-content/",
+      "chars": 15567
+    },
+    {
+      "file": "pages/zh-cn/reference/modules/astro-env/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/modules/astro-env/",
+      "chars": 1573
+    },
+    {
+      "file": "pages/zh-cn/reference/modules/astro-fetch/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/modules/astro-fetch/",
+      "chars": 9642
+    },
+    {
+      "file": "pages/zh-cn/reference/modules/astro-hono/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/modules/astro-hono/",
+      "chars": 1640
+    },
+    {
+      "file": "pages/zh-cn/reference/modules/astro-i18n/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/modules/astro-i18n/",
+      "chars": 8988
+    },
+    {
+      "file": "pages/zh-cn/reference/modules/astro-middleware/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/modules/astro-middleware/",
+      "chars": 7049
+    },
+    {
+      "file": "pages/zh-cn/reference/modules/astro-static-paths/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/modules/astro-static-paths/",
+      "chars": 3320
+    },
+    {
+      "file": "pages/zh-cn/reference/modules/astro-transitions/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/modules/astro-transitions/",
+      "chars": 14816
+    },
+    {
+      "file": "pages/zh-cn/reference/modules/astro-zod/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/modules/astro-zod/",
+      "chars": 4867
+    },
+    {
+      "file": "pages/zh-cn/reference/programmatic-reference/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/programmatic-reference/",
+      "chars": 8251
+    },
+    {
+      "file": "pages/zh-cn/reference/renderer-reference/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/renderer-reference/",
+      "chars": 12775
+    },
+    {
+      "file": "pages/zh-cn/reference/routing-reference/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/routing-reference/",
+      "chars": 8862
+    },
+    {
+      "file": "pages/zh-cn/reference/session-driver-reference/index.md",
+      "url": "https://docs.astro.build/zh-cn/reference/session-driver-reference/",
+      "chars": 6676
+    },
+    {
+      "file": "pages/zh-cn/tutorial/0-introduction/1/index.md",
+      "url": "https://docs.astro.build/zh-cn/tutorial/0-introduction/1/",
+      "chars": 1857
+    },
+    {
+      "file": "pages/zh-cn/tutorial/0-introduction/index.md",
+      "url": "https://docs.astro.build/zh-cn/tutorial/0-introduction/",
+      "chars": 1015
+    },
+    {
+      "file": "pages/zh-cn/tutorial/1-setup/1/index.md",
+      "url": "https://docs.astro.build/zh-cn/tutorial/1-setup/1/",
+      "chars": 1556
+    },
+    {
+      "file": "pages/zh-cn/tutorial/1-setup/2/index.md",
+      "url": "https://docs.astro.build/zh-cn/tutorial/1-setup/2/",
+      "chars": 2666
+    },
+    {
+      "file": "pages/zh-cn/tutorial/1-setup/3/index.md",
+      "url": "https://docs.astro.build/zh-cn/tutorial/1-setup/3/",
+      "chars": 1495
+    },
+    {
+      "file": "pages/zh-cn/tutorial/1-setup/4/index.md",
+      "url": "https://docs.astro.build/zh-cn/tutorial/1-setup/4/",
+      "chars": 1985
+    },
+    {
+      "file": "pages/zh-cn/tutorial/1-setup/5/index.md",
+      "url": "https://docs.astro.build/zh-cn/tutorial/1-setup/5/",
+      "chars": 1773
+    },
+    {
+      "file": "pages/zh-cn/tutorial/1-setup/index.md",
+      "url": "https://docs.astro.build/zh-cn/tutorial/1-setup/",
+      "chars": 1981
+    },
+    {
+      "file": "pages/zh-cn/tutorial/2-pages/1/index.md",
+      "url": "https://docs.astro.build/zh-cn/tutorial/2-pages/1/",
+      "chars": 3464
+    },
+    {
+      "file": "pages/zh-cn/tutorial/2-pages/2/index.md",
+      "url": "https://docs.astro.build/zh-cn/tutorial/2-pages/2/",
+      "chars": 4427
+    },
+    {
+      "file": "pages/zh-cn/tutorial/2-pages/3/index.md",
+      "url": "https://docs.astro.build/zh-cn/tutorial/2-pages/3/",
+      "chars": 4781
+    },
+    {
+      "file": "pages/zh-cn/tutorial/2-pages/4/index.md",
+      "url": "https://docs.astro.build/zh-cn/tutorial/2-pages/4/",
+      "chars": 3814
+    },
+    {
+      "file": "pages/zh-cn/tutorial/2-pages/5/index.md",
+      "url": "https://docs.astro.build/zh-cn/tutorial/2-pages/5/",
+      "chars": 2546
+    },
+    {
+      "file": "pages/zh-cn/tutorial/2-pages/index.md",
+      "url": "https://docs.astro.build/zh-cn/tutorial/2-pages/",
+      "chars": 1057
+    },
+    {
+      "file": "pages/zh-cn/tutorial/3-components/1/index.md",
+      "url": "https://docs.astro.build/zh-cn/tutorial/3-components/1/",
+      "chars": 2499
+    },
+    {
+      "file": "pages/zh-cn/tutorial/3-components/2/index.md",
+      "url": "https://docs.astro.build/zh-cn/tutorial/3-components/2/",
+      "chars": 4235
+    },
+    {
+      "file": "pages/zh-cn/tutorial/3-components/3/index.md",
+      "url": "https://docs.astro.build/zh-cn/tutorial/3-components/3/",
+      "chars": 3483
+    },
+    {
+      "file": "pages/zh-cn/tutorial/3-components/4/index.md",
+      "url": "https://docs.astro.build/zh-cn/tutorial/3-components/4/",
+      "chars": 4025
+    },
+    {
+      "file": "pages/zh-cn/tutorial/3-components/index.md",
+      "url": "https://docs.astro.build/zh-cn/tutorial/3-components/",
+      "chars": 1123
+    },
+    {
+      "file": "pages/zh-cn/tutorial/4-layouts/1/index.md",
+      "url": "https://docs.astro.build/zh-cn/tutorial/4-layouts/1/",
+      "chars": 4297
+    },
+    {
+      "file": "pages/zh-cn/tutorial/4-layouts/2/index.md",
+      "url": "https://docs.astro.build/zh-cn/tutorial/4-layouts/2/",
+      "chars": 4210
+    },
+    {
+      "file": "pages/zh-cn/tutorial/4-layouts/3/index.md",
+      "url": "https://docs.astro.build/zh-cn/tutorial/4-layouts/3/",
+      "chars": 3094
+    },
+    {
+      "file": "pages/zh-cn/tutorial/4-layouts/index.md",
+      "url": "https://docs.astro.build/zh-cn/tutorial/4-layouts/",
+      "chars": 1021
+    },
+    {
+      "file": "pages/zh-cn/tutorial/5-astro-api/1/index.md",
+      "url": "https://docs.astro.build/zh-cn/tutorial/5-astro-api/1/",
+      "chars": 4263
+    },
+    {
+      "file": "pages/zh-cn/tutorial/5-astro-api/2/index.md",
+      "url": "https://docs.astro.build/zh-cn/tutorial/5-astro-api/2/",
+      "chars": 7673
+    },
+    {
+      "file": "pages/zh-cn/tutorial/5-astro-api/3/index.md",
+      "url": "https://docs.astro.build/zh-cn/tutorial/5-astro-api/3/",
+      "chars": 7783
+    },
+    {
+      "file": "pages/zh-cn/tutorial/5-astro-api/4/index.md",
+      "url": "https://docs.astro.build/zh-cn/tutorial/5-astro-api/4/",
+      "chars": 2675
+    },
+    {
+      "file": "pages/zh-cn/tutorial/5-astro-api/index.md",
+      "url": "https://docs.astro.build/zh-cn/tutorial/5-astro-api/",
+      "chars": 775
+    },
+    {
+      "file": "pages/zh-cn/tutorial/6-islands/1/index.md",
+      "url": "https://docs.astro.build/zh-cn/tutorial/6-islands/1/",
+      "chars": 4336
+    },
+    {
+      "file": "pages/zh-cn/tutorial/6-islands/2/index.md",
+      "url": "https://docs.astro.build/zh-cn/tutorial/6-islands/2/",
+      "chars": 5296
+    },
+    {
+      "file": "pages/zh-cn/tutorial/6-islands/3/index.md",
+      "url": "https://docs.astro.build/zh-cn/tutorial/6-islands/3/",
+      "chars": 2473
+    },
+    {
+      "file": "pages/zh-cn/tutorial/6-islands/4/index.md",
+      "url": "https://docs.astro.build/zh-cn/tutorial/6-islands/4/",
+      "chars": 9063
+    },
+    {
+      "file": "pages/zh-cn/tutorial/6-islands/index.md",
+      "url": "https://docs.astro.build/zh-cn/tutorial/6-islands/",
+      "chars": 765
+    },
+    {
+      "file": "pages/zh-cn/upgrade-astro/index.md",
+      "url": "https://docs.astro.build/zh-cn/upgrade-astro/",
+      "chars": 5735
+    }
+  ]
+}

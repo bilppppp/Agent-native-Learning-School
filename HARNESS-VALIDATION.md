@@ -29,4 +29,4 @@
 
 本次实测非 Pi Harness 只有 Codex CLI；没有运行 AGY、Claude Code、OpenCode 等教师，也没有验证它们的认证、工具权限或教学质量。通用协议可复用，不等于所有运行环境已经兼容。Pi 默认路径保留，本次未重新进行 Pi 教学。仅验证本机 HTTP，没有公网部署。
 
-验证 School：`npm run school -- start process-results`，默认端口 4414。课程可在 [COURSE.md](schools/process-results/COURSE.md) 和 `src/content/lessons/` 编辑；本地进度留在该 School 的 `.wrangler/`，不纳入 Git。历史身份仅用于复现本次本地验证，新用户可在网页注册自己的身份。
+验证发生在当时的 `process-results`（默认端口 4414）。这所 School 已不在仓库中，运行记录留在 [evidence/harness-validation](evidence/harness-validation/)。历史身份仅用于复现本次本地验证。

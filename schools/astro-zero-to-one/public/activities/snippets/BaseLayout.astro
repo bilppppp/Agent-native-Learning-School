@@ -1,0 +1,32 @@
+---
+// src/layouts/BaseLayout.astro
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <header>
+      <slot name="header">
+        <nav><a href="/">首页</a> | <a href="/about/">关于</a></nav>
+      </slot>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer>
+      <p>© 2026 Astro 学习站点</p>
+    </footer>
+  </body>
+</html>

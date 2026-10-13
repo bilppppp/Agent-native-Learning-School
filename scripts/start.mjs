@@ -1,7 +1,7 @@
 import { spawn } from 'node:child_process';
 import { resolve } from 'node:path';
 const targets = process.argv.slice(2);
-if (!targets.length) targets.push('schools/react:4321', 'schools/transformer:4322');
+if (!targets.length) targets.push('schools/math-grade7:4325', 'schools/astro-zero-to-one:4331');
 const children = targets.map(target => {
   const colon = target.lastIndexOf(':');
   const folder = target.slice(0, colon), port = target.slice(colon + 1);

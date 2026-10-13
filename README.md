@@ -2,7 +2,9 @@
 
 把学习材料和学习目标做成一所独立网站（School）。网站发给学生一串身份并记住进度；关卡上的提示词交给 Coding Agent，就可以按课程讲解、问答和练习，下次用同一身份接着学。课程深度决定学什么，教学模式决定互动节奏。Pi 是默认的生成和教学入口；具备文件读写、终端和 HTTP 访问能力的 Coding Agent 也可以建校或授课。各 Harness 的验证范围见 [HARNESS-VALIDATION.md](HARNESS-VALIDATION.md)。
 
-七年级数学可以在 [https://math.gravityai.top](https://math.gravityai.top) 直接试用：不用注册，打开后领取一串「形容词-名词-四位数字」的身份，复制页面上的提示词即可学习。进度写在服务器上。这个地址是自定义域名；`*.vercel.app` 在中国大陆可能打不开。
+七年级数学可以在 [https://math.gravityai.top](https://math.gravityai.top) 直接试用：不用注册，打开后领取一串「形容词-名词-四位数字」的身份，复制页面上的提示词即可学习。进度写在服务器上。这个地址是自定义域名；`*.vercel.app` 在中国大陆可能打不开。课程在 [schools/math-grade7](schools/math-grade7/)。
+
+仓库里的完整生成示例是 [astro-zero-to-one](schools/astro-zero-to-one/)。它从 [Astro 中文入门文档](https://docs.astro.build/zh-cn/getting-started/) 生成，面向还没有接触过框架的学习者。[课程设计问答](schools/astro-zero-to-one/QA.md) 说明了抓到的页面里哪些进入了这 10 关，以及为什么没有把全部材料写进课程。
 
 ## 核心能力
 
@@ -145,3 +147,7 @@ GitHub 仓库、论文、PDF、DOCX、纯文本和本地路径按单份来源准
 - [Pi](https://github.com/badlogic/pi-mono)（现重定向至 [earendil-works/pi](https://github.com/earendil-works/pi)）：默认的生成与教学 Harness。课程与教学协议保持 Harness 中立。
 - [siteone-crawler](https://github.com/janreges/siteone-crawler)（MIT）：多页文档站的抓取工具。未安装时从官方 GitHub Release 下载到 `tools/cache`，不作为仓库文件提交。
 - 课程化组织还参考了 [codebase-to-course](https://github.com/zarazhangrui/codebase-to-course)、[Repo2NotebookLM](https://github.com/bilppppp/Repo2NotebookLM) 和 [archify](https://github.com/tt-a1i/archify)。这些项目提供了方向，没有作为运行依赖集成。
+
+## 许可
+
+本仓库以 [Apache License 2.0](LICENSE) 授权。`schools/` 中的网站代码派生自 School Template，原版权声明予以保留。课程引用的来源材料仍适用其各自的许可。
