@@ -105,6 +105,20 @@ import { t } from "../lib/ui";
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ teachingMode: mode }),
       });
+      if (response.status === 404) {
+        try {
+          localStorage.removeItem("studentId");
+          localStorage.removeItem("progress");
+        } catch (_) {}
+        if (window.school && typeof window.school.updateEnrolledIndicator === "function") {
+          window.school.updateEnrolledIndicator();
+        }
+        if (window.school && typeof window.school.updateAllCheckmarks === "function") {
+          window.school.updateAllCheckmarks();
+        }
+        setStatus(window.schoolUI.t("modeBrowserSaved"));
+        return true;
+      }
       if (!response.ok) throw new Error(window.schoolUI.t("modeSaveError"));
       var data = await response.json();
       if (window.school && typeof window.school.getCachedProgress === "function") {
@@ -153,7 +167,23 @@ import { t } from "../lib/ui";
     if (window.school && window.school.getStudentId()) {
       var profileLoadRevision = selectionRevision;
       fetch("/api/profile/" + encodeURIComponent(window.school.getStudentId()))
-        .then(function(response) { if (!response.ok) throw new Error(window.schoolUI.t("profileUnavailable")); return response.json(); })
+        .then(function(response) {
+          if (response.status === 404) {
+            try {
+              localStorage.removeItem("studentId");
+              localStorage.removeItem("progress");
+            } catch (_) {}
+            if (window.school && typeof window.school.updateEnrolledIndicator === "function") {
+              window.school.updateEnrolledIndicator();
+            }
+            if (window.school && typeof window.school.updateAllCheckmarks === "function") {
+              window.school.updateAllCheckmarks();
+            }
+            throw new Error(window.schoolUI.t("profileUnavailable"));
+          }
+          if (!response.ok) throw new Error(window.schoolUI.t("profileUnavailable"));
+          return response.json();
+        })
         .then(function(data) {
           if (selectionRevision !== profileLoadRevision) {
             setStatus(window.schoolUI.t("modeSelected"));

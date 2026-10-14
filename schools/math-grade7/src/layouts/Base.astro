@@ -425,6 +425,13 @@ import ClientUI from "../components/ClientUI.astro";
           const studentId = this.getStudentId();
           if (!studentId) return null;
           const res = await fetch(`/api/progress/${studentId}`);
+          if (res.status === 404) {
+            localStorage.removeItem("studentId");
+            localStorage.removeItem("progress");
+            this.updateEnrolledIndicator();
+            this.updateAllCheckmarks();
+            return null;
+          }
           if (!res.ok) return null;
           const progress = await res.json();
           this.setCachedProgress(progress);
@@ -704,13 +711,28 @@ import ClientUI from "../components/ClientUI.astro";
 
         // Poll for progress updates every second so the UI reflects changes
         // made by agents (e.g. marking a lesson complete) without a page reload.
-        if (window.school.getStudentId()) {
-          setInterval(function() {
+        var pollTimer = null;
+        function startPolling() {
+          if (pollTimer) return;
+          pollTimer = setInterval(function() {
+            if (!window.school.getStudentId()) {
+              clearInterval(pollTimer);
+              pollTimer = null;
+              return;
+            }
             window.school.fetchProgress().then(function() {
               window.school.updateAllCheckmarks();
             });
           }, 1000);
         }
+
+        if (window.school.getStudentId()) {
+          startPolling();
+        }
+
+        window.addEventListener("school:enrolled", function() {
+          startPolling();
+        });
       })();
     </script>
   </body>

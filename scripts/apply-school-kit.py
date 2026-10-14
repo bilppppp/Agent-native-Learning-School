@@ -194,7 +194,70 @@ def patch_base_layout(base_path: Path) -> bool:
         if count == 0:
             raise ValueError(f"{base_path} has no progress refresh point")
 
+    text = patch_stale_student_id(base_path, text)
     return write_if_changed(base_path, text) if text != original else False
+
+
+def patch_stale_student_id(base_path: Path, text: str) -> str:
+    """Drop a student id that this school does not know, and stop polling it."""
+    if "res.status === 404" not in text:
+        old = (
+            "          const res = await fetch(`/api/progress/${studentId}`);\n"
+            "          if (!res.ok) return null;"
+        )
+        new = (
+            "          const res = await fetch(`/api/progress/${studentId}`);\n"
+            "          if (res.status === 404) {\n"
+            '            localStorage.removeItem("studentId");\n'
+            '            localStorage.removeItem("progress");\n'
+            "            this.updateEnrolledIndicator();\n"
+            "            this.updateAllCheckmarks();\n"
+            "            return null;\n"
+            "          }\n"
+            "          if (!res.ok) return null;"
+        )
+        if old not in text:
+            raise ValueError(f"{base_path} has no progress fetch to clear a stale student id")
+        text = text.replace(old, new, 1)
+
+    if "function startPolling()" not in text:
+        old = (
+            "        if (window.school.getStudentId()) {\n"
+            "          setInterval(function() {\n"
+            "            window.school.fetchProgress().then(function() {\n"
+            "              window.school.updateAllCheckmarks();\n"
+            "            });\n"
+            "          }, 1000);\n"
+            "        }"
+        )
+        new = (
+            "        var pollTimer = null;\n"
+            "        function startPolling() {\n"
+            "          if (pollTimer) return;\n"
+            "          pollTimer = setInterval(function() {\n"
+            "            if (!window.school.getStudentId()) {\n"
+            "              clearInterval(pollTimer);\n"
+            "              pollTimer = null;\n"
+            "              return;\n"
+            "            }\n"
+            "            window.school.fetchProgress().then(function() {\n"
+            "              window.school.updateAllCheckmarks();\n"
+            "            });\n"
+            "          }, 1000);\n"
+            "        }\n"
+            "\n"
+            "        if (window.school.getStudentId()) {\n"
+            "          startPolling();\n"
+            "        }\n"
+            "\n"
+            '        window.addEventListener("school:enrolled", function() {\n'
+            "          startPolling();\n"
+            "        });"
+        )
+        if old not in text:
+            raise ValueError(f"{base_path} has no progress poll to stop for a stale student id")
+        text = text.replace(old, new, 1)
+    return text
 
 
 def patch_homepage(home_path: Path) -> bool:
