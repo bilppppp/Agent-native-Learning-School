@@ -422,6 +422,54 @@ def ensure_settings(target: Path) -> bool:
     )
 
 
+def strip_ts_comments(text: str) -> str:
+    out: list[str] = []
+    i = 0
+    n = len(text)
+    while i < n:
+        ch = text[i]
+        nxt = text[i + 1] if i + 1 < n else ""
+        if ch == "/" and nxt == "/":
+            i += 2
+            while i < n and text[i] != "\n":
+                i += 1
+            continue
+        if ch == "/" and nxt == "*":
+            i += 2
+            while i + 1 < n and not (text[i] == "*" and text[i + 1] == "/"):
+                i += 1
+            i = min(n, i + 2)
+            continue
+        if ch in "\"'`":
+            quote = ch
+            out.append(ch)
+            i += 1
+            while i < n:
+                out.append(text[i])
+                if text[i] == "\\":
+                    i += 1
+                    if i < n:
+                        out.append(text[i])
+                        i += 1
+                    continue
+                if text[i] == quote:
+                    i += 1
+                    break
+                i += 1
+            continue
+        out.append(ch)
+        i += 1
+    return "".join(out)
+
+
+def is_island_chrome(target: Path) -> bool:
+    config = target / "school.config.ts"
+    if not config.is_file():
+        return False
+    source = strip_ts_comments(config.read_text())
+    return bool(re.search(r'(?m)^\s*chrome\s*:\s*["\']island["\']\s*,?\s*$', source))
+
+
 def apply(target: Path) -> list[str]:
     if not target.is_dir():
         raise ValueError(f"School directory does not exist: {target}")
@@ -475,6 +523,13 @@ def apply(target: Path) -> list[str]:
     if package_changed:
         install_runtime_dependencies(target)
         changed.append("package-lock.json")
+    if is_island_chrome(target):
+        island_spec = importlib.util.spec_from_file_location(
+            "apply_island_chrome", ROOT / "scripts/apply-island-chrome.py"
+        )
+        island_module = importlib.util.module_from_spec(island_spec)
+        island_spec.loader.exec_module(island_module)
+        changed.extend(island_module.apply_island(target))
     return changed
 
 

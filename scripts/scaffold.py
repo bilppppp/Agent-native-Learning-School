@@ -23,7 +23,23 @@ wrangler = {"name": out.name + "-school", "compatibility_date": "2026-03-12",
 (out / "wrangler.jsonc").write_text(json.dumps(wrangler, indent=2) + "\n")
 (out / "school.settings.json").write_text(json.dumps(spec, ensure_ascii=False, indent=2) + "\n")
 school_config = out / "school.config.ts"
-school_config.write_text(school_config.read_text().replace('name: "My School"', 'name: ' + json.dumps(spec["name"], ensure_ascii=False)).replace('description: "An interactive course about your subject."', 'description: ' + json.dumps(spec.get("goal", ""), ensure_ascii=False)))
+config_text = school_config.read_text().replace('name: "My School"', 'name: ' + json.dumps(spec["name"], ensure_ascii=False)).replace('description: "An interactive course about your subject."', 'description: ' + json.dumps(spec.get("goal", ""), ensure_ascii=False))
+if not re.search(r"\bchrome\s*:", config_text):
+    config_text = config_text.replace(
+        "const config: SchoolConfig = {\n",
+        'const config: SchoolConfig = {\n\tchrome: "island",\n',
+        1,
+    )
+school_config.write_text(config_text)
+school_ts = out / "src/lib/school.ts"
+type_text = school_ts.read_text()
+if not re.search(r'chrome\?\s*:\s*"island"', type_text):
+    type_text = type_text.replace(
+        "export interface SchoolConfig {\n",
+        'export interface SchoolConfig {\n\tchrome?: "island";\n',
+        1,
+    )
+    school_ts.write_text(type_text)
 astro = out / "astro.config.mjs"
 astro.write_text(astro.read_text().replace('output: "server",', 'output: "server",\n\tcacheDir: "./.astro/cache",').replace("vite: {", 'vite: {\n\t\tcacheDir: "./.vite",\n\t\tserver: { strictPort: true },').replace('adapter: cloudflare(),', 'adapter: cloudflare({ inspectorPort: false }),'))
 base = out / "src/layouts/Base.astro"

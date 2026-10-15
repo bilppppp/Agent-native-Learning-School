@@ -1,0 +1,339 @@
+@import "animal-island-ui/style";
+
+html[data-chrome="island"] {
+  color-scheme: light;
+}
+
+html[data-chrome="island"] body {
+  background: transparent;
+  color: #725d42;
+}
+
+.island-page-bg {
+  min-height: 100vh;
+}
+
+.island-school-title,
+.island-lesson-title {
+  margin: 0;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+}
+
+.island-lesson-title {
+  margin-bottom: 1.35rem;
+}
+
+.island-school-title .ai-title,
+.island-lesson-title .ai-title {
+  vertical-align: middle;
+}
+
+.theme-link {
+  color: #11a89b;
+}
+
+.theme-link:hover {
+  color: #0d8f84;
+}
+
+.theme-button {
+  background: #11a89b;
+  color: #fffdf7;
+}
+
+.theme-button:hover {
+  background: #0d8f84;
+}
+
+.theme-panel {
+  border: 1px solid #e4d5b7;
+  background: rgb(247, 243, 223);
+}
+
+.theme-kicker {
+  color: #794f27;
+}
+
+.theme-banner {
+  background: #f0e8d8;
+  color: #794f27;
+}
+
+.theme-active-nav {
+  background: #e6f9f6;
+  color: #0f766e;
+}
+
+.theme-solid-bg {
+  background: #11a89b;
+}
+
+.theme-card-band {
+  background: #11a89b;
+  color: #fffdf7;
+  box-shadow: 0 25px 50px -12px rgba(114, 93, 66, 0.25);
+}
+
+.lesson-link:hover .lesson-title {
+  color: #11a89b;
+}
+
+.lesson-row--next {
+  border: 1px solid #e4d5b7;
+  background: #f7f3df;
+}
+
+.lesson-status--complete {
+  border-color: #11a89b !important;
+  background: #11a89b !important;
+}
+
+.island-mode-panel {
+  border: 1px solid #e4d5b7;
+  background: rgb(247, 243, 223);
+  color: #725d42;
+}
+
+.island-prompt-card .agent-prompt-box,
+.island-prompt-card.agent-prompt-card .agent-prompt-box {
+  border: 2px solid #c4b089;
+  border-left: 6px solid #11a89b;
+  background: #f0e8d8;
+  box-shadow: 0 0 0 3px rgba(17, 168, 155, 0.12), 0 4px 16px rgba(114, 93, 66, 0.12);
+}
+
+.island-prompt-card .agent-prompt-box pre {
+  background: rgb(247, 243, 223);
+  color: #725d42;
+}
+
+article.prose,
+div.prose {
+  font-family: "PingFang SC", "Noto Sans SC", "Microsoft YaHei", ui-sans-serif, system-ui, sans-serif;
+  color: #725d42;
+  background: rgb(247, 243, 223);
+  border-radius: 18px;
+  border: 1px solid #e4d5b7;
+  padding: 1.75rem 1.85rem;
+  --tw-prose-body: #725d42;
+  --tw-prose-headings: #794f27;
+  --tw-prose-links: #11a89b;
+  --tw-prose-bold: #725d42;
+  --tw-prose-counters: #8a6d4b;
+  --tw-prose-bullets: #8a6d4b;
+  --tw-prose-hr: #c4b089;
+  --tw-prose-quotes: #725d42;
+  --tw-prose-quote-borders: #11a89b;
+  --tw-prose-th-borders: #c4b089;
+  --tw-prose-td-borders: #d4c4a8;
+  --tw-prose-code: #725d42;
+  --tw-prose-pre-bg: #fffbe7;
+  --tw-prose-pre-code: #725d42;
+}
+
+article.prose h2,
+article.prose h3,
+div.prose h2,
+div.prose h3 {
+  color: #794f27;
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: #11a89b;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.28em;
+}
+
+article.prose a,
+div.prose a {
+  color: #11a89b;
+}
+
+article.prose blockquote,
+div.prose blockquote {
+  background: #f0e8d8;
+  border-left: 4px solid #11a89b;
+  padding: 0.75rem 1rem;
+}
+
+article.prose ul,
+article.prose ol,
+article.prose hr,
+article.prose table,
+article.prose th,
+article.prose td,
+div.prose ul,
+div.prose ol,
+div.prose hr,
+div.prose table,
+div.prose th,
+div.prose td {
+  color: #8a6d4b;
+  border-color: #c4b089;
+}
+
+article.prose :not(pre) > code,
+div.prose :not(pre) > code {
+  background: #fffbe7;
+  color: #725d42;
+}
+
+article.prose pre,
+article.prose code,
+article.prose kbd,
+article.prose samp,
+div.prose pre,
+div.prose code,
+div.prose kbd,
+div.prose samp {
+  font-family: ui-monospace, "JetBrains Mono", Menlo, Monaco, Consolas, monospace;
+}
+
+.katex {
+  color: inherit;
+}
+
+.katex .mord.text,
+.katex .cjk_fallback {
+  font-family: "PingFang SC", "Noto Sans SC", "Microsoft YaHei", ui-sans-serif, system-ui, sans-serif;
+}
+
+.island-rail {
+  color: #794f27;
+}
+
+.island-count-label {
+  margin: 0 0 0.75rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #8a6d4b;
+}
+
+.island-id-face {
+  display: none;
+}
+
+.island-id-face.is-selected {
+  display: block;
+}
+
+.island-id-card {
+  padding: 14px 18px 12px;
+}
+
+.island-id-layout {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.island-id-role {
+  margin: 0.15rem 0 0.35rem;
+  font-size: 2.35rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  line-height: 1.05;
+}
+
+.island-id-layout .island-id-value {
+  font-size: 1.15rem;
+  line-height: 1.35;
+}
+
+.island-id-layout .island-role-sprite {
+  flex: 0 0 128px;
+  width: 128px;
+  height: 128px;
+  background-size: 384px 128px;
+  animation-name: island-role-walk-lg;
+}
+
+.island-role-confirm {
+  margin: 0.85rem 0 0;
+  color: #8a6d4b;
+  font-size: 0.92rem;
+}
+
+.island-role-picker {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.island-role-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  margin: 0;
+  padding: 0.45rem 0.25rem 0.7rem;
+  border: 2px solid #e4d5b7;
+  border-radius: 18px;
+  background: rgb(247, 243, 223);
+  color: #794f27;
+  cursor: pointer;
+}
+
+.island-role-option[aria-pressed="true"] {
+  border-color: #11a89b;
+  box-shadow: 0 0 0 2px rgba(17, 168, 155, 0.35);
+}
+
+.island-role-name {
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.island-role-sprite {
+  display: block;
+  width: 96px;
+  height: 96px;
+  background-repeat: no-repeat;
+  background-position: 0 0;
+  background-size: 288px 96px;
+  image-rendering: pixelated;
+  animation: island-role-walk 0.6s steps(3) infinite;
+}
+
+.island-role-sprite--warrior {
+  background-image: url("/roles/warrior.png");
+}
+
+.island-role-sprite--wizard {
+  background-image: url("/roles/wizard.png");
+}
+
+.island-role-sprite--priest {
+  background-image: url("/roles/priest.png");
+}
+
+.island-role-sprite--ranger {
+  background-image: url("/roles/ranger.png");
+}
+
+@keyframes island-role-walk {
+  to {
+    background-position: -288px 0;
+  }
+}
+
+@keyframes island-role-walk-lg {
+  to {
+    background-position: -384px 0;
+  }
+}
+
+@media (min-width: 640px) {
+  .island-role-picker {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .island-role-sprite {
+    animation: none;
+  }
+}

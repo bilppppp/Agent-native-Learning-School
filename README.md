@@ -49,10 +49,12 @@
 
 ### 打开网站学习
 
-1. 打开启动后的网址，选择 Simple 或 Immersive，领取学习身份。
+1. 打开启动后的网址，选择简单或沉浸模式。点「选择身份」，从战士、巫师、牧师、游侠里选定角色，再点下方的「开始学习」领取学习身份。角色记在这台浏览器里，身份卡会显示对应的行走形象；学习身份和进度仍按原来的方式保存。
 2. 进入关卡，复制启动 Prompt 交给教师 Agent。使用 Pi 时，可粘贴进会话，或运行 `npm run school -- teach NAME --student 网页身份`。其他 Agent 加 `--prompt-only`，只生成通用提示词。已部署的学校加上 `--origin https://学校地址`（不能与 `--port` 同时使用）。
 3. 按提示问答、推演或做实验。在网页上切换模式后，教师下一轮会读到新设置；对话里也可以直接要求放慢或展开推导。
 4. 教师上报进度后，网页会记下完成情况。新对话带上同一身份即可续学。
+
+新建的 School 默认使用岛屿页面：关卡正文铺在羊皮纸底上，卡片、按钮、进度和完成计数来自 [animal-island-ui](https://github.com/guokaigdg/animal-island-ui)。七年级数学、Astro 示例，以及已部署的数学学校，沿用现有页面和原来的领取方式。
 
 教师需要能读取 HTTP、调用 REST，并遵守站点 `/llms.txt`。课程和材料通过关卡 API 与 `/sources/` 访问，进度接口见 `/api/openapi.json`。只有 Pi 需要阅读 `/harness/pi.txt`。
 
@@ -146,6 +148,8 @@ GitHub 仓库、论文、PDF、DOCX、纯文本和本地路径按单份来源准
 - [OpenCode School](https://github.com/agentschools/opencode.school)：早期 Agent 学习网站参考。School Template 上游文档注明其架构源自该项目。
 - [Pi](https://github.com/badlogic/pi-mono)（现重定向至 [earendil-works/pi](https://github.com/earendil-works/pi)）：默认的生成与教学 Harness。课程与教学协议保持 Harness 中立。
 - [siteone-crawler](https://github.com/janreges/siteone-crawler)（MIT）：多页文档站的抓取工具。未安装时从官方 GitHub Release 下载到 `tools/cache`，不作为仓库文件提交。
+- [animal-island-ui](https://github.com/guokaigdg/animal-island-ui)（MIT）：新建 School 的岛屿页面组件。
+- Eldiran 的 [32×32 RPG Character Sprites](https://opengameart.org/content/32x32-rpg-character-sprites)（CC0）：战士、巫师、牧师、游侠的三帧行走图。裁切说明见 [school-kit/island/roles/NOTICE.txt](school-kit/island/roles/NOTICE.txt)。
 - 课程化组织还参考了 [codebase-to-course](https://github.com/zarazhangrui/codebase-to-course)、[Repo2NotebookLM](https://github.com/bilppppp/Repo2NotebookLM) 和 [archify](https://github.com/tt-a1i/archify)。这些项目提供了方向，没有作为运行依赖集成。
 
 ## 许可

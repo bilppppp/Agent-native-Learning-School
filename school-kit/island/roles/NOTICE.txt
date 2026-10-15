@@ -1,0 +1,16 @@
+32x32 RPG Character Sprites
+Author: Eldiran
+Source: https://opengameart.org/content/32x32-rpg-character-sprites
+File: RPGCharacterSprites32x32.png
+License: CC0 1.0 Universal
+https://creativecommons.org/publicdomain/zero/1.0/
+
+These strips are the front-facing 3-frame walk cycles, cropped from that
+sheet. Rows are counted from the top, starting at 0:
+
+  warrior.png  row 4  blue armor
+  wizard.png   row 5  purple hood
+  priest.png   row 6  white robe
+  ranger.png   row 9  brown hat
+
+The magenta background was removed. The frames themselves are unchanged.

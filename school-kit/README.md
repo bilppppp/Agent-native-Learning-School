@@ -51,6 +51,19 @@ dependency list actually changed. It does not rewrite a lockfile that is already
 consistent. `node_modules` must be a real directory, not a symlink to the
 template.
 
+New schools scaffold `chrome: "island"` on `school.config.ts`. The kit reads
+that field after the shared overlay steps. If it is absent or not exactly
+`island`, apply stays the current overlay-only behavior. Island schools then
+get React, `animal-island-ui`, and the parchment chrome; a second apply keeps
+that shell. Finished schools without the field are left as they are.
+
+Island enrollment asks for a character instead of a theme color. The four
+walk cycles (warrior, wizard, priest, ranger) come from Eldiran's CC0
+32×32 RPG sprites; see `school-kit/island/roles/NOTICE.txt`. Choosing a
+character only marks it. The lower start button enrolls with that character.
+The choice is stored in this browser as `learningRole` and only changes the
+identity card. The student ID, progress, and page colors stay as they are.
+
 ## Website language
 
 Fixed UI copy uses `school.settings.json.language`: `zh` (default) or `en`
