@@ -7,13 +7,17 @@ export const prerender = true;
 import Base from "../layouts/Base.astro";
 import { Card, Button, Divider } from "animal-island-ui";
 import IslandMark from "../components/island/IslandMark";
-import IslandTypewriter from "../components/island/IslandTypewriter";
 import IslandLessonBoard from "../components/island/IslandLessonBoard";
 import IslandCast from "../components/island/IslandCast";
 import config from "../../school.config";
 import { getCollection } from "astro:content";
 
 const lessons = (await getCollection("lessons")).sort((a, b) => a.data.order - b.data.order);
+const courseIntro = config.description
+	.trim()
+	.split(/(?<=[。！？])/)
+	.map((line) => line.trim())
+	.filter(Boolean);
 const exercises = (await getCollection("exercises")).sort((a, b) => a.data.order - b.data.order);
 
 import { t } from "../lib/ui";
@@ -78,7 +82,11 @@ import { t } from "../lib/ui";
 
   <!-- Page header: hidden once enrolled -->
   <div id="page-header" class="mb-8">
-    <IslandTypewriter client:load text={`${config.description} ${t("welcome")}`} />
+    {courseIntro.length > 0 && (
+      <div class="island-intro">
+        {courseIntro.map((line) => <p>{line}</p>)}
+      </div>
+    )}
     <Divider type="wave-yellow" />
   </div>
 
@@ -110,25 +118,23 @@ import { t } from "../lib/ui";
 
     <div id="enroll-step-color" class="hidden">
       <p id="role-picker-copy" class="text-sm text-gray-600 dark:text-stone-400 mb-4">{t("chooseRole")}</p>
-      <IslandCast client:load />
       <Card color="default" pattern="warm-peach-pink" className="island-role-card">
-      <div id="role-picker" class="island-role-picker not-prose">
-        <button type="button" class="island-role-option" data-role="warrior" aria-pressed="true" aria-label={t("roleWarrior")}>
-          <span class="island-role-sprite island-role-sprite--warrior" aria-hidden="true"></span>
-          <span class="island-role-name">{t("roleWarrior")}</span>
-        </button>
-        <button type="button" class="island-role-option" data-role="wizard" aria-pressed="false" aria-label={t("roleWizard")}>
-          <span class="island-role-sprite island-role-sprite--wizard" aria-hidden="true"></span>
-          <span class="island-role-name">{t("roleWizard")}</span>
-        </button>
-        <button type="button" class="island-role-option" data-role="priest" aria-pressed="false" aria-label={t("rolePriest")}>
-          <span class="island-role-sprite island-role-sprite--priest" aria-hidden="true"></span>
-          <span class="island-role-name">{t("rolePriest")}</span>
-        </button>
-        <button type="button" class="island-role-option" data-role="ranger" aria-pressed="false" aria-label={t("roleRanger")}>
-          <span class="island-role-sprite island-role-sprite--ranger" aria-hidden="true"></span>
-          <span class="island-role-name">{t("roleRanger")}</span>
-        </button>
+      <div id="role-picker">
+        <IslandCast
+          client:load
+          labels={{
+            warrior: t("roleWarrior"),
+            wizard: t("roleWizard"),
+            priest: t("rolePriest"),
+            ranger: t("roleRanger"),
+          }}
+          notes={{
+            warrior: t("roleWarriorNote"),
+            wizard: t("roleWizardNote"),
+            priest: t("rolePriestNote"),
+            ranger: t("roleRangerNote"),
+          }}
+        />
       </div>
       <p class="island-role-confirm">{t("confirmRole")}</p>
       </Card>
@@ -163,9 +169,11 @@ import { t } from "../lib/ui";
       var enrollBottomSection = document.getElementById("enroll-bottom-section");
       var enrollBtnBottom     = document.getElementById("enroll-button-bottom");
 
-      var roleOptions = Array.prototype.slice.call(
-        document.querySelectorAll(".island-role-option[data-role]")
-      );
+      function roleOptions() {
+        return Array.prototype.slice.call(
+          document.querySelectorAll("#role-picker .island-role-option[data-role]")
+        );
+      }
       var roleNames = ["warrior", "wizard", "priest", "ranger"];
 
       function readRole() {
@@ -301,14 +309,14 @@ import { t } from "../lib/ui";
         document.querySelectorAll(".island-id-face").forEach(function(face) {
           face.classList.toggle("is-selected", face.getAttribute("data-role") === selectedRole);
         });
-        roleOptions.forEach(function(opt) {
+        roleOptions().forEach(function(opt) {
           opt.setAttribute("aria-pressed", opt.getAttribute("data-role") === selectedRole ? "true" : "false");
         });
       }
 
       function setPickerState(message, disabled) {
         if (colorPickerCopy && message) colorPickerCopy.textContent = message;
-        roleOptions.forEach(function(opt) {
+        roleOptions().forEach(function(opt) {
           opt.disabled = disabled;
           opt.classList.toggle("opacity-60", disabled);
           opt.classList.toggle("cursor-not-allowed", disabled);
@@ -356,12 +364,14 @@ import { t } from "../lib/ui";
         });
       }
 
-      roleOptions.forEach(function(opt) {
-        opt.addEventListener("click", function() {
-          if (isSubmitting) return;
+      var rolePicker = document.getElementById("role-picker");
+      if (rolePicker) {
+        rolePicker.addEventListener("click", function(event) {
+          var opt = event.target.closest(".island-role-option[data-role]");
+          if (!opt || isSubmitting) return;
           setSelectedRole(opt.getAttribute("data-role"));
         });
-      });
+      }
     })();
   </script>
 </Base>

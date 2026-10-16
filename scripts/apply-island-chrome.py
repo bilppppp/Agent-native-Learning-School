@@ -34,6 +34,7 @@ ISLAND_RUNTIME_FILES = (
     (ISLAND / "IslandProgress.tsx", Path("src/components/island/IslandProgress.tsx")),
     (ISLAND / "IslandCountUp.tsx", Path("src/components/island/IslandCountUp.tsx")),
     (ISLAND / "IslandShell.tsx", Path("src/components/island/IslandShell.tsx")),
+    (ISLAND / "IslandRocket.tsx", Path("src/components/island/IslandRocket.tsx")),
     (ISLAND / "IslandSignals.tsx", Path("src/components/island/IslandSignals.tsx")),
     (ISLAND / "IslandMark.tsx", Path("src/components/island/IslandMark.tsx")),
     (ISLAND / "IslandClock.tsx", Path("src/components/island/IslandClock.tsx")),
@@ -138,9 +139,13 @@ def role_messages_text(source: str) -> str:
             '    "chooseColor": "Choose a color for your student ID card and site theme.",\n'
             '    "chooseRole": "Choose a character.",\n'
             '    "roleWarrior": "Warrior",\n'
+            '    "roleWarriorNote": "Walks the lessons in order, one station at a time. This only changes how your student card looks, not the course or your progress.",\n'
             '    "roleWizard": "Wizard",\n'
+            '    "roleWizardNote": "Likes to see the rule clearly before trying it. This only changes how your student card looks, not the course or your progress.",\n'
             '    "rolePriest": "Priest",\n'
+            '    "rolePriestNote": "Stays a little longer on the part that is still unclear. This only changes how your student card looks, not the course or your progress.",\n'
             '    "roleRanger": "Ranger",\n'
+            '    "roleRangerNote": "Tries the path first, then checks the answer. This only changes how your student card looks, not the course or your progress.",\n'
             '    "chooseIdentity": "Choose identity",\n'
             '    "confirmRole": "Then use Start learning below to enter.",\n'
             '    "generatingId":',
@@ -151,9 +156,13 @@ def role_messages_text(source: str) -> str:
             '    "chooseColor": "为学习身份卡和网站主题选择一种颜色。",\n'
             '    "chooseRole": "选择你的角色。",\n'
             '    "roleWarrior": "战士",\n'
+            '    "roleWarriorNote": "披着盔甲，适合想按课本顺序、一关一关走完的人。选它只改变学习身份的样子，课程内容和进度都不变。",\n'
             '    "roleWizard": "巫师",\n'
+            '    "roleWizardNote": "先把规则看清楚再动手，适合想把概念弄明白的人。选它只改变学习身份的样子，课程内容和进度都不变。",\n'
             '    "rolePriest": "牧师",\n'
+            '    "rolePriestNote": "愿意在没弄懂的地方多停一停，适合想把容易错的地方补上的人。选它只改变学习身份的样子，课程内容和进度都不变。",\n'
             '    "roleRanger": "游侠",\n'
+            '    "roleRangerNote": "喜欢自己先找路，适合想先试一遍再对答案的人。选它只改变学习身份的样子，课程内容和进度都不变。",\n'
             '    "chooseIdentity": "选择身份",\n'
             '    "confirmRole": "选好后，点击下方的开始学习进入课程。",\n'
             '    "generatingId":',

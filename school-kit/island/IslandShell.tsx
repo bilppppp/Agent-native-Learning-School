@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
-import { BackTop, Background, Footer } from "animal-island-ui";
+import { Background, Footer } from "animal-island-ui";
+import IslandRocket from "./IslandRocket";
 import IslandSignals from "./IslandSignals";
 
 interface Props {
@@ -12,7 +13,7 @@ export default function IslandShell({ children, shortName = "" }: Props) {
 		<Background type="sweet-corner" className="island-page-bg">
 			{children}
 			<Footer text={shortName} />
-			<BackTop visibilityHeight={480} />
+			<IslandRocket />
 			<IslandSignals />
 		</Background>
 	);

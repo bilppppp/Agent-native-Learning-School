@@ -42,6 +42,31 @@ html[data-chrome="island"] body {
   line-height: 1.7;
 }
 
+.island-intro {
+  max-width: 40rem;
+  margin: 0 auto 1.1rem;
+  padding: 0.95rem 1.15rem 1.05rem;
+  border: 1px solid #e4d5b7;
+  border-radius: 16px;
+  background: rgba(247, 243, 223, 0.9);
+}
+
+.island-intro p {
+  margin: 0;
+  color: #725d42;
+  font-size: 0.98rem;
+  line-height: 1.8;
+}
+
+.island-intro p + p {
+  margin-top: 0.45rem;
+}
+
+.island-intro p:first-child {
+  color: #794f27;
+  font-weight: 700;
+}
+
 .island-lesson-header {
   display: flex;
   flex-direction: column;
@@ -832,6 +857,7 @@ div.prose samp {
   flex-direction: column;
   align-items: center;
   gap: 0.15rem;
+  width: 100%;
   margin: 0;
   padding: 0.45rem 0.25rem 0.7rem;
   border: 2px solid #e4d5b7;
@@ -899,5 +925,187 @@ div.prose samp {
 @media (prefers-reduced-motion: reduce) {
   .island-role-sprite {
     animation: none;
+  }
+
+  .island-rocket-craft,
+  .island-rocket-flame {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .island-rocket-status {
+    transition: none;
+  }
+}
+
+.island-rocket-fx {
+  position: fixed;
+  inset: 0;
+  z-index: 998;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+}
+
+.island-rocket {
+  position: fixed;
+  z-index: 1000;
+  width: 64px;
+  height: 64px;
+  transform: translate(-50%, -50%);
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  filter: drop-shadow(0 4px 10px rgba(91, 78, 30, 0.22));
+}
+
+.island-rocket.is-visible,
+.island-rocket.dragging,
+.island-rocket.launching {
+  opacity: 1;
+  visibility: visible;
+}
+
+.island-rocket.is-visible,
+.island-rocket.dragging {
+  pointer-events: auto;
+}
+
+.island-rocket.dragging {
+  cursor: grabbing;
+}
+
+.island-rocket.launching {
+  cursor: default;
+  pointer-events: none;
+}
+
+.island-rocket:focus-visible {
+  outline: 2px dashed #12ae9f;
+  outline-offset: 1px;
+  border-radius: 16px;
+}
+
+.island-rocket-craft {
+  position: relative;
+  display: block;
+  width: 64px;
+  height: 64px;
+  transform-origin: 50% 50%;
+  transition: transform 0.14s ease-out;
+}
+
+.island-rocket.dragging .island-rocket-craft {
+  transform: rotate(var(--lean, 0deg)) scale(1.07);
+}
+
+.island-rocket.armed .island-rocket-craft {
+  animation: island-rocket-jit 0.08s ease-in-out infinite alternate;
+  filter: drop-shadow(0 0 4px #ffc35e);
+}
+
+.island-rocket.launching .island-rocket-craft {
+  animation: none;
+  transform: rotate(var(--lean, 0deg));
+  transition: none;
+}
+
+.island-rocket-flame {
+  position: absolute;
+  left: 16px;
+  top: 46px;
+  width: 32px;
+  height: 28px;
+  transform-origin: 16px 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.island-rocket.armed .island-rocket-flame,
+.island-rocket.launching .island-rocket-flame {
+  opacity: 1;
+  animation: island-rocket-flame 0.1s infinite alternate;
+}
+
+.island-rocket-guide {
+  position: fixed;
+  z-index: 999;
+  display: none;
+  pointer-events: none;
+  transform: translateX(-50%);
+  border-left: 2px dashed #ddb267;
+  opacity: 0.84;
+}
+
+.island-rocket-guide::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -7px;
+  width: 12px;
+  height: 12px;
+  border: 2px solid #d6b171;
+  background: #fff5e3;
+  border-radius: 50%;
+}
+
+.island-rocket-status {
+  position: fixed;
+  z-index: 1001;
+  left: 50%;
+  bottom: 18px;
+  transform: translate(-50%, 15px);
+  border: 1px solid #dbc6a1;
+  background: #fff9eaee;
+  color: #795a40;
+  border-radius: 30px;
+  padding: 10px 18px;
+  font-size: 13px;
+  font-weight: 750;
+  box-shadow: 0 6px 28px #a68b5955;
+  opacity: 0;
+  transition: opacity 0.2s, transform 0.2s;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.island-rocket-status.show {
+  transform: translate(-50%, 0);
+  opacity: 1;
+}
+
+.island-rocket-status.ready {
+  background: #21ad9d;
+  color: white;
+  border-color: #0b9888;
+}
+
+.island-rocket-status.good {
+  background: #edb356;
+  color: #553e23;
+  border-color: #d2994c;
+}
+
+@keyframes island-rocket-jit {
+  from {
+    transform: translate(-1px, 1px) rotate(-2deg);
+  }
+  to {
+    transform: translate(1px, 0) rotate(2deg);
+  }
+}
+
+@keyframes island-rocket-flame {
+  from {
+    transform: scaleY(0.7);
+  }
+  to {
+    transform: scaleY(1.23);
   }
 }

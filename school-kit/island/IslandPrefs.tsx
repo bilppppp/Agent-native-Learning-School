@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Button, Notification, Select } from "animal-island-ui";
+import { Button, Notification, Select, Tooltip } from "animal-island-ui";
 
 const depthOptions = [
 	{ key: "brief", label: "简短" },
@@ -71,9 +71,11 @@ export default function IslandPrefs() {
 					}}
 				/>
 			</div>
-			<Button type="primary" disabled={!studentId || pending} onClick={save}>
-				保存偏好
-			</Button>
+			<Tooltip className="island-save-tip" title="偏好已保存" trigger="click" variant="island" bordered placement="top">
+				<Button type="primary" disabled={!studentId || pending} onClick={save}>
+					保存偏好
+				</Button>
+			</Tooltip>
 		</section>
 	);
 }
