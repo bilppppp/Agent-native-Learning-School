@@ -189,12 +189,25 @@ export function validateGeneration(inputPath) {
   const output = resolve(root, input.output);
   const lessons = readdirSync(join(output, 'src/content/lessons')).filter(n => /\.mdx?$/.test(n));
   if (!lessons.length || !existsSync(join(output, 'COURSE.md'))) throw new Error('Generation did not produce a complete route and lessons. Files are preserved for inspection.');
+  const configText = readFileSync(join(output, 'school.config.ts'), 'utf8');
+  const field = (key) => configText.match(new RegExp(`^\\s*${key}:\\s*"((?:\\\\.|[^"])*)"`, 'm'))?.[1] ?? '';
+  const internalName = field('name');
+  const publicName = field('publicName');
+  const shortName = field('shortName');
+  if (!publicName || !shortName || publicName === internalName || shortName === internalName || publicName.includes('Learn Islands')) {
+    throw new Error('Set school.config.ts publicName and shortName to the public course names from the generation protocol. The directory slug is not a title.');
+  }
   for (const name of lessons) {
     const text = readFileSync(join(output, 'src/content/lessons', name), 'utf8');
     if (!text.startsWith('---\n') || !/agentInstructions:\s*\|/.test(text) || /\bTODO\b|Coming soon\./.test(text)) {
       throw new Error(`Incomplete lesson: ${name}. Generated files have been preserved.`);
     }
     if (/Use the bash tool|Pi is the only|Pi should teach|--mode rpc/.test(text.split('\n---')[0])) throw new Error(`Harness-specific teaching notes in ${name}; revise before using the School.`);
+    const lessonTitle = text.match(/^title:\s*(?:"([^"]*)"|'([^']*)'|(.+))\s*$/m);
+    const titleValue = (lessonTitle?.[1] ?? lessonTitle?.[2] ?? lessonTitle?.[3] ?? '').trim();
+    if (!titleValue || titleValue.includes(internalName) || titleValue.includes('Learn Islands')) {
+      throw new Error(`Lesson title in ${name} must name what the learner studies, without the directory slug or the brand.`);
+    }
     assertMathDelimiters(text, name);
   }
   return lessons.length;

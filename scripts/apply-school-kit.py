@@ -154,6 +154,67 @@ def add_teaching_mode_profile_field(config_path: Path) -> bool:
     return write_if_changed(config_path, updated)
 
 
+PUBLIC_TITLE_BLOCK = (
+    "const courseShortName = config.shortName || config.publicName || config.name;\n"
+    "const coursePublicName = config.publicName || config.shortName || config.name;\n"
+    "const pageTitle = title ? `${title} | ${courseShortName}` : `${coursePublicName} | Learn Islands`;"
+)
+
+
+def patch_public_titles(base_path: Path) -> bool:
+    """Use the public course name in the document title and header, not the directory slug."""
+    text = base_path.read_text()
+    original = text
+    legacy = 'const pageTitle = title ? `${title} | ${config.name}` : config.name;'
+    template = 'const pageTitle = title ? `${title} | My School` : "My School";'
+    if "const courseShortName = " not in text:
+        if legacy in text:
+            text = text.replace(legacy, PUBLIC_TITLE_BLOCK, 1)
+        elif template in text:
+            text = text.replace(template, PUBLIC_TITLE_BLOCK, 1)
+        else:
+            raise ValueError(f"{base_path} has no recognizable document title")
+    text = text.replace(
+        '<meta property="og:site_name" content={config.name} />',
+        '<meta property="og:site_name" content={courseShortName} />',
+        1,
+    )
+    text = text.replace('data-school-name={config.name}', "data-school-name={courseShortName}")
+    text = text.replace(">{config.name}<", ">{courseShortName}<")
+    return write_if_changed(base_path, text) if text != original else False
+
+
+def ensure_public_title_fields(target: Path) -> bool:
+    """Add optional public names. Leave an existing publicName untouched."""
+    changed = False
+    school_ts = target / "src/lib/school.ts"
+    type_text = school_ts.read_text()
+    if "publicName?:" not in type_text:
+        needle = "\tname: string;\n"
+        if needle not in type_text:
+            raise ValueError(f"{school_ts} has no name field on SchoolConfig")
+        type_text = type_text.replace(
+            needle,
+            "\tname: string;\n\tpublicName?: string;\n\tshortName?: string;\n",
+            1,
+        )
+        school_ts.write_text(type_text)
+        changed = True
+
+    config_path = target / "school.config.ts"
+    config_text = config_path.read_text()
+    if re.search(r"(?m)^\s*publicName\s*:", config_text):
+        return changed
+    match = re.search(r"(?m)^([ \t]*)name:\s*(?:\"(?:\\.|[^\"])*\"|'(?:\\.|[^'])*')\s*,[ \t]*\n", config_text)
+    if not match:
+        raise ValueError(f"{config_path} has no name property")
+    indent = match.group(1)
+    insert = f'{indent}publicName: "",\n{indent}shortName: "",\n'
+    config_text = config_text[: match.end()] + insert + config_text[match.end() :]
+    config_path.write_text(config_text)
+    return True
+
+
 def patch_base_layout(base_path: Path) -> bool:
     text = base_path.read_text()
     original = text
@@ -504,6 +565,10 @@ def apply(target: Path) -> list[str]:
 
     if patch_base_layout(target / "src/layouts/Base.astro"):
         changed.append("src/layouts/Base.astro")
+    if patch_public_titles(target / "src/layouts/Base.astro"):
+        changed.append("src/layouts/Base.astro (public titles)")
+    if ensure_public_title_fields(target):
+        changed.append("public title fields")
     homepage = target / "src/pages/index.astro"
     if homepage.exists() and patch_homepage(homepage):
         changed.append("src/pages/index.astro (removed synthetic enrollment completion)")

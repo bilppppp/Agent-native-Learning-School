@@ -13,7 +13,9 @@ interface Props {
 }
 
 const { title, description = config.description } = Astro.props;
-const pageTitle = title ? `${title} | ${config.name}` : config.name;
+const courseShortName = config.shortName || config.publicName || config.name;
+const coursePublicName = config.publicName || config.shortName || config.name;
+const pageTitle = title ? `${title} | ${courseShortName}` : `${coursePublicName} | Learn Islands`;
 const canonicalUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : Astro.url.pathname;
 
 const lessons = (await getCollection("lessons")).sort((a, b) => a.data.order - b.data.order);
@@ -38,7 +40,7 @@ import ClientUI from "../components/ClientUI.astro";
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
 
-    <meta property="og:site_name" content={config.name} />
+    <meta property="og:site_name" content={courseShortName} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={pageTitle} />
     <meta name="twitter:description" content={description} />
@@ -554,7 +556,7 @@ import ClientUI from "../components/ClientUI.astro";
     <div class="lg:flex">
       <!-- Mobile header -->
       <header class="lg:hidden flex items-center justify-between p-4 border-b border-gray-200 dark:border-stone-800">
-        <a href="/" class="font-mono font-bold text-lg">{config.name}</a>
+        <a href="/" class="font-mono font-bold text-lg">{courseShortName}</a>
         <button
           id="menu-toggle"
           class="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-stone-800"
@@ -571,7 +573,7 @@ import ClientUI from "../components/ClientUI.astro";
         id="sidebar"
         class="hidden lg:block w-72 shrink-0 border-r border-gray-200 dark:border-stone-800 h-screen sticky top-0 overflow-y-auto p-6"
       >
-        <a href="/" class="block font-mono font-bold text-xl mb-6 px-3" data-school-name={config.name}>{config.name}</a>
+        <a href="/" class="block font-mono font-bold text-xl mb-6 px-3" data-school-name={courseShortName}>{courseShortName}</a>
         <ol class="space-y-1">
           {lessons.map((lesson) => {
             const href = `/lessons/${lesson.data.slug}`;
