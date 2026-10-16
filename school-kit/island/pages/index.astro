@@ -1,0 +1,367 @@
+---
+// Copyright (c) 2026 Cloudflare, Inc.
+// Licensed under the Apache 2.0 license found in the LICENSE file or at:
+//     https://opensource.org/licenses/Apache-2.0
+export const prerender = true;
+
+import Base from "../layouts/Base.astro";
+import { Card, Button, Divider } from "animal-island-ui";
+import IslandMark from "../components/island/IslandMark";
+import IslandTypewriter from "../components/island/IslandTypewriter";
+import IslandLessonBoard from "../components/island/IslandLessonBoard";
+import IslandCast from "../components/island/IslandCast";
+import config from "../../school.config";
+import { getCollection } from "astro:content";
+
+const lessons = (await getCollection("lessons")).sort((a, b) => a.data.order - b.data.order);
+const exercises = (await getCollection("exercises")).sort((a, b) => a.data.order - b.data.order);
+
+import { t } from "../lib/ui";
+---
+
+<Base>
+
+  <!-- Student ID card: always at top, shown once enrolled -->
+  <div id="student-id-card" class="hidden mb-8" style="max-width:420px; position:relative;">
+    <!-- Particle layer: behind the card, not clipped -->
+    <div id="celebration-layer" style="position:absolute; inset:-80px; pointer-events:none; z-index:1; overflow:visible;"></div>
+    <!-- Card itself sits above the particle layer -->
+    <div class="island-id-face is-selected" data-role="warrior">
+      <Card color="app-red" className="island-id-card" style={{ position: "relative", zIndex: 2 }}>
+        <div class="island-id-layout">
+          <div>
+            <p class="text-xs font-mono uppercase tracking-[0.3em] opacity-80">{t("studentId")}</p>
+            <p class="island-id-role">{t("roleWarrior")}</p>
+            <p class="island-id-value text-2xl font-mono font-bold tracking-tight"></p>
+          </div>
+          <span class="island-role-sprite island-role-sprite--warrior" aria-hidden="true"></span>
+        </div>
+      </Card>
+    </div>
+    <div class="island-id-face" data-role="wizard">
+      <Card color="purple" className="island-id-card" style={{ position: "relative", zIndex: 2 }}>
+        <div class="island-id-layout">
+          <div>
+            <p class="text-xs font-mono uppercase tracking-[0.3em] opacity-80">{t("studentId")}</p>
+            <p class="island-id-role">{t("roleWizard")}</p>
+            <p class="island-id-value text-2xl font-mono font-bold tracking-tight"></p>
+          </div>
+          <span class="island-role-sprite island-role-sprite--wizard" aria-hidden="true"></span>
+        </div>
+      </Card>
+    </div>
+    <div class="island-id-face" data-role="priest">
+      <Card color="app-yellow" className="island-id-card" style={{ position: "relative", zIndex: 2 }}>
+        <div class="island-id-layout">
+          <div>
+            <p class="text-xs font-mono uppercase tracking-[0.3em] opacity-80">{t("studentId")}</p>
+            <p class="island-id-role">{t("rolePriest")}</p>
+            <p class="island-id-value text-2xl font-mono font-bold tracking-tight"></p>
+          </div>
+          <span class="island-role-sprite island-role-sprite--priest" aria-hidden="true"></span>
+        </div>
+      </Card>
+    </div>
+    <div class="island-id-face" data-role="ranger">
+      <Card color="app-green" className="island-id-card" style={{ position: "relative", zIndex: 2 }}>
+        <div class="island-id-layout">
+          <div>
+            <p class="text-xs font-mono uppercase tracking-[0.3em] opacity-80">{t("studentId")}</p>
+            <p class="island-id-role">{t("roleRanger")}</p>
+            <p class="island-id-value text-2xl font-mono font-bold tracking-tight"></p>
+          </div>
+          <span class="island-role-sprite island-role-sprite--ranger" aria-hidden="true"></span>
+        </div>
+      </Card>
+    </div>
+  </div>
+
+  <!-- Page header: hidden once enrolled -->
+  <div id="page-header" class="mb-8">
+    <IslandTypewriter client:load text={`${config.description} ${t("welcome")}`} />
+    <Divider type="wave-yellow" />
+  </div>
+
+  <!-- Enrolled: lesson list -->
+  <div id="enrolled-section" class="hidden mb-12">
+    <h2 class="mb-4"><IslandMark client:load name={t("lessons")} size="small" /></h2>
+
+    <IslandLessonBoard
+      client:load
+      lessons={lessons.map((lesson) => ({
+        slug: lesson.data.slug,
+        title: lesson.data.title,
+        description: lesson.data.description,
+        order: lesson.data.order,
+        stub: lesson.body?.trim() === "Coming soon.",
+      }))}
+    />
+
+  </div>
+
+  <!-- Not enrolled: enrollment widget -->
+  <div id="not-enrolled-section" class="mb-12">
+    <div id="enroll-step-button" class="py-8 text-center">
+      <span id="enroll-button" class="inline-block">
+        <Button type="primary" size="large">{t("chooseIdentity")}</Button>
+      </span>
+      <p class="text-sm text-gray-500 dark:text-stone-500 mt-4">{t("privacy")}</p>
+    </div>
+
+    <div id="enroll-step-color" class="hidden">
+      <p id="role-picker-copy" class="text-sm text-gray-600 dark:text-stone-400 mb-4">{t("chooseRole")}</p>
+      <IslandCast client:load />
+      <Card color="default" pattern="warm-peach-pink" className="island-role-card">
+      <div id="role-picker" class="island-role-picker not-prose">
+        <button type="button" class="island-role-option" data-role="warrior" aria-pressed="true" aria-label={t("roleWarrior")}>
+          <span class="island-role-sprite island-role-sprite--warrior" aria-hidden="true"></span>
+          <span class="island-role-name">{t("roleWarrior")}</span>
+        </button>
+        <button type="button" class="island-role-option" data-role="wizard" aria-pressed="false" aria-label={t("roleWizard")}>
+          <span class="island-role-sprite island-role-sprite--wizard" aria-hidden="true"></span>
+          <span class="island-role-name">{t("roleWizard")}</span>
+        </button>
+        <button type="button" class="island-role-option" data-role="priest" aria-pressed="false" aria-label={t("rolePriest")}>
+          <span class="island-role-sprite island-role-sprite--priest" aria-hidden="true"></span>
+          <span class="island-role-name">{t("rolePriest")}</span>
+        </button>
+        <button type="button" class="island-role-option" data-role="ranger" aria-pressed="false" aria-label={t("roleRanger")}>
+          <span class="island-role-sprite island-role-sprite--ranger" aria-hidden="true"></span>
+          <span class="island-role-name">{t("roleRanger")}</span>
+        </button>
+      </div>
+      <p class="island-role-confirm">{t("confirmRole")}</p>
+      </Card>
+      <p id="enroll-error" class="mt-2 text-red-500 text-sm hidden">{t("enrollError")}</p>
+    </div>
+  </div>
+
+  <!-- Bottom enroll CTA: hidden once enrolled -->
+  <div id="enroll-bottom-section" class="mt-10 py-8 text-center not-prose">
+    <span id="enroll-button-bottom" class="inline-block">
+      <Button type="primary" size="large">{t("enroll")}</Button>
+    </span>
+    <p class="text-sm text-gray-500 dark:text-stone-500 mt-4">{t("privacy")}</p>
+  </div>
+
+  <script is:inline>
+    (function() {
+      var idCard          = document.getElementById("student-id-card");
+      var pageHeader      = document.getElementById("page-header");
+      var stepButton      = document.getElementById("enroll-step-button");
+      var stepColor       = document.getElementById("enroll-step-color");
+      var enrollBtn       = document.getElementById("enroll-button");
+      var colorPickerCopy = document.getElementById("role-picker-copy");
+      var enrollError     = document.getElementById("enroll-error");
+      function paintId(value) {
+        document.querySelectorAll(".island-id-value").forEach(function(node) {
+          node.textContent = value;
+        });
+      }
+      var notEnrolledSection  = document.getElementById("not-enrolled-section");
+      var enrolledSection     = document.getElementById("enrolled-section");
+      var enrollBottomSection = document.getElementById("enroll-bottom-section");
+      var enrollBtnBottom     = document.getElementById("enroll-button-bottom");
+
+      var roleOptions = Array.prototype.slice.call(
+        document.querySelectorAll(".island-role-option[data-role]")
+      );
+      var roleNames = ["warrior", "wizard", "priest", "ranger"];
+
+      function readRole() {
+        var saved = localStorage.getItem("learningRole");
+        return roleNames.indexOf(saved) === -1 ? "warrior" : saved;
+      }
+
+      var selectedRole = readRole();
+      var isSubmitting = false;
+
+      var chars  = "abcdefghijklmnopqrstuvwxyz";
+      var digits = "0123456789";
+
+      function randomChar(real) {
+        if (real === "-") return "-";
+        if (real >= "0" && real <= "9") return digits[Math.floor(Math.random() * digits.length)];
+        return chars[Math.floor(Math.random() * chars.length)];
+      }
+
+      function scramble(target) {
+        var result = "";
+        for (var i = 0; i < target.length; i++) result += randomChar(target[i]);
+        return result;
+      }
+
+      function fireCelebration() {
+        var layer = document.getElementById("celebration-layer");
+        if (!layer) return;
+        var roleColors = {
+          warrior: ["#b91c1c", "#fb7185", "#fdba74", "#fff7ed"],
+          wizard: ["#6d28d9", "#c4b5fd", "#818cf8", "#f5f3ff"],
+          priest: ["#ca8a04", "#fde68a", "#fffbeb", "#fef3c7"],
+          ranger: ["#15803d", "#86efac", "#fef08a", "#ecfccb"]
+        };
+        var colors = roleColors[selectedRole] || roleColors.warrior;
+
+        // Center of the layer (offset accounts for the -80px inset bleed)
+        var cx = layer.offsetWidth / 2;
+        var cy = layer.offsetHeight / 2;
+
+        for (var i = 0; i < 80; i++) {
+          var p = document.createElement("span");
+          p.className = "celebration-particle";
+
+          var angle = Math.random() * 2 * Math.PI;
+          var speed = 120 + Math.random() * 200;
+          var vx = Math.cos(angle) * speed * 1.6;
+          var vy = Math.sin(angle) * speed;
+          var size = (4 + Math.random() * 5) + "px";
+          var rot = (Math.random() * 720 - 360) + "deg";
+          var dur = (0.8 + Math.random() * 0.7) + "s";
+          var isCircle = Math.random() > 0.4;
+
+          p.style.setProperty("--vx", vx + "px");
+          p.style.setProperty("--vy", vy + "px");
+          p.style.setProperty("--rot", rot);
+          p.style.setProperty("--size", size);
+          p.style.setProperty("--dur", dur);
+          p.style.setProperty("--radius", isCircle ? "50%" : "20%");
+          p.style.setProperty("--color", colors[Math.floor(Math.random() * colors.length)]);
+          p.style.left = cx + "px";
+          p.style.top  = cy + "px";
+
+          layer.appendChild(p);
+          p.addEventListener("animationend", function() { this.remove(); });
+        }
+      }
+
+      function cipherReveal(target, fast, callback) {
+        var scrambleMs = fast ? 15 : 30;
+        var delayMs    = fast ? 150 : 600;
+        var resolveMs  = fast ? 45 : 140;
+
+        var resolved = 0;
+        paintId(scramble(target));
+
+        var scrambleInterval = setInterval(function() {
+          var next = "";
+          for (var i = 0; i < target.length; i++) {
+            if (i < resolved)           next += target[i];
+            else if (target[i] === "-") next += "-";
+            else                        next += randomChar(target[i]);
+          }
+          paintId(next);
+        }, scrambleMs);
+
+        setTimeout(function() {
+          var resolveInterval = setInterval(function() {
+            if (resolved >= target.length) {
+              clearInterval(scrambleInterval);
+              clearInterval(resolveInterval);
+              paintId(target);
+              if (callback) callback();
+              return;
+            }
+            if (target[resolved] === "-") resolved++;
+            resolved++;
+          }, resolveMs);
+        }, delayMs);
+      }
+
+      function revealIdCard(studentId) {
+        paintId(studentId);
+        idCard.classList.remove("hidden");
+        pageHeader.classList.add("hidden");
+      }
+
+      function showEnrolled(studentId, animate, fast) {
+        notEnrolledSection.classList.add("hidden");
+        if (enrollBottomSection) enrollBottomSection.classList.add("hidden");
+        enrolledSection.classList.remove("hidden");
+        pageHeader.classList.add("hidden");
+        paintId(studentId);
+        idCard.classList.remove("hidden");
+
+        if (animate) {
+          cipherReveal(studentId, fast, function() {
+            fireCelebration();
+            if (!fast) {
+              window.dispatchEvent(new CustomEvent("school:island-notice", { detail: { kind: "success", message: "学习身份已领好" } }));
+              window.school.updateAllCheckmarks();
+              if (typeof window.school.updateEnrolledIndicator === "function") {
+                window.school.updateEnrolledIndicator();
+              }
+}
+          });
+        }
+      }
+
+      function setSelectedRole(role) {
+        selectedRole = roleNames.indexOf(role) === -1 ? "warrior" : role;
+        localStorage.setItem("learningRole", selectedRole);
+        document.querySelectorAll(".island-id-face").forEach(function(face) {
+          face.classList.toggle("is-selected", face.getAttribute("data-role") === selectedRole);
+        });
+        roleOptions.forEach(function(opt) {
+          opt.setAttribute("aria-pressed", opt.getAttribute("data-role") === selectedRole ? "true" : "false");
+        });
+      }
+
+      function setPickerState(message, disabled) {
+        if (colorPickerCopy && message) colorPickerCopy.textContent = message;
+        roleOptions.forEach(function(opt) {
+          opt.disabled = disabled;
+          opt.classList.toggle("opacity-60", disabled);
+          opt.classList.toggle("cursor-not-allowed", disabled);
+        });
+      }
+
+      // On page load: if already enrolled, show card + lesson list with fast cipher + celebration
+      var existingId = window.school.getStudentId();
+      setSelectedRole(selectedRole);
+      if (existingId) {
+        showEnrolled(existingId, true, true);
+      }
+
+      function submitEnrollment() {
+        if (isSubmitting) return;
+        isSubmitting = true;
+        if (enrollError) enrollError.classList.add("hidden");
+        if (stepButton) stepButton.classList.add("hidden");
+        if (stepColor) stepColor.classList.remove("hidden");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        setPickerState(window.schoolUI.t("generatingId"), true);
+        window.school.enroll().then(function(data) {
+          showEnrolled(data.studentId, true, false);
+        }).catch(function() {
+          window.dispatchEvent(new CustomEvent("school:island-notice", { detail: { kind: "error", message: "注册没有成功" } }));
+          if (enrollError) enrollError.classList.remove("hidden");
+          setPickerState(window.schoolUI.t("chooseRole"), false);
+          isSubmitting = false;
+        });
+      }
+
+      // The lower button enters with the selected character.
+      if (enrollBtnBottom) {
+        enrollBtnBottom.addEventListener("click", function() {
+          submitEnrollment();
+        });
+      }
+
+      // The upper button only opens the character picker.
+      if (enrollBtn) {
+        enrollBtn.addEventListener("click", function() {
+          stepButton.classList.add("hidden");
+          stepColor.classList.remove("hidden");
+          setSelectedRole(selectedRole);
+        });
+      }
+
+      roleOptions.forEach(function(opt) {
+        opt.addEventListener("click", function() {
+          if (isSubmitting) return;
+          setSelectedRole(opt.getAttribute("data-role"));
+        });
+      });
+    })();
+  </script>
+</Base>

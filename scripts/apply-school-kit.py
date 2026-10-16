@@ -61,6 +61,16 @@ KIT_DEPENDENCIES = {
     "katex": "^0.16.22",
 }
 
+ISLAND_OVERLAY_DEFER = {
+    Path("astro.config.mjs"),
+    Path("src/lib/ui-messages.json"),
+}
+
+ISLAND_OVERLAY_SKIP = {
+    Path("src/components/TeachingMode.astro"),
+    Path("src/components/AgentPrompt.astro"),
+}
+
 NPMRC_CONTENTS = "legacy-peer-deps=true\n"
 
 
@@ -544,6 +554,7 @@ def apply(target: Path) -> list[str]:
     if missing:
         raise ValueError(f"Not a School Template derived school; missing: {', '.join(missing)}")
 
+    island = is_island_chrome(target)
     changed: list[str] = []
     if ensure_settings(target):
         changed.append("school.settings.json")
@@ -558,6 +569,8 @@ def apply(target: Path) -> list[str]:
         changed.append("school.config.ts (added profileFields.teachingMode)")
 
     for relative in OVERLAY_FILES:
+        if island and relative in ISLAND_OVERLAY_SKIP | ISLAND_OVERLAY_DEFER:
+            continue
         source = OVERLAY / relative
         destination = target / relative
         if write_if_changed(destination, source.read_text()):
@@ -585,16 +598,19 @@ def apply(target: Path) -> list[str]:
             path.unlink()
             changed.append(f"removed {leftover}")
     ensure_serve_executable(target)
-    if package_changed:
-        install_runtime_dependencies(target)
-        changed.append("package-lock.json")
-    if is_island_chrome(target):
+    if island:
         island_spec = importlib.util.spec_from_file_location(
             "apply_island_chrome", ROOT / "scripts/apply-island-chrome.py"
         )
         island_module = importlib.util.module_from_spec(island_spec)
         island_spec.loader.exec_module(island_module)
-        changed.extend(island_module.apply_island(target))
+        island_changed = island_module.apply_island(target)
+        if "package.json" in island_changed:
+            package_changed = True
+        changed.extend(island_changed)
+    if package_changed:
+        install_runtime_dependencies(target)
+        changed.append("package-lock.json")
     return changed
 
 

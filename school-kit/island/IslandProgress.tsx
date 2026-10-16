@@ -27,18 +27,20 @@ function completedCount(): number {
 
 export default function IslandProgress({ total }: Props) {
 	const [percent, setPercent] = useState(0);
+	const [done, setDone] = useState(0);
 
 	useEffect(() => {
 		const read = () => {
-			const done = completedCount();
-			setPercent(total > 0 ? Math.min(100, (done / total) * 100) : 0);
+			const finished = completedCount();
+			setDone(finished);
+			setPercent(total > 0 ? Math.min(100, (finished / total) * 100) : 0);
 		};
 		read();
 
 		const school = window.school;
 		const previousCheckmarks = school?.updateAllCheckmarks;
 		const wrappedCheckmarks = () => {
-			previousCheckmarks?.();
+			previousCheckmarks?.call(school);
 			read();
 		};
 		if (school && typeof previousCheckmarks === "function") {
@@ -57,5 +59,11 @@ export default function IslandProgress({ total }: Props) {
 		};
 	}, [total]);
 
-	return <Progress percent={percent} variant="sweet-corner" size="small" />;
+	const caption = `已完成 ${done}/${total} 关`;
+	return (
+		<div className="island-progress-block">
+			<Progress percent={percent} size="small" aria-label={caption} />
+			<p className="island-progress-caption">{caption}</p>
+		</div>
+	);
 }

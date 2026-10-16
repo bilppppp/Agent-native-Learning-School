@@ -1,4 +1,5 @@
 """Copy the upstream template and apply the shared, harness-neutral School Kit."""
+import importlib.util
 import json
 import re
 import shutil
@@ -24,22 +25,35 @@ wrangler = {"name": out.name + "-school", "compatibility_date": "2026-03-12",
 (out / "school.settings.json").write_text(json.dumps(spec, ensure_ascii=False, indent=2) + "\n")
 school_config = out / "school.config.ts"
 config_text = school_config.read_text().replace('name: "My School"', 'name: ' + json.dumps(spec["name"], ensure_ascii=False)).replace('description: "An interactive course about your subject."', 'description: ' + json.dumps(spec.get("goal", ""), ensure_ascii=False))
+config_marker = "const config: SchoolConfig = {\n"
+if config_marker not in config_text:
+    raise SystemExit("模板结构不匹配：school.config.ts 缺少 SchoolConfig 对象标记，无法写入 chrome: \"island\"")
 if not re.search(r"\bchrome\s*:", config_text):
     config_text = config_text.replace(
-        "const config: SchoolConfig = {\n",
+        config_marker,
         'const config: SchoolConfig = {\n\tchrome: "island",\n',
         1,
     )
 school_config.write_text(config_text)
+kit_spec = importlib.util.spec_from_file_location("apply_school_kit", root / "scripts/apply-school-kit.py")
+kit_module = importlib.util.module_from_spec(kit_spec)
+kit_spec.loader.exec_module(kit_module)
+if not kit_module.is_island_chrome(out):
+    raise SystemExit("模板结构不匹配：chrome 写入后不是 island，已停止以免生成旧皮")
 school_ts = out / "src/lib/school.ts"
 type_text = school_ts.read_text()
+type_marker = "export interface SchoolConfig {\n"
+if type_marker not in type_text:
+    raise SystemExit("模板结构不匹配：src/lib/school.ts 缺少 SchoolConfig 接口标记")
 if not re.search(r'chrome\?\s*:\s*"island"', type_text):
     type_text = type_text.replace(
-        "export interface SchoolConfig {\n",
+        type_marker,
         'export interface SchoolConfig {\n\tchrome?: "island";\n',
         1,
     )
     school_ts.write_text(type_text)
+if not re.search(r'chrome\?\s*:\s*"island"', school_ts.read_text()):
+    raise SystemExit("模板结构不匹配：SchoolConfig 未写入 chrome?: \"island\"")
 astro = out / "astro.config.mjs"
 astro.write_text(astro.read_text().replace('output: "server",', 'output: "server",\n\tcacheDir: "./.astro/cache",').replace("vite: {", 'vite: {\n\t\tcacheDir: "./.vite",\n\t\tserver: { strictPort: true },').replace('adapter: cloudflare(),', 'adapter: cloudflare({ inspectorPort: false }),'))
 base = out / "src/layouts/Base.astro"

@@ -43,6 +43,8 @@ npm run school -- finish new-school
 
 `finish` 复用课程文件检查并构建，不调用 Pi。失败时保留材料与生成文件，修复具体错误后再次 `finish`；不要用 `retry` 代替它。默认 Pi 自动生成仍可用：省略 `--prepare-only`，或者直接 `create "完整自然语言请求" --name new-school`。
 
+新建 School 的岛屿页面由 `create` 自动安装；生成课程的 Agent 只按 GENERATION.md 编写课程内容，不修改页面、组件或样式，也不从 `schools/island-preview` 复制文件。
+
 `--source` 可以重复；`--ref` 选择仓库分支/标签，`--language`、`--port`、`--model` 可选。字符串应安全引用，不把用户文字作为 shell 代码执行。非交互终端要传齐来源和目标，不使用无参数创建的交互问答。
 
 HTML 文档站不需要额外参数。`create` 会按 [README.md](README.md) 的「多页文档站」规则自动决定是否抓取（默认最多 500 页）。命中后按 siteone-crawler 自己的同站链接跟随，不限制在入口路径。用户没有要求整站或单页时，不要自行加上 `--crawl` 或 `--no-crawl`。只有用户明确要求，或自动判断给出了「信号不足」的提示而用户确实要整段文档时，才使用 `--crawl`。用户要收窄范围时用 `--crawl-prefix /路径`，页数或并发不够时用 `--max-pages`、`--crawl-workers`。`--no-crawl` 只保存入口页。

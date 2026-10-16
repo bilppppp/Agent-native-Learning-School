@@ -107,7 +107,7 @@ export default function IslandCountUp({ currentLessonSlug = "" }: Props) {
 		const school = window.school;
 		const previousCheckmarks = school?.updateAllCheckmarks;
 		const wrappedCheckmarks = () => {
-			previousCheckmarks?.();
+			previousCheckmarks?.call(school);
 			apply(false);
 		};
 		if (school && typeof previousCheckmarks === "function") {
