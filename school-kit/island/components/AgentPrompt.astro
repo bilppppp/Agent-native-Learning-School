@@ -1,0 +1,104 @@
+---
+interface Props {
+  title: string;
+  prompt?: string;
+}
+
+const { title, prompt } = Astro.props;
+
+import "katex/dist/katex.min.css";
+import IslandPageIcon from "./island/IslandPageIcon";
+import IslandPromptNotice from "./island/IslandPromptNotice";
+import { t } from "../lib/ui";
+---
+
+<div class="agent-prompt-card island-prompt-card hidden" data-lesson-title={title} data-prompt={prompt}>
+  <div class="island-prompt-row">
+    <IslandPageIcon client:load size={28} />
+    <div class="island-prompt-meta">
+      <p class="island-prompt-title">教师同行</p>
+      <p class="island-prompt-lead">已为你准备好本关引导提示。</p>
+    </div>
+    <div class="island-prompt-actions">
+      <button type="button" class="island-prompt-expand" aria-expanded="false">展开</button>
+      <button type="button" class="agent-prompt-copy">{t("copy")}</button>
+    </div>
+  </div>
+  <pre class="agent-prompt-text island-prompt-body hidden"></pre>
+  <p role="status" aria-live="polite" class="agent-prompt-confirm hidden">{t("copyError")}</p>
+  <IslandPromptNotice client:load />
+</div>
+
+<script is:inline>
+  (function() {
+    function setPromptOpen(card, open) {
+      var body = card.querySelector(".agent-prompt-text");
+      var toggle = card.querySelector(".island-prompt-expand");
+      if (!body || !toggle) return;
+      body.classList.toggle("hidden", !open);
+      toggle.setAttribute("aria-expanded", open ? "true" : "false");
+      toggle.textContent = open ? "收起" : "展开";
+    }
+
+    document.querySelectorAll(".island-prompt-expand").forEach(function(toggle) {
+      toggle.addEventListener("click", function() {
+        var card = toggle.closest(".agent-prompt-card");
+        if (!card) return;
+        setPromptOpen(card, toggle.getAttribute("aria-expanded") !== "true");
+      });
+    });
+
+    window.addEventListener("school:island-lesson-tab", function(event) {
+      if (!event.detail || event.detail.panel !== "teach") return;
+      document.querySelectorAll(".agent-prompt-card").forEach(function(card) {
+        setPromptOpen(card, true);
+      });
+    });
+
+    if (!window.school) return;
+    var studentId = window.school.getStudentId();
+    if (!studentId) return;
+
+    document.querySelectorAll(".agent-prompt-card").forEach(function(card) {
+      var lessonTitle = card.getAttribute("data-lesson-title");
+      var promptText = card.querySelector(".agent-prompt-text");
+      var copyBtn = card.querySelector(".agent-prompt-copy");
+      var confirm = card.querySelector(".agent-prompt-confirm");
+      if (!promptText) return;
+
+      var customPrompt = card.getAttribute("data-prompt");
+      var schoolName = document.querySelector("[data-school-name]");
+      var name = schoolName ? schoolName.getAttribute("data-school-name") : window.schoolUI.t("thisSchool");
+      var origin = window.location.origin;
+      var pathParts = window.location.pathname.split("/").filter(Boolean);
+      var lessonSlug = pathParts[pathParts.length - 1] || lessonTitle || "";
+      var kind = pathParts[0] === "exercises" ? "exercises" : "lessons";
+      var prompt = window.schoolUI.t("promptIdentity", { school: name, student: studentId }) + "\n\n" +
+        (customPrompt || window.schoolUI.t("promptLesson", { title: lessonTitle })) + "\n\n" +
+        window.schoolUI.t("promptContract", { origin: origin, kind: kind, slug: encodeURIComponent(lessonSlug), student: encodeURIComponent(studentId) });
+      promptText.textContent = prompt;
+      card.classList.remove("hidden");
+
+      if (copyBtn) copyBtn.addEventListener("click", function() {
+        Promise.resolve().then(function() {
+          return navigator.clipboard.writeText(prompt);
+        }).then(function() {
+          if (confirm) confirm.classList.add("hidden");
+          window.dispatchEvent(new CustomEvent("school:island-prompt-copied"));
+        }).catch(function() {
+          if (confirm) {
+            confirm.textContent = window.schoolUI.t("copyError");
+            confirm.classList.remove("hidden");
+          }
+        });
+      });
+    });
+  })();
+</script>
+
+<style is:global>
+.katex .mord.text,
+.katex .cjk_fallback {
+  font-family: "PingFang SC", "Noto Sans SC", "Microsoft YaHei", ui-sans-serif, system-ui, sans-serif;
+}
+</style>

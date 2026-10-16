@@ -1,0 +1,903 @@
+@import "animal-island-ui/style";
+
+html[data-chrome="island"] {
+  color-scheme: light;
+}
+
+html[data-chrome="island"] body {
+  background: transparent;
+  color: #725d42;
+}
+
+.island-page-bg {
+  min-height: 100vh;
+}
+
+.island-cast {
+  display: flex;
+  gap: 0.75rem;
+  margin: 0 0 1rem;
+}
+
+.island-lesson-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.island-lesson-card .lesson-title {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.island-typewriter {
+  margin: 0 0 0.8rem;
+  color: var(--animal-text-body, #725d42);
+  font-size: 1.15rem;
+  line-height: 1.7;
+}
+
+.island-lesson-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  margin-bottom: 1.25rem;
+}
+
+.island-lesson-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.island-heading-mark {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.island-page-icon {
+  display: inline-flex;
+  flex: none;
+  color: #11a89b;
+}
+
+.island-done-banner:not(.hidden) {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid #e4d5b7;
+  border-radius: 14px;
+  background: #f7f3df;
+  color: #725d42;
+}
+
+.island-done-check {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 1.35rem;
+  height: 1.35rem;
+  border-radius: 999px;
+  background: #11a89b;
+  color: #fffdf7;
+}
+
+.island-prompt-card {
+  margin: 1rem 0;
+  padding: 0.95rem 1.1rem;
+  border: 1px solid #e4d5b7;
+  border-radius: 16px;
+  background: #fffdf7;
+}
+
+.island-prompt-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.island-prompt-meta {
+  min-width: 0;
+}
+
+.island-prompt-title,
+.island-prompt-lead,
+.island-prompt-confirm {
+  margin: 0;
+}
+
+.island-prompt-title {
+  color: #794f27;
+  font-weight: 700;
+}
+
+.island-prompt-lead,
+.island-prompt-confirm {
+  color: #8a6d4b;
+  font-size: 0.9rem;
+}
+
+.island-prompt-confirm:not(.hidden) {
+  margin-top: 0.75rem;
+}
+
+.island-prompt-actions {
+  display: flex;
+  flex: none;
+  gap: 0.45rem;
+  margin-left: auto;
+}
+
+.island-prompt-expand,
+.island-prompt-card .agent-prompt-copy {
+  border: 1px solid #e4d5b7;
+  border-radius: 999px;
+  background: transparent;
+  color: #794f27;
+  padding: 0.35rem 0.85rem;
+  cursor: pointer;
+}
+
+.island-copy-line {
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+
+.island-copy-mark {
+  color: #fc0;
+}
+
+.island-prompt-body {
+  margin: 0.85rem 0 0;
+  color: #725d42;
+  font-size: 0.85rem;
+  line-height: 1.65;
+  white-space: pre-wrap;
+}
+
+.island-next-bar {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.25rem;
+  padding: 0.95rem 1.25rem;
+  border-radius: 999px;
+  background: #11a89b;
+  color: #fffdf7;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.island-next-bar:hover {
+  color: #fffdf7;
+}
+
+.island-role-card {
+  margin-top: 0.5rem;
+}
+
+.island-greeting,
+.island-board,
+.island-prefs,
+.island-lesson-chrome,
+.island-depart,
+.island-progress-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.island-board,
+.island-prefs,
+.island-lesson-chrome {
+  margin-top: 1.25rem;
+}
+
+.island-kicker {
+  margin: 0 0 0.35rem;
+  color: var(--animal-text-secondary, #8a6a45);
+  font-size: 0.85rem;
+}
+
+.island-rest tr.island-current-row {
+  display: none;
+}
+
+.island-rest-pending {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.island-prompt-source {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+
+.island-inline-tip,
+.island-progress-tip {
+  display: inline-flex;
+}
+
+.island-topbar {
+  flex-direction: column;
+  gap: 0.65rem;
+  padding: 1rem;
+}
+
+.island-brand-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.island-clock {
+  margin-left: auto;
+  min-width: 3.2rem;
+  color: #8a6a45;
+  font-size: 0.95rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+}
+
+.island-progress-block {
+  gap: 0.35rem;
+}
+
+.island-progress-caption {
+  margin: 0;
+  color: #725d42;
+  font-size: 0.85rem;
+}
+
+.island-mode-tip {
+  display: block;
+  width: 100%;
+}
+
+.island-mode-tip .teaching-mode-option {
+  width: 100%;
+}
+
+.island-mode-panel .island-mode-tip [role="tooltip"] {
+  position: fixed;
+  top: var(--island-tip-y, 0);
+  left: var(--island-tip-x, 0);
+  right: auto;
+  bottom: auto;
+  margin: 0;
+  transform: translate(-50%, calc(-100% - 12px));
+}
+
+.island-path {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.island-path::before {
+  content: "";
+  position: absolute;
+  top: 0.9rem;
+  bottom: 0.9rem;
+  left: 0.72rem;
+  width: 2px;
+  background: #e4d5b7;
+}
+
+.island-station {
+  position: relative;
+  padding-left: 2.2rem;
+}
+
+.island-station::before {
+  content: "";
+  position: absolute;
+  top: 0.45rem;
+  left: 0.38rem;
+  z-index: 1;
+  width: 0.72rem;
+  height: 0.72rem;
+  border-radius: 999px;
+  background: #11a89b;
+  box-shadow: 0 0 0 3px #f7f3df;
+}
+
+.island-station-later {
+  opacity: 0.78;
+}
+
+.island-station-later::before {
+  top: 0.72rem;
+  left: 0.34rem;
+  width: 0.78rem;
+  height: 0.58rem;
+  border: 2px solid #b9a88a;
+  border-radius: 2px;
+  background: #f7f3df;
+  box-shadow: none;
+}
+
+.island-station-later::after {
+  content: "";
+  position: absolute;
+  top: 0.32rem;
+  left: 0.48rem;
+  z-index: 1;
+  width: 0.5rem;
+  height: 0.38rem;
+  border: 2px solid #b9a88a;
+  border-bottom: 0;
+  border-radius: 8px 8px 0 0;
+}
+
+.island-station-current {
+  padding: 0.9rem 1rem 0.95rem 2.35rem;
+  border: 1px solid #d7e4c8;
+  border-radius: 1rem;
+  background: #f4f8ef;
+}
+
+.island-station-current::before {
+  top: 1.15rem;
+  left: 0.95rem;
+}
+
+.island-station .lesson-row,
+.island-station .lesson-row--next {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.35rem;
+  border: 0;
+  background: transparent;
+}
+
+.island-station .lesson-link {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  color: inherit;
+  text-decoration: none;
+}
+
+.island-station-kicker {
+  color: #8a6a45;
+  font-size: 0.8rem;
+}
+
+.island-station-done .island-station-kicker {
+  color: #0f766e;
+}
+
+.island-station .lesson-title {
+  font-weight: 600;
+}
+
+.island-station .lesson-description {
+  color: #8a6a45;
+  font-size: 0.9rem;
+}
+
+.island-station .lesson-cta {
+  margin-top: 0.45rem;
+  border-radius: 999px;
+  padding: 0.45rem 0.95rem;
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+.island-status-hook {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+
+.island-path-done {
+  margin: 0;
+  color: #725d42;
+}
+
+.island-prefs-fold {
+  overflow: visible;
+  border: 1px solid #e4d5b7;
+  border-radius: 1rem;
+  background: #f7f3df;
+}
+
+.island-prefs-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.9rem 1.1rem;
+  border: 0;
+  background: transparent;
+  color: #725d42;
+  font-size: 1.05rem;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+
+.island-prefs-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  flex: 0 0 auto;
+  border-radius: 999px;
+  background: #11a89b;
+  color: #fffdf7;
+  font-size: 1.15rem;
+  line-height: 1;
+}
+
+.island-prefs-title {
+  flex: 1;
+}
+
+.island-prefs-icon {
+  display: inline-flex;
+  margin-left: auto;
+  transform: rotate(0deg);
+  transition: transform 0.3s ease;
+}
+
+.island-prefs-icon.is-open {
+  transform: rotate(45deg);
+}
+
+.island-prefs-fold .island-prefs {
+  margin-top: 0;
+  overflow: visible;
+  padding: 0 1.1rem 1.1rem;
+}
+
+.island-save-tip {
+  width: 100%;
+}
+
+.island-save-tip > button {
+  width: 100%;
+}
+
+.island-prefs-label {
+  margin: 0;
+  color: #8a6a45;
+  font-size: 0.95rem;
+}
+
+.island-depth {
+  position: relative;
+  z-index: 3;
+  overflow: visible;
+}
+
+.island-depth [class*="wrapper"] {
+  display: block;
+  width: 100%;
+}
+
+.island-depth [class*="dropdown"] {
+  left: 0 !important;
+  right: auto !important;
+  top: auto !important;
+  bottom: calc(100% + 8px) !important;
+  width: 100% !important;
+  margin: 0 !important;
+  transform: none !important;
+}
+
+.island-sidebar-toc {
+  margin-top: 1.25rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid #e4d5b7;
+}
+
+.island-toc-label {
+  margin: 0 0 0.45rem;
+  padding: 0 0.75rem;
+  color: #8a6a45;
+  font-size: 0.8rem;
+}
+
+.island-sidebar-toc .island-toc ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.island-sidebar-toc .island-toc a {
+  display: block;
+  padding: 0.35rem 0.75rem;
+  border-radius: 0.5rem;
+  color: #725d42;
+  text-decoration: none;
+}
+
+.island-sidebar-toc .island-toc a:hover {
+  color: #0f766e;
+  background: #e6f9f6;
+}
+
+.island-toc {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.island-depart {
+  align-items: flex-start;
+}
+
+.island-toybox {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 2.5rem 0 1rem;
+}
+
+.island-toybox-lead {
+  margin: 0;
+  color: var(--animal-text-body, #725d42);
+}
+
+.island-toybox-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 0.85rem;
+}
+
+.island-toybox-grid .animal-card,
+.island-toybox .animal-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.island-lesson-tabs [role="tabpanel"] {
+  display: none;
+}
+
+.island-toybox-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.island-school-title,
+.island-lesson-title {
+  margin: 0;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+}
+
+.island-lesson-title {
+  margin-bottom: 1.35rem;
+}
+
+.island-school-title .ai-title,
+.island-lesson-title .ai-title {
+  vertical-align: middle;
+}
+
+.theme-link {
+  color: #11a89b;
+}
+
+.theme-link:hover {
+  color: #0d8f84;
+}
+
+.theme-button {
+  background: #11a89b;
+  color: #fffdf7;
+}
+
+.theme-button:hover {
+  background: #0d8f84;
+}
+
+.theme-panel {
+  border: 1px solid #e4d5b7;
+  background: rgb(247, 243, 223);
+}
+
+.theme-kicker {
+  color: #794f27;
+}
+
+.theme-banner {
+  background: #f0e8d8;
+  color: #794f27;
+}
+
+.theme-active-nav {
+  background: #e6f9f6;
+  color: #0f766e;
+}
+
+.theme-solid-bg {
+  background: #11a89b;
+}
+
+.theme-card-band {
+  background: #11a89b;
+  color: #fffdf7;
+  box-shadow: 0 25px 50px -12px rgba(114, 93, 66, 0.25);
+}
+
+.lesson-link:hover .lesson-title {
+  color: #11a89b;
+}
+
+.lesson-row--next {
+  border: 1px solid #e4d5b7;
+  background: #f7f3df;
+}
+
+.lesson-status--complete {
+  border-color: #11a89b !important;
+  background: #11a89b !important;
+}
+
+.island-mode-panel {
+  border: 1px solid #e4d5b7;
+  background: rgb(247, 243, 223);
+  color: #725d42;
+}
+
+article.prose,
+div.prose {
+  font-family: "PingFang SC", "Noto Sans SC", "Microsoft YaHei", ui-sans-serif, system-ui, sans-serif;
+  color: #725d42;
+  background: rgb(247, 243, 223);
+  border-radius: 18px;
+  border: 1px solid #e4d5b7;
+  padding: 1.75rem 1.85rem;
+  --tw-prose-body: #725d42;
+  --tw-prose-headings: #794f27;
+  --tw-prose-links: #11a89b;
+  --tw-prose-bold: #725d42;
+  --tw-prose-counters: #8a6d4b;
+  --tw-prose-bullets: #8a6d4b;
+  --tw-prose-hr: #c4b089;
+  --tw-prose-quotes: #725d42;
+  --tw-prose-quote-borders: #11a89b;
+  --tw-prose-th-borders: #c4b089;
+  --tw-prose-td-borders: #d4c4a8;
+  --tw-prose-code: #725d42;
+  --tw-prose-pre-bg: #fffbe7;
+  --tw-prose-pre-code: #725d42;
+}
+
+article.prose h2,
+article.prose h3,
+div.prose h2,
+div.prose h3 {
+  color: #794f27;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+article.prose a,
+div.prose a {
+  color: #11a89b;
+}
+
+article.prose blockquote,
+div.prose blockquote {
+  background: #f0e8d8;
+  border-left: 4px solid #11a89b;
+  padding: 0.75rem 1rem;
+}
+
+article.prose ul,
+article.prose ol,
+article.prose hr,
+article.prose table,
+article.prose th,
+article.prose td,
+div.prose ul,
+div.prose ol,
+div.prose hr,
+div.prose table,
+div.prose th,
+div.prose td {
+  color: #8a6d4b;
+  border-color: #c4b089;
+}
+
+article.prose :not(pre) > code,
+div.prose :not(pre) > code {
+  background: #fffbe7;
+  color: #725d42;
+}
+
+article.prose pre,
+article.prose code,
+article.prose kbd,
+article.prose samp,
+div.prose pre,
+div.prose code,
+div.prose kbd,
+div.prose samp {
+  font-family: ui-monospace, "JetBrains Mono", Menlo, Monaco, Consolas, monospace;
+}
+
+.katex {
+  color: inherit;
+}
+
+.katex .mord.text,
+.katex .cjk_fallback {
+  font-family: "PingFang SC", "Noto Sans SC", "Microsoft YaHei", ui-sans-serif, system-ui, sans-serif;
+}
+
+.island-rail {
+  color: #794f27;
+}
+
+.island-count-label {
+  margin: 0 0 0.75rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #8a6d4b;
+}
+
+.island-id-face {
+  display: none;
+}
+
+.island-id-face.is-selected {
+  display: block;
+}
+
+.island-id-card {
+  padding: 14px 18px 12px;
+}
+
+.island-id-layout {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.island-id-role {
+  margin: 0.15rem 0 0.35rem;
+  font-size: 2.35rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  line-height: 1.05;
+}
+
+.island-id-layout .island-id-value {
+  font-size: 1.15rem;
+  line-height: 1.35;
+}
+
+.island-id-layout .island-role-sprite {
+  flex: 0 0 128px;
+  width: 128px;
+  height: 128px;
+  background-size: 384px 128px;
+  animation-name: island-role-walk-lg;
+}
+
+.island-role-confirm {
+  margin: 0.85rem 0 0;
+  color: #8a6d4b;
+  font-size: 0.92rem;
+}
+
+.island-role-picker {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.island-role-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  margin: 0;
+  padding: 0.45rem 0.25rem 0.7rem;
+  border: 2px solid #e4d5b7;
+  border-radius: 18px;
+  background: rgb(247, 243, 223);
+  color: #794f27;
+  cursor: pointer;
+}
+
+.island-role-option[aria-pressed="true"] {
+  border-color: #11a89b;
+  box-shadow: 0 0 0 2px rgba(17, 168, 155, 0.35);
+}
+
+.island-role-name {
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.island-role-sprite {
+  display: block;
+  width: 96px;
+  height: 96px;
+  background-repeat: no-repeat;
+  background-position: 0 0;
+  background-size: 288px 96px;
+  image-rendering: pixelated;
+  animation: island-role-walk 0.6s steps(3) infinite;
+}
+
+.island-role-sprite--warrior {
+  background-image: url("/roles/warrior.png");
+}
+
+.island-role-sprite--wizard {
+  background-image: url("/roles/wizard.png");
+}
+
+.island-role-sprite--priest {
+  background-image: url("/roles/priest.png");
+}
+
+.island-role-sprite--ranger {
+  background-image: url("/roles/ranger.png");
+}
+
+@keyframes island-role-walk {
+  to {
+    background-position: -288px 0;
+  }
+}
+
+@keyframes island-role-walk-lg {
+  to {
+    background-position: -384px 0;
+  }
+}
+
+@media (min-width: 640px) {
+  .island-role-picker {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .island-role-sprite {
+    animation: none;
+  }
+}

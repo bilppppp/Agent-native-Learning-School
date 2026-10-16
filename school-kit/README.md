@@ -51,6 +51,25 @@ dependency list actually changed. It does not rewrite a lockfile that is already
 consistent. `node_modules` must be a real directory, not a symlink to the
 template.
 
+New schools scaffold `chrome: "island"` on `school.config.ts`. The kit reads
+that field after the shared overlay steps. If it is absent or not exactly
+`island`, apply stays the current overlay-only behavior: it does not install
+island pages, island components, or island dependencies. Island schools take
+their page shell from `school-kit/island/`, not from `school-kit/overlay/`.
+Apply copies these complete files: `layouts/Base.astro`, `pages/index.astro`,
+`pages/lessons/[slug].astro`, `components/TeachingMode.astro`,
+`components/AgentPrompt.astro`, the island React components, `island.css`, and
+the role sprites. A second apply compares those files and writes nothing when
+they already match. This documents the install path only; it does not claim a
+verified teaching loop.
+
+Island enrollment asks for a character instead of a theme color. The four
+walk cycles (warrior, wizard, priest, ranger) come from Eldiran's CC0
+32×32 RPG sprites; see `school-kit/island/roles/NOTICE.txt`. Choosing a
+character only marks it. The lower start button enrolls with that character.
+The choice is stored in this browser as `learningRole` and only changes the
+identity card. The student ID, progress, and page colors stay as they are.
+
 ## Website language
 
 Fixed UI copy uses `school.settings.json.language`: `zh` (default) or `en`

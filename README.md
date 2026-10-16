@@ -14,6 +14,14 @@
 - **文档站可以一次取多页。** HTTP(S) HTML 文档会自动判断是否抓取，默认跟随同站链接，最多 500 页。写入课程的仍是生成时选中的页面。数学公式会在关卡页面中排版显示。
 - **同一份学校目录可以三处运行：** 本机、自有服务器、Vercel。
 
+## 岛屿页面
+
+本仓库的默认分支会创建带岛屿页面的新学校。按下面的方式新建 School 时，创建工具会自动装上这套页面，生成课程的 Agent 只写关卡正文，不改页面。
+
+关卡在首页排成一条路：已经完成的在上面，当前这一关展开，后面的关有锁的样子，但仍然可以打开。进入一关后，课文保持 Markdown，铺在羊皮纸上。代码用深色代码块，较小的标题用双层纸样式。网页上可以选择简单或沉浸模式；注册时先选战士、巫师、牧师或游侠，再领取学习身份。教师读取课程、切换模式和记录进度的方式不变。
+
+七年级数学和 Astro 示例沿用原来的页面，不会因为这次改动被换皮。
+
 ## 快速开始
 
 复制下面任意一段，发给支持终端工具的 Coding Agent。无需先记 CLI，也无需手写配置或安装 Skill。Agent 会定位项目、检查环境并启动网站。你在网页领取身份后，把关卡上的启动 Prompt 交给教师 Agent。
@@ -49,10 +57,12 @@
 
 ### 打开网站学习
 
-1. 打开启动后的网址，选择 Simple 或 Immersive，领取学习身份。
+1. 打开启动后的网址，选择简单或沉浸模式。点「选择身份」，从战士、巫师、牧师、游侠里选定角色，再点下方的「开始学习」领取学习身份。角色记在这台浏览器里，身份卡会显示对应的行走形象；学习身份和进度仍按原来的方式保存。
 2. 进入关卡，复制启动 Prompt 交给教师 Agent。使用 Pi 时，可粘贴进会话，或运行 `npm run school -- teach NAME --student 网页身份`。其他 Agent 加 `--prompt-only`，只生成通用提示词。已部署的学校加上 `--origin https://学校地址`（不能与 `--port` 同时使用）。
 3. 按提示问答、推演或做实验。在网页上切换模式后，教师下一轮会读到新设置；对话里也可以直接要求放慢或展开推导。
 4. 教师上报进度后，网页会记下完成情况。新对话带上同一身份即可续学。
+
+新建的 School 默认使用岛屿页面：关卡正文铺在羊皮纸底上，卡片、按钮、进度和完成计数来自 [animal-island-ui](https://github.com/guokaigdg/animal-island-ui)。七年级数学、Astro 示例，以及已部署的数学学校，沿用现有页面和原来的领取方式。
 
 教师需要能读取 HTTP、调用 REST，并遵守站点 `/llms.txt`。课程和材料通过关卡 API 与 `/sources/` 访问，进度接口见 `/api/openapi.json`。只有 Pi 需要阅读 `/harness/pi.txt`。
 
@@ -146,6 +156,8 @@ GitHub 仓库、论文、PDF、DOCX、纯文本和本地路径按单份来源准
 - [OpenCode School](https://github.com/agentschools/opencode.school)：早期 Agent 学习网站参考。School Template 上游文档注明其架构源自该项目。
 - [Pi](https://github.com/badlogic/pi-mono)（现重定向至 [earendil-works/pi](https://github.com/earendil-works/pi)）：默认的生成与教学 Harness。课程与教学协议保持 Harness 中立。
 - [siteone-crawler](https://github.com/janreges/siteone-crawler)（MIT）：多页文档站的抓取工具。未安装时从官方 GitHub Release 下载到 `tools/cache`，不作为仓库文件提交。
+- [animal-island-ui](https://github.com/guokaigdg/animal-island-ui)（MIT）：新建 School 的岛屿页面组件。
+- Eldiran 的 [32×32 RPG Character Sprites](https://opengameart.org/content/32x32-rpg-character-sprites)（CC0）：战士、巫师、牧师、游侠的三帧行走图。裁切说明见 [school-kit/island/roles/NOTICE.txt](school-kit/island/roles/NOTICE.txt)。
 - 课程化组织还参考了 [codebase-to-course](https://github.com/zarazhangrui/codebase-to-course)、[Repo2NotebookLM](https://github.com/bilppppp/Repo2NotebookLM) 和 [archify](https://github.com/tt-a1i/archify)。这些项目提供了方向，没有作为运行依赖集成。
 
 ## 许可

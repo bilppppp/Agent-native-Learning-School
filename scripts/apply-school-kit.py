@@ -61,6 +61,16 @@ KIT_DEPENDENCIES = {
     "katex": "^0.16.22",
 }
 
+ISLAND_OVERLAY_DEFER = {
+    Path("astro.config.mjs"),
+    Path("src/lib/ui-messages.json"),
+}
+
+ISLAND_OVERLAY_SKIP = {
+    Path("src/components/TeachingMode.astro"),
+    Path("src/components/AgentPrompt.astro"),
+}
+
 NPMRC_CONTENTS = "legacy-peer-deps=true\n"
 
 
@@ -483,6 +493,54 @@ def ensure_settings(target: Path) -> bool:
     )
 
 
+def strip_ts_comments(text: str) -> str:
+    out: list[str] = []
+    i = 0
+    n = len(text)
+    while i < n:
+        ch = text[i]
+        nxt = text[i + 1] if i + 1 < n else ""
+        if ch == "/" and nxt == "/":
+            i += 2
+            while i < n and text[i] != "\n":
+                i += 1
+            continue
+        if ch == "/" and nxt == "*":
+            i += 2
+            while i + 1 < n and not (text[i] == "*" and text[i + 1] == "/"):
+                i += 1
+            i = min(n, i + 2)
+            continue
+        if ch in "\"'`":
+            quote = ch
+            out.append(ch)
+            i += 1
+            while i < n:
+                out.append(text[i])
+                if text[i] == "\\":
+                    i += 1
+                    if i < n:
+                        out.append(text[i])
+                        i += 1
+                    continue
+                if text[i] == quote:
+                    i += 1
+                    break
+                i += 1
+            continue
+        out.append(ch)
+        i += 1
+    return "".join(out)
+
+
+def is_island_chrome(target: Path) -> bool:
+    config = target / "school.config.ts"
+    if not config.is_file():
+        return False
+    source = strip_ts_comments(config.read_text())
+    return bool(re.search(r'(?m)^\s*chrome\s*:\s*["\']island["\']\s*,?\s*$', source))
+
+
 def apply(target: Path) -> list[str]:
     if not target.is_dir():
         raise ValueError(f"School directory does not exist: {target}")
@@ -496,6 +554,7 @@ def apply(target: Path) -> list[str]:
     if missing:
         raise ValueError(f"Not a School Template derived school; missing: {', '.join(missing)}")
 
+    island = is_island_chrome(target)
     changed: list[str] = []
     if ensure_settings(target):
         changed.append("school.settings.json")
@@ -510,6 +569,8 @@ def apply(target: Path) -> list[str]:
         changed.append("school.config.ts (added profileFields.teachingMode)")
 
     for relative in OVERLAY_FILES:
+        if island and relative in ISLAND_OVERLAY_SKIP | ISLAND_OVERLAY_DEFER:
+            continue
         source = OVERLAY / relative
         destination = target / relative
         if write_if_changed(destination, source.read_text()):
@@ -537,6 +598,16 @@ def apply(target: Path) -> list[str]:
             path.unlink()
             changed.append(f"removed {leftover}")
     ensure_serve_executable(target)
+    if island:
+        island_spec = importlib.util.spec_from_file_location(
+            "apply_island_chrome", ROOT / "scripts/apply-island-chrome.py"
+        )
+        island_module = importlib.util.module_from_spec(island_spec)
+        island_spec.loader.exec_module(island_module)
+        island_changed = island_module.apply_island(target)
+        if "package.json" in island_changed:
+            package_changed = True
+        changed.extend(island_changed)
     if package_changed:
         install_runtime_dependencies(target)
         changed.append("package-lock.json")
