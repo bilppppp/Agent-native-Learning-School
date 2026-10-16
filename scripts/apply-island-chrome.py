@@ -238,15 +238,19 @@ def patch_island_base(base_path: Path) -> bool:
         )
 
     if 'class="island-mobile-brand"' not in text:
-        mobile = (
+        mobile_classic = (
             '        <a href="/" class="font-mono font-bold text-lg">{config.name}</a>'
         )
+        mobile_public = (
+            '        <a href="/" class="font-mono font-bold text-lg">{courseShortName}</a>'
+        )
+        mobile = mobile_public if mobile_public in text else mobile_classic
         if mobile not in text:
             raise ValueError(f"{base_path} has no mobile school name link")
         text = text.replace(
             mobile,
             '        <a href="/" class="island-mobile-brand">'
-            '\n          <Title color="app-teal" size="small">{config.name}</Title>'
+            '\n          <Title color="app-teal" size="small">{courseShortName}</Title>'
             "\n        </a>",
             1,
         )
@@ -254,15 +258,20 @@ def patch_island_base(base_path: Path) -> bool:
     if "island-school-title" not in text:
         sidebar_name = (
             '        <a href="/" class="block font-mono font-bold text-xl mb-6 px-3" '
-            'data-school-name={config.name}>{config.name}</a>'
+            'data-school-name={courseShortName}>{courseShortName}</a>'
         )
+        if sidebar_name not in text:
+            sidebar_name = (
+                '        <a href="/" class="block font-mono font-bold text-xl mb-6 px-3" '
+                'data-school-name={config.name}>{config.name}</a>'
+            )
         if sidebar_name not in text:
             raise ValueError(f"{base_path} has no sidebar school name link")
         text = text.replace(
             sidebar_name,
-            '        <a href="/" class="block mb-4 px-1" data-school-name={config.name}>\n'
+            '        <a href="/" class="block mb-4 px-1" data-school-name={courseShortName}>\n'
             '          <h1 class="island-school-title m-0 text-xl">\n'
-            '            <Title color="app-teal" size="middle">{config.name}</Title>\n'
+            '            <Title color="app-teal" size="middle">{courseShortName}</Title>\n'
             "          </h1>\n"
             "        </a>\n"
             '        <div class="mb-6 px-1">\n'
