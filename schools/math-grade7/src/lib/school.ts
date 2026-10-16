@@ -13,6 +13,8 @@ export interface ProfileField {
 
 export interface SchoolConfig {
 	name: string;
+	publicName?: string;
+	shortName?: string;
 	description: string;
 	adjectives: string[];
 	nouns: string[];

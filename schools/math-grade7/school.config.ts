@@ -2,6 +2,8 @@ import type { SchoolConfig } from "./src/lib/school";
 
 const config: SchoolConfig = {
 	name: "math-grade7",
+	publicName: "七年级数学上册 AI 互动课程",
+	shortName: "七年级数学",
 	description: "帮助一位小学毕业生理解并应用这本教材中七年级上册的核心数学知识，结合温度、购物、分配等简单生活问题，建立必要概念与解题思路",
 	adjectives: [
 		"bright",

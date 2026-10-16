@@ -29,8 +29,13 @@ astro.write_text(astro.read_text().replace('output: "server",', 'output: "server
 base = out / "src/layouts/Base.astro"
 text = base.read_text().replace('import "../styles/main.css";', 'import "../styles/main.css";\nimport config from "../../school.config";')
 text = text.replace('const { title, description = "An interactive, agent-driven school." }', 'const { title, description = config.description }')
-text = text.replace('const pageTitle = title ? `${title} | My School` : "My School";', 'const pageTitle = title ? `${title} | ${config.name}` : config.name;')
-text = text.replace('content="My School"', 'content={config.name}').replace('data-school-name="My School"', 'data-school-name={config.name}').replace('>My School<', '>{config.name}<')
+text = text.replace(
+    'const pageTitle = title ? `${title} | My School` : "My School";',
+    "const courseShortName = config.shortName || config.publicName || config.name;\n"
+    "const coursePublicName = config.publicName || config.shortName || config.name;\n"
+    "const pageTitle = title ? `${title} | ${courseShortName}` : `${coursePublicName} | Learn Islands`;",
+)
+text = text.replace('content="My School"', 'content={courseShortName}').replace('data-school-name="My School"', 'data-school-name={courseShortName}').replace('>My School<', '>{courseShortName}<')
 text = re.sub(r'        <div class="mt-6 pt-4 border-t border-gray-200 dark:border-stone-800">\n          <a\n            href="/exercises"[\s\S]*?</div>', lambda match: '{exercises.length > 0 && (\n' + match.group(0) + '\n)}', text, count=1)
 text = re.sub(r'          <a\n            href="/glossary"[\s\S]*?</a>\n', '', text, count=1)
 base.write_text(text)
