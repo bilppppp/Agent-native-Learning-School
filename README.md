@@ -1,10 +1,30 @@
 # Agent-native Learning School
 
-把学习材料和学习目标做成一所独立网站（School）。网站发给学生一串身份并记住进度；关卡上的提示词交给 Coding Agent，就可以按课程讲解、问答和练习，下次用同一身份接着学。课程深度决定学什么，教学模式决定互动节奏。Pi 是默认的生成和教学入口；具备文件读写、终端和 HTTP 访问能力的 Coding Agent 也可以建校或授课。各 Harness 的验证范围见 [HARNESS-VALIDATION.md](HARNESS-VALIDATION.md)。
+把学习材料和学习目标做成一所独立网站（School）。网站发给学生一串身份并记住进度；关卡上的提示词交给 Coding Agent，就可以按课程讲解、问答和练习，下次用同一身份接着学。课程深度决定学什么，教学模式决定互动节奏。Pi 是默认的生成和教学入口；具备文件读写、终端和 HTTP 访问能力的 Coding Agent 也可以建校或授课。各 Harness 的验证范围见 [HARNESS-VALIDATION.md](HARNESS-VALIDATION.md)。使用方式上的变化记在 [CHANGELOG.md](CHANGELOG.md)。
 
-七年级数学可以在 [https://math.gravityai.top](https://math.gravityai.top) 直接试用：不用注册，打开后领取一串「形容词-名词-四位数字」的身份，复制页面上的提示词即可学习。进度写在服务器上。这个地址是自定义域名；`*.vercel.app` 在中国大陆可能打不开。课程在 [schools/math-grade7](schools/math-grade7/)。
+## 可以打开的课程
 
-仓库里的完整生成示例是 [astro-zero-to-one](schools/astro-zero-to-one/)。它从 [Astro 中文入门文档](https://docs.astro.build/zh-cn/getting-started/) 生成，面向还没有接触过框架的学习者。[课程设计问答](schools/astro-zero-to-one/QA.md) 说明了抓到的页面里哪些进入了这 10 关，以及为什么没有把全部材料写进课程。
+三门七年级课程已经发布。打开后选择简单或沉浸模式，点「选择身份」选定角色，再点「开始学习」领取一串「形容词-名词-四位数字」的身份。进度写在网站上。
+
+| 课程 | 地址 |
+| --- | --- |
+| 七年级语文 | [yuwen.learnislands.com](https://yuwen.learnislands.com) |
+| 七年级数学 | [shuxue.learnislands.com](https://shuxue.learnislands.com) |
+| 七年级英语 | [yingyu.learnislands.com](https://yingyu.learnislands.com) |
+
+七年级语文首页：
+
+![七年级语文首页，左侧是单元列表，右侧可以选择教学模式并开始学习](docs/images/yuwen.png)
+
+七年级数学首页：
+
+![七年级数学首页，左侧是各关列表，右侧说明学完上册的目标](docs/images/shuxue.png)
+
+七年级英语首页：
+
+![七年级英语首页，左侧是各单元，右侧说明词汇和句型按教材原文学习](docs/images/yingyu.png)
+
+仓库里的完整生成示例是 [astro-zero-to-one](schools/astro-zero-to-one/)。它从 [Astro 中文入门文档](https://docs.astro.build/zh-cn/getting-started/) 生成，面向还没有接触过框架的学习者。[课程设计问答](schools/astro-zero-to-one/QA.md) 说明了抓到的页面里哪些进入了这 10 关，以及为什么没有把全部材料写进课程。较早的七年级数学页面留在 [schools/math-grade7](schools/math-grade7/)。
 
 ## 核心能力
 
@@ -16,11 +36,11 @@
 
 ## 岛屿页面
 
-本仓库的默认分支会创建带岛屿页面的新学校。按下面的方式新建 School 时，创建工具会自动装上这套页面，生成课程的 Agent 只写关卡正文，不改页面。
+新建 School 时，创建工具会装上岛屿页面。生成课程的 Agent 只写关卡正文，不改页面。
 
 关卡在首页排成一条路：已经完成的在上面，当前这一关展开，后面的关有锁的样子，但仍然可以打开。进入一关后，课文保持 Markdown，铺在羊皮纸上。代码用深色代码块，较小的标题用双层纸样式。网页上可以选择简单或沉浸模式；注册时先选战士、巫师、牧师或游侠，再领取学习身份。教师读取课程、切换模式和记录进度的方式不变。
 
-七年级数学和 Astro 示例沿用原来的页面，不会因为这次改动被换皮。
+仓库里的 [七年级数学](schools/math-grade7/) 和 [Astro 示例](schools/astro-zero-to-one/) 仍使用较早的页面。上面三门已发布的课程使用岛屿页面。
 
 ## 快速开始
 
@@ -57,12 +77,12 @@
 
 ### 打开网站学习
 
-1. 打开启动后的网址，选择简单或沉浸模式。点「选择身份」，从战士、巫师、牧师、游侠里选定角色，再点下方的「开始学习」领取学习身份。角色记在这台浏览器里，身份卡会显示对应的行走形象；学习身份和进度仍按原来的方式保存。
+1. 打开启动后的网址，选择简单或沉浸模式。点「选择身份」，从战士、巫师、牧师、游侠里选定角色，再点下方的「开始学习」领取学习身份。角色记在这台浏览器里，身份卡会显示对应的行走形象。学习身份和进度保存在网站上。
 2. 进入关卡，复制启动 Prompt 交给教师 Agent。使用 Pi 时，可粘贴进会话，或运行 `npm run school -- teach NAME --student 网页身份`。其他 Agent 加 `--prompt-only`，只生成通用提示词。已部署的学校加上 `--origin https://学校地址`（不能与 `--port` 同时使用）。
 3. 按提示问答、推演或做实验。在网页上切换模式后，教师下一轮会读到新设置；对话里也可以直接要求放慢或展开推导。
-4. 教师上报进度后，网页会记下完成情况。新对话带上同一身份即可续学。
+4. 教师记下进度后，当前页面会更新。另一台设备重新打开页面或刷新后看到新进度。新对话带上同一身份即可续学。
 
-新建的 School 默认使用岛屿页面：关卡正文铺在羊皮纸底上，卡片、按钮、进度和完成计数来自 [animal-island-ui](https://github.com/guokaigdg/animal-island-ui)。七年级数学、Astro 示例，以及已部署的数学学校，沿用现有页面和原来的领取方式。
+新建的 School 使用岛屿页面：关卡正文铺在羊皮纸底上，卡片、按钮、进度和完成计数来自 [animal-island-ui](https://github.com/guokaigdg/animal-island-ui)。
 
 教师需要能读取 HTTP、调用 REST，并遵守站点 `/llms.txt`。课程和材料通过关卡 API 与 `/sources/` 访问，进度接口见 `/api/openapi.json`。只有 Pi 需要阅读 `/harness/pi.txt`。
 
@@ -109,6 +129,8 @@ npm run school -- start my-school
 | `teach ... --prompt-only` | 只输出通用教师提示词 |
 | `finish NAME` | 检查 Agent 写的课程并构建 |
 | `build NAME` | 构建。先停止该 School 的开发服务；不要同时开发并构建 |
+| `deploy NAME` | 部署到 Vercel，并连接私有 Blob。存储被暂停时脚本会停下来 |
+| `deploy-cloudflare NAME` | 部署到 Cloudflare Workers。进度写入该校私有 R2，地址是 `workers.dev` |
 | `supplement NAME` | 补齐已保存的网页文档 |
 | `retry NAME` | 用 Pi 重新生成课程 |
 | `setup` | 准备模板依赖 |
@@ -143,10 +165,10 @@ GitHub 仓库、论文、PDF、DOCX、纯文本和本地路径按单份来源准
 | --- | --- |
 | 本机 | `npm run school -- start NAME`，使用 `DEPLOY_TARGET=dev`。进度在 `.wrangler/` |
 | 自有服务器 | 在学校目录执行 `./script/serve`，使用 `DEPLOY_TARGET=node`。进度在 `.school-data/` |
-| Vercel | `npm run school -- deploy NAME`，或在学校目录执行 `./script/deploy-vercel`。脚本写入 `DEPLOY_TARGET=vercel` 并连接私有 Blob 存储 |
-| Cloudflare Workers | `npm run school -- deploy-cloudflare NAME`，或在学校目录执行 `./script/deploy-cloudflare`。进度写入该校私有 R2，发布到 `workers.dev` |
+| Vercel | `npm run school -- deploy NAME`，或在学校目录执行 `./script/deploy-vercel`。脚本写入 `DEPLOY_TARGET=vercel` 并连接私有 Blob 存储。已连接的存储如果被暂停，脚本会停下来。`*.vercel.app` 在中国大陆可能打不开，实用地址是自定义域名 |
+| Cloudflare Workers | `npm run school -- deploy-cloudflare NAME`，或在学校目录执行 `./script/deploy-cloudflare`。进度写入该校私有 R2。脚本发布到 `workers.dev`；自定义域名要另外接上。上面三门课程的正式地址已经接在 `learnislands.com` |
 
-迁移或备份时保留 `.wrangler/`。环境变量和域名见该学校的 `DEPLOYMENT.md`。
+本机备份保留 `.wrangler/`。自有服务器保留 `.school-data/`。Cloudflare 上的进度在该校的 R2 桶里。环境变量和域名见该学校的 `DEPLOYMENT.md`。
 
 要脱离本仓库运行：复制整个 `schools/NAME`，在该目录执行 `npm ci`。本机用 `npm run dev`，自有服务器用 `./script/serve`。`node_modules` 必须是真实目录。
 
