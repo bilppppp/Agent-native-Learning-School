@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+name="$(basename "$PWD")"
+short="${name%-7a}"
+bucket="learnislands-${short}-progress"
+worker="$(node -e 'const fs=require("fs"); process.stdout.write(JSON.parse(fs.readFileSync("wrangler.jsonc","utf8")).name)')"
+
+if ! npx wrangler r2 bucket info "$bucket" >/dev/null 2>&1; then
+	npx wrangler r2 bucket create "$bucket"
+fi
+
+cat > wrangler.cloudflare.jsonc << EOF
+{
+  "name": "${worker}",
+  "compatibility_date": "2026-03-12",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": "./dist/client"
+  },
+  "vars": {
+    "DEPLOY_TARGET": "cloudflare"
+  },
+  "r2_buckets": [
+    {
+      "binding": "PROGRESS_BUCKET",
+      "bucket_name": "${bucket}"
+    }
+  ]
+}
+EOF
+
+DEPLOY_TARGET=cloudflare npm run build
+npx wrangler deploy

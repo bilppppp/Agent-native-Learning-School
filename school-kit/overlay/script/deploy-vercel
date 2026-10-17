@@ -1,0 +1,89 @@
+#!/usr/bin/env bash
+set -euo pipefail
+cd "$(dirname "$0")/.."
+name="$(basename "$PWD")"
+
+if [[ ! -f .vercel/project.json ]]; then
+	npx --yes vercel@latest link --yes --project "$name"
+fi
+
+export SCHOOL_NAME="$name"
+node --input-type=module << 'EOF'
+import { spawnSync } from "node:child_process";
+
+const school = process.env.SCHOOL_NAME;
+
+function vercel(args) {
+	const result = spawnSync("npx", ["--yes", "vercel@latest", ...args], {
+		encoding: "utf8",
+	});
+	if (result.stderr) process.stderr.write(result.stderr);
+	if (result.status !== 0) {
+		if (result.stdout) process.stdout.write(result.stdout);
+		process.exit(result.status ?? 1);
+	}
+	return result.stdout ?? "";
+}
+
+function readJson(stdout) {
+	const objectAt = stdout.indexOf("{");
+	const arrayAt = stdout.indexOf("[");
+	const start = objectAt < 0 ? arrayAt : arrayAt < 0 ? objectAt : Math.min(objectAt, arrayAt);
+	if (start < 0) {
+		console.error("无法读取 Vercel 返回的数据。");
+		process.exit(1);
+	}
+	return JSON.parse(stdout.slice(start));
+}
+
+function usable(store) {
+	const billing = String(store.billingState ?? "").toLowerCase();
+	const status = String(store.status ?? "").toLowerCase();
+	if (billing === "suspended" || billing === "inactive") return false;
+	if (status.includes("suspend")) return false;
+	return true;
+}
+
+const envData = readJson(vercel(["env", "ls", "--json"]));
+const keys = new Set((envData.envs ?? []).map((item) => item.key));
+if (!keys.has("DEPLOY_TARGET")) {
+	vercel([
+		"env", "add", "DEPLOY_TARGET", "production,preview,development",
+		"--value", "vercel",
+		"--no-sensitive",
+		"--yes",
+	]);
+}
+
+const stores = readJson(vercel(["blob", "list-stores", "--json"])).stores ?? [];
+if (stores.length === 0) {
+	const created = spawnSync(
+		"npx",
+		["--yes", "vercel@latest", "blob", "create-store", `${school}-progress`, "--access", "private", "--yes"],
+		{ encoding: "utf8" },
+	);
+	if (created.stderr) process.stderr.write(created.stderr);
+	if (created.stdout) process.stdout.write(created.stdout);
+	if (created.status !== 0) {
+		console.error("没有可用的进度存储，而且新建失败。若提示已达到用量上限，需要先在 Vercel 恢复已暂停的 Blob 存储。");
+		process.exit(created.status ?? 1);
+	}
+} else {
+	const store = stores.find(usable);
+	if (!store) {
+		const current = stores[0];
+		console.error("进度存储「" + current.name + "」已暂停，注册和进度现在不可用。Vercel 不允许再新建一个存储。请先在控制台恢复该存储，然后再部署。");
+		process.exit(1);
+	}
+	if (!keys.has("BLOB_STORE_ID")) {
+		vercel([
+			"env", "add", "BLOB_STORE_ID", "production,preview,development",
+			"--value", store.id,
+			"--no-sensitive",
+			"--yes",
+		]);
+	}
+}
+EOF
+
+npx --yes vercel@latest deploy --prod --yes

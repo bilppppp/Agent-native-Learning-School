@@ -43,7 +43,8 @@ The same school directory runs as:
 
 - local `start` with `DEPLOY_TARGET=dev`
 - `./script/serve` on a self-hosted Node process
-- Vercel with `DEPLOY_TARGET=vercel` and `BLOB_READ_WRITE_TOKEN`
+- Vercel via `./script/deploy-vercel`, which sets `DEPLOY_TARGET=vercel` and connects a private Blob store (`BLOB_STORE_ID`)
+- Cloudflare Workers via `./script/deploy-cloudflare`, which sets `DEPLOY_TARGET=cloudflare` and stores progress in a private R2 bucket
 
 Applying the kit merges those dependencies into the school's `package.json`,
 writes `.npmrc` (`legacy-peer-deps=true`), and runs `npm install` only when the

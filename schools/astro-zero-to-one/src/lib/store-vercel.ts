@@ -48,7 +48,23 @@ function isBlobNotFound(error: unknown): boolean {
 	};
 	if (value.status === 404 || value.statusCode === 404) return true;
 	if (value.name === "BlobNotFoundError") return true;
-	return typeof value.message === "string" && /not found/i.test(value.message);
+	if (typeof value.message !== "string") return false;
+	if (/store does not exist/i.test(value.message)) return false;
+	return (
+		/requested blob does not exist/i.test(value.message) ||
+		/not found/i.test(value.message)
+	);
+}
+
+function reportStoreFailure(error: unknown): ProgressStoreUnavailableError {
+	const name = error instanceof Error ? error.name : "Error";
+	const message = error instanceof Error ? error.message : "";
+	const safe = message
+		.replace(/eyJ[A-Za-z0-9_-]{10,}/g, "[redacted]")
+		.replace(/vercel_blob_\S+/g, "[redacted]")
+		.slice(0, 200);
+	console.error(`progress-store ${name}: ${safe}`);
+	return new ProgressStoreUnavailableError();
 }
 
 async function readText(key: string): Promise<string | null> {
@@ -63,7 +79,7 @@ async function readText(key: string): Promise<string | null> {
 		});
 	} catch (error) {
 		if (isBlobNotFound(error)) return null;
-		throw new ProgressStoreUnavailableError();
+		throw reportStoreFailure(error);
 	}
 	if (result == null) return null;
 	if (!result.stream) return null;
@@ -97,8 +113,8 @@ export function createVercelProgressStore(): ProgressStore {
 					allowOverwrite: true,
 					contentType: "application/json",
 				});
-			} catch {
-				throw new ProgressStoreUnavailableError();
+			} catch (error) {
+				throw reportStoreFailure(error);
 			}
 		},
 		withLock(key, operation) {

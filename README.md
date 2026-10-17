@@ -12,7 +12,7 @@
 - **用 Agent 创建，也用 Agent 上课。** 把下面的提示词交给支持终端工具的 Coding Agent 即可。当前 Agent 按协议写课程时不必安装 Pi；默认 CLI 的自动生成和 `teach` 会调用 Pi。
 - **进度留在网站上。** 完成当关互动后，教师通过进度 API 记下进度。教学模式可以在网页或对话里切换，不必重新生成课程。关卡完成表示参与了当关互动并得到反馈。学生身份是轻量标识，没有账号和权限系统。
 - **文档站可以一次取多页。** HTTP(S) HTML 文档会自动判断是否抓取，默认跟随同站链接，最多 500 页。写入课程的仍是生成时选中的页面。数学公式会在关卡页面中排版显示。
-- **同一份学校目录可以三处运行：** 本机、自有服务器、Vercel。
+- **同一份学校目录可以四处运行：** 本机、自有服务器、Vercel、Cloudflare Workers。
 
 ## 岛屿页面
 
@@ -143,7 +143,8 @@ GitHub 仓库、论文、PDF、DOCX、纯文本和本地路径按单份来源准
 | --- | --- |
 | 本机 | `npm run school -- start NAME`，使用 `DEPLOY_TARGET=dev`。进度在 `.wrangler/` |
 | 自有服务器 | 在学校目录执行 `./script/serve`，使用 `DEPLOY_TARGET=node`。进度在 `.school-data/` |
-| Vercel | 项目根目录指向该学校，配置 `DEPLOY_TARGET=vercel` 和 `BLOB_READ_WRITE_TOKEN` |
+| Vercel | `npm run school -- deploy NAME`，或在学校目录执行 `./script/deploy-vercel`。脚本写入 `DEPLOY_TARGET=vercel` 并连接私有 Blob 存储 |
+| Cloudflare Workers | `npm run school -- deploy-cloudflare NAME`，或在学校目录执行 `./script/deploy-cloudflare`。进度写入该校私有 R2，发布到 `workers.dev` |
 
 迁移或备份时保留 `.wrangler/`。环境变量和域名见该学校的 `DEPLOYMENT.md`。
 

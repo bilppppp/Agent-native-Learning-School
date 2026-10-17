@@ -11,12 +11,14 @@ export function resolveDeployTarget(
 	);
 }
 
+function present(value: string | undefined): boolean {
+	return value !== undefined && value !== "";
+}
+
 export function assertVercelBuildEnv(
 	env: NodeJS.ProcessEnv = process.env,
 ): void {
 	if (resolveDeployTarget(env) !== "vercel") return;
-	const token = env.BLOB_READ_WRITE_TOKEN;
-	if (token === undefined || token === "") {
-		throw new Error("BLOB_READ_WRITE_TOKEN");
-	}
+	if (present(env.BLOB_STORE_ID) || present(env.BLOB_READ_WRITE_TOKEN)) return;
+	throw new Error("BLOB_STORE_ID");
 }

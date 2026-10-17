@@ -18,9 +18,16 @@ function buildTarget(): string | undefined {
 	return import.meta.env.SCHOOL_DEPLOY_TARGET;
 }
 
-function blobTokenMissing(): boolean {
-	const token = process.env.BLOB_READ_WRITE_TOKEN;
-	return token === undefined || token === "";
+function readEnv(name: string): string | undefined {
+	const value = process.env[name];
+	return typeof value === "string" && value !== "" ? value : undefined;
+}
+
+function blobConfigMissing(): boolean {
+	return (
+		readEnv("BLOB_STORE_ID") === undefined &&
+		readEnv("BLOB_READ_WRITE_TOKEN") === undefined
+	);
 }
 
 export function progressUnavailableResponse(
@@ -50,35 +57,37 @@ export async function runWithProgressStore(
 	}
 }
 
-/** Select the progress backend from DEPLOY_TARGET. Unset or empty means dev. */
-export async function getProgressStore(): Promise<ProgressStore> {
-	const target = resolveDeployTarget();
+function activeTarget() {
 	const compiled = buildTarget();
+	if (
+		compiled === "dev" ||
+		compiled === "node" ||
+		compiled === "vercel" ||
+		compiled === "cloudflare"
+	) {
+		return compiled;
+	}
+	return resolveDeployTarget();
+}
+
+/** Select the progress backend from the build target. Unset or empty means dev. */
+export async function getProgressStore(): Promise<ProgressStore> {
+	const target = activeTarget();
 	if (target === "dev") {
-		if (compiled === "node" || compiled === "vercel") {
-			throw new Error("Dev progress store is not available in this build");
-		}
 		const { createDevProgressStore } = await import("./store-dev");
 		return createDevProgressStore();
 	}
 	if (target === "node") {
-		if (compiled === "dev" || compiled === "vercel") {
-			throw new Error("Node progress store is not available in this build");
-		}
 		const { createNodeProgressStore } = await import("./store-node");
 		return createNodeProgressStore();
 	}
 	if (target === "vercel") {
-		if (compiled === "dev" || compiled === "node") {
-			throw new Error("Vercel progress store is not available in this build");
-		}
-		if (blobTokenMissing()) {
+		if (blobConfigMissing()) {
 			throw new ProgressStoreUnavailableError();
 		}
 		const { createVercelProgressStore } = await import("./store-vercel");
 		return createVercelProgressStore();
 	}
-	throw new Error(
-		`Invalid DEPLOY_TARGET: ${JSON.stringify(target)}. Expected "dev", "node", or "vercel".`,
-	);
+	const { createR2ProgressStore } = await import("./store-r2");
+	return createR2ProgressStore();
 }

@@ -711,29 +711,12 @@ import ClientUI from "../components/ClientUI.astro";
           }, 1500);
         }
 
-        // Poll for progress updates every second so the UI reflects changes
-        // made by agents (e.g. marking a lesson complete) without a page reload.
-        var pollTimer = null;
-        function startPolling() {
-          if (pollTimer) return;
-          pollTimer = setInterval(function() {
-            if (!window.school.getStudentId()) {
-              clearInterval(pollTimer);
-              pollTimer = null;
-              return;
-            }
-            window.school.fetchProgress().then(function() {
-              window.school.updateAllCheckmarks();
-            });
-          }, 1000);
-        }
-
-        if (window.school.getStudentId()) {
-          startPolling();
-        }
-
-        window.addEventListener("school:enrolled", function() {
-          startPolling();
+        document.addEventListener("visibilitychange", function() {
+          if (document.visibilityState !== "visible") return;
+          if (!window.school.getStudentId()) return;
+          window.school.fetchProgress().then(function() {
+            window.school.updateAllCheckmarks();
+          });
         });
       })();
     </script>

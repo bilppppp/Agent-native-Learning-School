@@ -30,6 +30,7 @@ OVERLAY_FILES = (
     Path("src/lib/store-dev.ts"),
     Path("src/lib/store-node.ts"),
     Path("src/lib/store-vercel.ts"),
+    Path("src/lib/store-r2.ts"),
     Path("src/lib/progress.ts"),
     Path("src/lib/student-id.ts"),
     Path("src/pages/api/enroll.ts"),
@@ -43,6 +44,8 @@ OVERLAY_FILES = (
     Path("src/pages/harness/pi.txt.ts"),
     Path("src/pages/llms.txt.ts"),
     Path("script/serve"),
+    Path("script/deploy-vercel"),
+    Path("script/deploy-cloudflare"),
     Path("DEPLOYMENT.md"),
     Path(".env.example"),
 )
@@ -472,11 +475,12 @@ def ensure_gitignore(target: Path) -> bool:
 
 
 def ensure_serve_executable(target: Path) -> None:
-    serve = target / "script" / "serve"
-    if not serve.is_file():
-        return
-    mode = serve.stat().st_mode
-    serve.chmod(mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH)
+    for name in ("serve", "deploy-vercel", "deploy-cloudflare"):
+        script = target / "script" / name
+        if not script.is_file():
+            continue
+        mode = script.stat().st_mode
+        script.chmod(mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH)
 
 
 def install_runtime_dependencies(target: Path) -> None:

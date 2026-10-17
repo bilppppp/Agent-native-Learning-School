@@ -54,6 +54,8 @@ function help() {
   添加 --prompt-only 输出通用教师提示词，不启动 Pi。
   npm run school -- finish NAME      # 检查 Agent 生成的课程并构建，不调用 Pi
   npm run school -- build NAME
+  npm run school -- deploy NAME      # 部署到 Vercel：写入 DEPLOY_TARGET，连接私有 Blob，发布生产环境
+  npm run school -- deploy-cloudflare NAME  # 部署到 Cloudflare Workers，进度写入该校私有 R2，发布 workers.dev
   npm run school -- retry NAME       # 检查保留文件后重新生成；可能修改课程，不重置进度
   npm run school -- setup            # 安装模板依赖；PDF提取还需要pypdf
 
@@ -189,7 +191,7 @@ async function main() {
   if (!operation || options.help || ['help', '--help', '-h'].includes(operation)) { help(); return; }
   if (options['prepare-only'] && operation !== 'create') throw new Error('--prepare-only is only valid with create.');
   if (options['prompt-only'] && operation !== 'teach') throw new Error('--prompt-only is only valid with teach.');
-  if (!['setup', 'create', 'list', 'start', 'build', 'retry', 'teach', 'finish', 'supplement'].includes(operation)) throw new Error(`Unknown command ${operation}. Use --help.`);
+  if (!['setup', 'create', 'list', 'start', 'build', 'deploy', 'deploy-cloudflare', 'retry', 'teach', 'finish', 'supplement'].includes(operation)) throw new Error(`Unknown command ${operation}. Use --help.`);
   if (operation === 'setup') { await setup(); return; }
   if (operation === 'create') { await create(); return; }
   process.chdir(root);
@@ -211,6 +213,14 @@ async function main() {
     await command('npm', ['run', 'dev', '--', '--host', '127.0.0.1', '--port', String(chosen)], { cwd: path, inherit: true, env: { DEPLOY_TARGET: 'dev' } });
   } else if (operation === 'build') {
     await command('npm', ['run', 'build'], { cwd: path, inherit: true, rejectOnErrorLog: true });
+  } else if (operation === 'deploy') {
+    const script = join(path, 'script', 'deploy-vercel');
+    if (!existsSync(script)) throw new Error(`Unknown School script ${script}. Apply the School Kit first.`);
+    await command(script, [], { cwd: path, inherit: true });
+  } else if (operation === 'deploy-cloudflare') {
+    const script = join(path, 'script', 'deploy-cloudflare');
+    if (!existsSync(script)) throw new Error(`Unknown School script ${script}. Apply the School Kit first.`);
+    await command(script, [], { cwd: path, inherit: true });
   } else if (operation === 'finish') {
     const count = validateGeneration(join(root, 'inputs', basename(path) + '.json'));
     await command('npm', ['run', 'build'], { cwd: path, inherit: true, rejectOnErrorLog: true });

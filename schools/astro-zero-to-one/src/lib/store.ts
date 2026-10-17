@@ -18,9 +18,16 @@ function buildTarget(): string | undefined {
 	return import.meta.env.SCHOOL_DEPLOY_TARGET;
 }
 
-function blobTokenMissing(): boolean {
-	const token = process.env.BLOB_READ_WRITE_TOKEN;
-	return token === undefined || token === "";
+function readEnv(name: string): string | undefined {
+	const value = process.env[name];
+	return typeof value === "string" && value !== "" ? value : undefined;
+}
+
+function blobConfigMissing(): boolean {
+	return (
+		readEnv("BLOB_STORE_ID") === undefined &&
+		readEnv("BLOB_READ_WRITE_TOKEN") === undefined
+	);
 }
 
 export function progressUnavailableResponse(
@@ -72,7 +79,7 @@ export async function getProgressStore(): Promise<ProgressStore> {
 		if (compiled === "dev" || compiled === "node") {
 			throw new Error("Vercel progress store is not available in this build");
 		}
-		if (blobTokenMissing()) {
+		if (blobConfigMissing()) {
 			throw new ProgressStoreUnavailableError();
 		}
 		const { createVercelProgressStore } = await import("./store-vercel");
