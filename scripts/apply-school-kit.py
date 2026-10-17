@@ -23,6 +23,7 @@ OVERLAY_FILES = (
     Path("src/components/ClientUI.astro"),
     Path("src/components/AgentPrompt.astro"),
     Path("src/components/TeachingMode.astro"),
+    Path("src/components/MermaidDiagrams.astro"),
     Path("src/lib/teaching.ts"),
     Path("src/lib/deploy-target.ts"),
     Path("src/lib/public-origin.ts"),
@@ -62,6 +63,7 @@ KIT_DEPENDENCIES = {
     "remark-math": "^6.0.0",
     "rehype-katex": "^7.0.1",
     "katex": "^0.16.22",
+    "mermaid": "^11.12.2",
 }
 
 ISLAND_OVERLAY_DEFER = {

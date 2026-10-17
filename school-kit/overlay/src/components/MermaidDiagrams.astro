@@ -1,0 +1,67 @@
+<script>
+  function diagramBlocks(): HTMLElement[] {
+    return Array.from(
+      document.querySelectorAll('article pre[data-language="mermaid"]'),
+    );
+  }
+
+  function diagramSource(block: HTMLElement): string {
+    const code = block.querySelector("code");
+    return (code?.textContent ?? block.textContent ?? "").replace(/\n$/, "");
+  }
+
+  async function renderMermaidDiagrams(): Promise<void> {
+    const blocks = diagramBlocks().filter((block) => block.dataset.mermaidReady !== "true");
+    if (blocks.length === 0) return;
+    const mermaid = (await import("mermaid")).default;
+    const dark = document.documentElement.classList.contains("dark");
+    mermaid.initialize({
+      startOnLoad: false,
+      securityLevel: "strict",
+      theme: dark ? "dark" : "neutral",
+      fontFamily: "inherit",
+    });
+    for (const [index, block] of blocks.entries()) {
+      const id = `mermaid-${index}-${Math.random().toString(36).slice(2, 8)}`;
+      try {
+        const { svg } = await mermaid.render(id, diagramSource(block));
+        const figure = document.createElement("figure");
+        figure.className = "mermaid-diagram";
+        figure.innerHTML = svg;
+        block.replaceWith(figure);
+      } catch (error) {
+        document.getElementById(id)?.remove();
+        block.dataset.mermaidReady = "true";
+        console.error(error);
+      }
+    }
+  }
+
+  renderMermaidDiagrams();
+  document.addEventListener("astro:page-load", () => {
+    renderMermaidDiagrams();
+  });
+</script>
+
+<style is:global>
+  .mermaid-diagram {
+    margin: 1.5rem 0;
+    overflow-x: auto;
+    background: #fffdf8;
+    border: 1px solid #e4d3b4;
+    border-radius: 12px;
+    padding: 1rem 0.75rem;
+  }
+
+  .dark .mermaid-diagram {
+    background: #1c1917;
+    border-color: #44403c;
+  }
+
+  .mermaid-diagram svg {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto;
+  }
+</style>

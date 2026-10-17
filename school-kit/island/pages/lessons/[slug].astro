@@ -24,7 +24,7 @@ export async function getStaticPaths() {
 const { lesson } = Astro.props;
 const { Content } = await render(lesson);
 const lessonBody = lesson.body ?? "";
-const hasCode = lessonBody.includes("```");
+const hasCode = /```(?!mermaid\b)/.test(lessonBody);
 const hasTable = /^\|.+\|$/m.test(lessonBody);
 const minutes = Math.max(1, Math.round(lessonBody.length / 280));
 
@@ -33,6 +33,7 @@ const currentIndex = allLessons.findIndex((l) => l.data.slug === lesson.data.slu
 const next = currentIndex < allLessons.length - 1 ? allLessons[currentIndex + 1] : null;
 
 import { t } from "../../lib/ui";
+import MermaidDiagrams from "../../components/MermaidDiagrams.astro";
 ---
 
 <Base title={lesson.data.title} description={lesson.data.description}>
@@ -64,6 +65,7 @@ import { t } from "../../lib/ui";
   <LessonTabs client:load readLabel="自己阅读" teachLabel="交给教师" />
   <article class="prose dark:prose-invert max-w-none island-lesson-sheet" data-lesson-panel="read">
     <Content />
+    <MermaidDiagrams />
   </article>
   <div data-lesson-panel="teach" hidden>
       {lesson.data.agentOnly && (
